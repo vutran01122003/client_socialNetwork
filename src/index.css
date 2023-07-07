@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url(./styles/NotFound.css);
+@import url(./styles/Header.css);
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%
+}
+
+.App {
+    height: 100%;
+    margin: 0;
+    background: white;
+}
+
+#theme:checked ~ .App {
+    filter: invert(1);
+}
+
+#theme:checked ~ .App img {
+    filter: invert(1);
+}
