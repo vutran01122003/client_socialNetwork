@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './pages/Login';
 import Home from './pages/Home';
-import Header from './components/Header';
+import Header from './components/header/Header';
 import Register from './pages/Register';
 import axios from 'axios';
 import Alert from './components/notify/Alert';

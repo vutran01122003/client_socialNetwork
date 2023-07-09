@@ -2,8 +2,16 @@ import React from 'react';
 import { Box, Button, Container, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { activePageSelector } from '../redux/selector';
+import { activePageAction } from '../redux/actions/activePageAction';
 
 export default function NotFound() {
+    const dispatch = useDispatch();
+
+    const handleActivePage = () => {
+        dispatch(activePageAction('Home'));
+    };
     return (
         <Box
             sx={{
@@ -27,6 +35,7 @@ export default function NotFound() {
                                 to='/'
                                 color='inherit'
                                 style={{ textDecoration: 'none' }}
+                                onClick={handleActivePage}
                             >
                                 Back home
                             </Link>

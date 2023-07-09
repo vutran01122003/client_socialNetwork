@@ -2,13 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 @import url(./styles/NotFound.css);
-@import url(./styles/Header.css);
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+@import url(./styles/Search.css);
+@import url(./styles/tippy.css);
+@import url(./styles/scrollbar.css);
+@import url(./styles/reset.css);
 
 html, body, #root {
   height: 100%

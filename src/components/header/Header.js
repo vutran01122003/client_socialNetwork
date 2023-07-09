@@ -22,9 +22,15 @@ import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../redux/actions/authAction';
-import { authSelector, themSelector } from '../redux/selector';
-import { GLOBALTYPES } from '../redux/actions/globalTypes';
+import { logout } from '../../redux/actions/authAction';
+import { activePageAction } from '../../redux/actions/activePageAction';
+import {
+    activePageSelector,
+    authSelector,
+    themSelector
+} from '../../redux/selector';
+import { GLOBALTYPES } from '../../redux/actions/globalTypes';
+import Search from './Search';
 
 const pages = [
     { icon: HomeIcon, name: 'Home', path: '/' },
@@ -36,12 +42,18 @@ const pages = [
 function Header() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
+    const activePage = useSelector(activePageSelector).name;
     const theme = useSelector(themSelector);
     const auth = useSelector(authSelector);
+
     const dispatch = useDispatch();
 
     const handleLogout = () => {
         dispatch(logout());
+    };
+
+    const handleActivePage = (pageName) => {
+        dispatch(activePageAction(pageName));
     };
 
     const handleTheme = () => {
@@ -95,7 +107,7 @@ function Header() {
                         }}
                     >
                         <img
-                            src={require('../images/logo2.png')}
+                            src={require('../../images/logo2.png')}
                             style={{ height: '40px' }}
                             alt=''
                         />
@@ -110,7 +122,6 @@ function Header() {
                         sx={{
                             mr: 2,
                             display: { xs: 'flex', md: 'none' },
-                            flexGrow: 1,
                             fontFamily: 'monospace',
                             fontWeight: 700,
                             letterSpacing: '.3rem',
@@ -120,31 +131,53 @@ function Header() {
                         }}
                     >
                         <img
-                            src={require('../images/logo2.png')}
+                            src={require('../../images/logo2.png')}
                             style={{ height: '30px' }}
                             alt=''
                         />
                         <span> Smedia </span>
                     </Typography>
 
+                    <Box
+                        sx={{
+                            height: '40px',
+                            display: { xs: 'none', md: 'flex' }
+                        }}
+                    >
+                        <Search />
+                    </Box>
+
                     <Box sx={{ flexGrow: 0, display: 'flex', gap: 4 }}>
                         <Box
+                            className={`text-white`}
                             sx={{
                                 flexGrow: 1,
-                                display: { xs: 'none', md: 'flex' }
+                                display: {
+                                    xs: 'none',
+                                    md: 'flex'
+                                }
                             }}
                         >
                             {pages.map((page, index) => (
                                 <Button
                                     key={index}
-                                    onClick={handleCloseNavMenu}
+                                    onClick={() => {
+                                        handleCloseNavMenu();
+                                        handleActivePage(page.name);
+                                    }}
                                     sx={{
                                         my: 2,
-                                        color: 'white',
                                         display: 'block'
                                     }}
                                 >
-                                    <Link to={page.path}>
+                                    <Link
+                                        to={page.path}
+                                        className={`${
+                                            activePage === page.name
+                                                ? 'text-orange-500'
+                                                : 'text-white'
+                                        } hover:text-orange-500`}
+                                    >
                                         <page.icon fontSize='large' />
                                     </Link>
                                 </Button>
@@ -232,22 +265,20 @@ function Header() {
                             onClose={handleCloseUserMenu}
                         >
                             <MenuItem onClick={handleCloseUserMenu}>
-                                <Typography textAlign='center'>
-                                    <Link
-                                        to='/profile'
-                                        className='flex gap-2 items-center'
-                                    >
-                                        {(auth.user.gender === 'male' ||
-                                            auth.user.gender === 'other') && (
-                                            <Person4Icon />
-                                        )}
-                                        {auth.user.gender === 'female' && (
-                                            <Person3Icon />
-                                        )}
+                                <Link
+                                    to='/profile'
+                                    className='flex gap-2 items-center w-full'
+                                >
+                                    {(auth.user.gender === 'male' ||
+                                        auth.user.gender === 'other') && (
+                                        <Person4Icon />
+                                    )}
+                                    {auth.user.gender === 'female' && (
+                                        <Person3Icon />
+                                    )}
 
-                                        <span>Profile</span>
-                                    </Link>
-                                </Typography>
+                                    <span className='flex-1'>Profile</span>
+                                </Link>
                             </MenuItem>
                             <MenuItem onClick={handleCloseUserMenu}>
                                 <Typography
@@ -278,7 +309,7 @@ function Header() {
                             >
                                 <Typography
                                     onClick={handleLogout}
-                                    className='flex gap-2 items-center'
+                                    className='flex gap-2 items-center w-full'
                                     textAlign='center'
                                 >
                                     <LogoutIcon /> <span>Logout</span>
