@@ -2,8 +2,7 @@ import React from 'react';
 import { Box, Button, Container, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { activePageSelector } from '../redux/selector';
+import { useDispatch } from 'react-redux';
 import { activePageAction } from '../redux/actions/activePageAction';
 
 export default function NotFound() {
@@ -43,7 +42,7 @@ export default function NotFound() {
                     </Grid>
                     <Grid item xs={6}>
                         <img
-                            src='https://cdn.pixabay.com/photo/2017/03/09/12/31/error-2129569__340.jpg'
+                            src={require('../images/notfound.png')}
                             alt=''
                             width={500}
                             height={250}

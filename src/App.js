@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './pages/Login';
 import Home from './pages/Home';
-import Header from './components/header/Header';
 import Register from './pages/Register';
 import axios from 'axios';
 import Alert from './components/notify/Alert';
@@ -13,13 +12,14 @@ import { GLOBALTYPES } from './redux/actions/globalTypes';
 import { authSelector, themSelector } from './redux/selector';
 import PageRender from './configRouter/PageRender';
 import PrivateRoute from './configRouter/PrivateRoute';
+import Layout from './components/layout/Layout';
 
 function App() {
     axios.defaults.withCredentials = true;
     axios.defaults.baseURL = process.env.REACT_APP_API_URI;
     const dispatch = useDispatch();
-    const auth = useSelector(authSelector);
     const theme = useSelector(themSelector);
+    const auth = useSelector(authSelector);
 
     useEffect(() => {
         dispatch({
@@ -27,9 +27,8 @@ function App() {
             payload: localStorage.getItem('theme') === 'true'
         });
 
-        getDataApi('access_token')
+        getDataApi('/access_token')
             .then((res) => {
-                localStorage.setItem('logged', true);
                 dispatch({
                     type: GLOBALTYPES.AUTH,
                     payload: res.data
@@ -50,33 +49,40 @@ function App() {
     }, [dispatch]);
 
     return (
-        <>
+        <div>
             <input type='checkbox' checked={theme} readOnly id='theme' hidden />
             <div className='App'>
                 <Alert />
                 <Router>
                     <Fragment>
-                        {auth?.token && <Header />}
                         <Routes>
-                            <Route
-                                path='/'
-                                element={auth?.token ? <Home /> : <Login />}
-                            />
                             <Route path='/register' element={<Register />} />
                             <Route path='/login' element={<Login />} />
-
-                            <Route path='/' element={<PrivateRoute />}>
-                                <Route path='/:page' element={<PageRender />} />
+                            <Route path='/' element={<Layout />}>
                                 <Route
-                                    path='/:page/:id'
-                                    element={<PageRender />}
+                                    index
+                                    element={auth.token ? <Home /> : <Login />}
                                 />
+                                <Route path='*' element={<PageRender />} />
+                                <Route
+                                    path='/'
+                                    element={<PrivateRoute auth={auth} />}
+                                >
+                                    <Route
+                                        path='/:page'
+                                        element={<PageRender />}
+                                    />
+                                    <Route
+                                        path='/:page/:id'
+                                        element={<PageRender />}
+                                    />
+                                </Route>
                             </Route>
                         </Routes>
                     </Fragment>
                 </Router>
             </div>
-        </>
+        </div>
     );
 }
 

@@ -1,26 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url(./styles/App.css);
+@import url(./styles/Header.css);
 @import url(./styles/NotFound.css);
 @import url(./styles/Search.css);
 @import url(./styles/tippy.css);
 @import url(./styles/scrollbar.css);
 @import url(./styles/reset.css);
+@import url(./styles/Profile.css);
+@import url(./styles/Avatar.css);
+@import url(./styles/Layout.css);
+@import url(./styles/Info.css);
+@import url(./styles/Post.css);
 
-html, body, #root {
-  height: 100%
-}
-
-.App {
-    height: 100%;
-    margin: 0;
-    background: white;
-}
-
-#theme:checked ~ .App {
-    filter: invert(1);
-}
-
-#theme:checked ~ .App img {
-    filter: invert(1);
-}

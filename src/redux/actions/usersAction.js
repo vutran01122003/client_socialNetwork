@@ -11,7 +11,7 @@ export const getSearchUser = (searchValue) => async (dispatch) => {
         const res = await postDataApi('/user', { searchValue });
 
         dispatch({
-            type: GLOBALTYPES.USERS,
+            type: GLOBALTYPES.USERS.SEARCH_USERS,
             payload: res.data.users
         });
 

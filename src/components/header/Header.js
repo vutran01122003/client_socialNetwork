@@ -8,7 +8,6 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import MessageIcon from '@mui/icons-material/Message';
@@ -78,7 +77,7 @@ function Header() {
     };
 
     return (
-        <AppBar position='static'>
+        <AppBar color='inherit'>
             <Container maxWidth='xl'>
                 <Toolbar
                     disableGutters
@@ -89,54 +88,19 @@ function Header() {
                         height: '100%'
                     }}
                 >
-                    <Typography
-                        variant='h6'
-                        noWrap
-                        component='a'
-                        href='./'
-                        sx={{
-                            mr: 2,
-                            display: { xs: 'none', md: 'flex' },
-                            fontFamily: 'monospace',
-                            fontWeight: 700,
-                            alignItems: 'center',
-                            letterSpacing: '.3rem',
-                            color: 'inherit',
-                            textDecoration: 'none',
-                            gap: 2
-                        }}
-                    >
-                        <img
-                            src={require('../../images/logo2.png')}
-                            style={{ height: '40px' }}
-                            alt=''
-                        />
-                        <span className='text-2xl'> Smedia </span>
-                    </Typography>
-
-                    <Typography
-                        variant='h5'
-                        noWrap
-                        href='./'
-                        component='a'
-                        sx={{
-                            mr: 2,
-                            display: { xs: 'flex', md: 'none' },
-                            fontFamily: 'monospace',
-                            fontWeight: 700,
-                            letterSpacing: '.3rem',
-                            color: 'inherit',
-                            textDecoration: 'none',
-                            gap: 2
-                        }}
-                    >
-                        <img
-                            src={require('../../images/logo2.png')}
-                            style={{ height: '30px' }}
-                            alt=''
-                        />
-                        <span> Smedia </span>
-                    </Typography>
+                    <Box>
+                        <Link
+                            to='/'
+                            className='flex items-center gap-2 font-semibold'
+                        >
+                            <img
+                                src={require('../../images/logo2.png')}
+                                style={{ height: '40px' }}
+                                alt=''
+                            />
+                            <span className='text-2xl'> Smedia </span>
+                        </Link>
+                    </Box>
 
                     <Box
                         sx={{
@@ -151,7 +115,6 @@ function Header() {
                         <Box
                             className={`text-white`}
                             sx={{
-                                flexGrow: 1,
                                 display: {
                                     xs: 'none',
                                     md: 'flex'
@@ -159,28 +122,21 @@ function Header() {
                             }}
                         >
                             {pages.map((page, index) => (
-                                <Button
+                                <Link
                                     key={index}
                                     onClick={() => {
                                         handleCloseNavMenu();
                                         handleActivePage(page.name);
                                     }}
-                                    sx={{
-                                        my: 2,
-                                        display: 'block'
-                                    }}
+                                    to={page.path}
+                                    className={`${
+                                        activePage === page.name
+                                            ? 'text-gray-700'
+                                            : 'text-gray-400'
+                                    } hover:text-gray-700 px-4`}
                                 >
-                                    <Link
-                                        to={page.path}
-                                        className={`${
-                                            activePage === page.name
-                                                ? 'text-orange-500'
-                                                : 'text-white'
-                                        } hover:text-orange-500`}
-                                    >
-                                        <page.icon fontSize='large' />
-                                    </Link>
-                                </Button>
+                                    <page.icon fontSize='large' />
+                                </Link>
                             ))}
                         </Box>
 
@@ -196,7 +152,7 @@ function Header() {
                                 aria-controls='menu-appbar'
                                 aria-haspopup='true'
                                 onClick={handleOpenNavMenu}
-                                color='inherit'
+                                color='gray'
                             >
                                 <MenuIcon />
                             </IconButton>
@@ -227,7 +183,7 @@ function Header() {
                                         <Typography textAlign='center'>
                                             <Link
                                                 to={page.path}
-                                                className='flex gap-2'
+                                                className='flex gap-2 text-gray-700 hover:text-gray-800'
                                             >
                                                 <page.icon />
                                                 {page.name}
@@ -266,7 +222,7 @@ function Header() {
                         >
                             <MenuItem onClick={handleCloseUserMenu}>
                                 <Link
-                                    to='/profile'
+                                    to={`/profile/${auth.user._id}`}
                                     className='flex gap-2 items-center w-full'
                                 >
                                     {(auth.user.gender === 'male' ||

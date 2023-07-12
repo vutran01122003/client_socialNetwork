@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const postDataApi = (uri, data, token) => {
-    const res = axios.post(`/api/${uri}`, data, {
+    const res = axios.post(`/api${uri}`, data, {
         headers: { Authorization: token }
     });
 
@@ -9,7 +9,7 @@ export const postDataApi = (uri, data, token) => {
 };
 
 export const getDataApi = (uri, token) => {
-    const res = axios.get(`/api/${uri}`, {
+    const res = axios.get(`/api${uri}`, {
         headers: { Authorization: token }
     });
 

@@ -1,0 +1,17 @@
+html, body, #root {
+    height: 100%;
+}
+    
+.App {
+    height: 100%;
+    background-color: #F0F2F5;
+    margin: 0;
+}
+
+#theme:checked ~ .App  {
+    filter: invert(1);
+}
+
+#theme:checked ~ .App  img {
+    filter: invert(1);
+}

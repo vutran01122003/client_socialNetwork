@@ -17,11 +17,11 @@ function Search() {
     const [openResult, setOpenResult] = useState(false);
 
     const dispatch = useDispatch();
+
     const handleSearch = (e) => {
-        setOpenResult(true);
         setSearchValue(e.target.value);
     };
-
+    // eslint-disable-next-line
     const handleGetUser = async (searchValue) => {
         if (searchValue !== '') {
             const formatSearchValue = searchValue
@@ -40,6 +40,7 @@ function Search() {
         return () => {
             clearTimeout(timeId);
         };
+        // eslint-disable-next-line
     }, [searchValue]);
 
     const hideResult = () => {
@@ -77,6 +78,8 @@ function Search() {
                     {users.map((user) => (
                         <Account
                             key={user._id}
+                            id={user._id}
+                            onClick={hideResult}
                             avatar={user.avatar}
                             fullname={user.fullname}
                             username={user.username}
@@ -85,7 +88,7 @@ function Search() {
                 </div>
             )}
         >
-            <div className='search text-black font-semibold flex items-center h-full'>
+            <div className='search search_wrapper text-black font-semibold flex items-center h-full'>
                 <input
                     type='search'
                     className='search_input py-2 px-3 outline-none'
@@ -94,7 +97,7 @@ function Search() {
                     onChange={handleSearch}
                     onClick={visibleResult}
                 />
-                <div className='icon_wrapper bg-gray-300 h-full p-2 hover:text-white hover:bg-orange-600 transition linear'>
+                <div className='icon_wrapper bg-gray-300 h-full p-2 hover:text-white hover:bg-gray-700 transition linear'>
                     <SearchIcon />
                 </div>
             </div>

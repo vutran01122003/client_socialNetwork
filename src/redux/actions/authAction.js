@@ -4,8 +4,7 @@ import { GLOBALTYPES } from './globalTypes';
 export const loginAction = (payload) => async (dispatch) => {
     try {
         dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } });
-        const res = await postDataApi('login', payload);
-        localStorage.setItem('logged', true);
+        const res = await postDataApi('/login', payload);
         dispatch({
             type: GLOBALTYPES.AUTH,
             payload: {
@@ -28,7 +27,7 @@ export const loginAction = (payload) => async (dispatch) => {
 export const refreshToken = () => async (dispatch) => {
     try {
         dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } });
-        const res = await postDataApi('refresh_token');
+        const res = await postDataApi('/refresh_token');
         dispatch({
             type: GLOBALTYPES.AUTH,
             payload: {
@@ -38,7 +37,6 @@ export const refreshToken = () => async (dispatch) => {
         });
         dispatch({ type: GLOBALTYPES.ALERT, payload: {} });
     } catch (err) {
-        localStorage.removeItem('logged');
         dispatch({
             type: GLOBALTYPES.ALERT,
             payload: { error: err.response?.data.msg || 'Error' }
@@ -53,7 +51,7 @@ export const register = (userData) => async (dispatch) => {
             payload: { loading: true }
         });
 
-        const res = await postDataApi('register', userData);
+        const res = await postDataApi('/register', userData);
 
         dispatch({
             type: GLOBALTYPES.AUTH,
@@ -83,8 +81,7 @@ export const logout = () => async (dispatch) => {
             type: GLOBALTYPES.ALERT,
             payload: { loading: true }
         });
-        const res = await getDataApi('logout');
-        localStorage.removeItem('logged');
+        const res = await getDataApi('/logout');
         dispatch({
             type: GLOBALTYPES.AUTH,
             payload: {}

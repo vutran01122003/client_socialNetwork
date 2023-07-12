@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -44,6 +44,7 @@ const defaultTheme = createTheme();
 export default function Login() {
     const dispatch = useDispatch();
     const auth = useSelector(authSelector);
+
     const [showPassword, setShowPassword] = useState(false);
     const [userData, setUserData] = useState({
         email: '',
@@ -62,11 +63,7 @@ export default function Login() {
         }));
     };
 
-    useEffect(() => {
-        if (auth.token) return <Navigate to='/' />;
-    }, [auth]);
-
-    if (localStorage.getItem('logged')) return <></>;
+    if (auth.token) return <Navigate to='/' />;
 
     return (
         <>

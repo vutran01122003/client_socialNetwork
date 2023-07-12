@@ -1,5 +1,5 @@
 function Message() {
-    return <>Message</>;
+    return <span>message</span>;
 }
 
 export default Message;
