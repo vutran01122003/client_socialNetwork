@@ -91,13 +91,13 @@ function Search() {
             <div className='search search_wrapper text-black font-semibold flex items-center h-full'>
                 <input
                     type='search'
-                    className='search_input py-2 px-3 outline-none'
+                    className='search_input py-2 px-3 outline-none bg-gray-100'
                     placeholder='Search on Smedia'
                     value={searchValue}
                     onChange={handleSearch}
                     onClick={visibleResult}
                 />
-                <div className='icon_wrapper bg-gray-300 h-full p-2 hover:text-white hover:bg-gray-700 transition linear'>
+                <div className='flex justify-center items-center icon_wrapper bg-gray-300 h-full p-2 hover:text-white hover:bg-gray-700 transition linear'>
                     <SearchIcon />
                 </div>
             </div>

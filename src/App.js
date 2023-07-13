@@ -3,7 +3,7 @@ import Login from './pages/Login';
 import Home from './pages/Home';
 import Register from './pages/Register';
 import axios from 'axios';
-import Alert from './components/notify/Alert';
+import Alert from './components/alert/Alert';
 import { useDispatch, useSelector } from 'react-redux';
 import { Fragment, useEffect } from 'react';
 import { getDataApi } from './utils/fetchData';

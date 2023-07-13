@@ -1,3 +1,25 @@
 .info_wrapper {
     margin-top: 8px;
+    gap: 20px
+}
+
+.avatar_wrapper {
+    min-width: 150px;
+}
+
+.website_link {
+    display: inline-block;
+    max-width: 500px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.story {
+    max-width: 500px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3; /* start showing ellipsis when 3rd line is reached */
+    white-space: pre-wrap; /* let the text wrap preserving spaces */
 }

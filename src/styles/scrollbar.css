@@ -6,3 +6,17 @@
     background-color: rgba(22, 24, 35, 0.06);
     border-radius: 50px;
 }
+
+.story_textarea::-webkit-scrollbar {
+    width: 5px;
+}
+
+.story_textarea::-webkit-scrollbar-thumb{
+    background-color: rgba(22, 24, 35, 0.06);
+    border-radius: 50px;
+}
+
+.edit_wrapper::-webkit-scrollbar {
+    width: 0px;
+}
+

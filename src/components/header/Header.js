@@ -77,7 +77,7 @@ function Header() {
     };
 
     return (
-        <AppBar color='inherit'>
+        <AppBar color='inherit' elevation={1}>
             <Container maxWidth='xl'>
                 <Toolbar
                     disableGutters
@@ -133,7 +133,7 @@ function Header() {
                                         activePage === page.name
                                             ? 'text-gray-700'
                                             : 'text-gray-400'
-                                    } hover:text-gray-700 px-4`}
+                                    } hover:text-gray-700 px-4 transition linear`}
                                 >
                                     <page.icon fontSize='large' />
                                 </Link>

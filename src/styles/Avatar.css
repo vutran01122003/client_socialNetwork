@@ -3,3 +3,9 @@
     height: 150px;
     object-fit: cover;
 }
+
+.medium {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}

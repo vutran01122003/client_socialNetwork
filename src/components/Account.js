@@ -7,10 +7,10 @@ function Account({ avatar, fullname, username, id, onClick }) {
             className='avatar w-full flex gap-2 p-2 items-center bg-white hover:bg-gray-100'
             onClick={onClick}
         >
-            <div className='img_wrapper h-full w-10 h-10'>
+            <div className='img_wrapper w-10 h-10'>
                 <img
                     src={avatar}
-                    className='h-full w-full rounded-full'
+                    className='h-full w-full rounded-full '
                     alt=''
                 />
             </div>

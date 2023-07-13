@@ -1,7 +1,14 @@
 import { Box } from '@mui/material';
+import { useState } from 'react';
+import Edit from './EditProfile';
 
 function Info({ userInfo }) {
-    const { avatar, username, fullname, followers, following } = userInfo || {};
+    const { avatar, username, fullname, followers, following, story, website } =
+        userInfo || {};
+    const [edit, setEdit] = useState(false);
+    const handleEdit = () => {
+        setEdit((prev) => !prev);
+    };
 
     return (
         <Box>
@@ -10,7 +17,7 @@ function Info({ userInfo }) {
                     <img
                         src={avatar}
                         alt='avatar'
-                        className='avatar big rounded-full'
+                        className='avatar big rounded-full select-none'
                     />
                 </div>
                 <div className='user_wrapper'>
@@ -18,19 +25,32 @@ function Info({ userInfo }) {
                         {username}
                     </h3>
                     <div className='follow_info flex gap-8 text-teal-400'>
-                        <span className='hover:text-teal-500 cursor-pointer'>{`${followers?.length} Followers`}</span>
-                        <span className='hover:text-teal-500 cursor-pointer'>{`${following?.length} Following`}</span>
+                        <span className='hover:text-teal-300 cursor-pointer'>{`${followers?.length} Followers`}</span>
+                        <span className='hover:text-teal-300 cursor-pointer'>{`${following?.length} Following`}</span>
                     </div>
-                    <p className='fullname text-gray-500 font-bold'>
+                    <h4 className='fullname text-gray-500 font-bold'>
                         {fullname}
-                    </p>
+                    </h4>
+                    <a
+                        href={website}
+                        className='website_link text-blue-600 text-semibold hover:text-blue-700'
+                        target='_blank'
+                        rel='noreferrer'
+                    >
+                        {website}
+                    </a>
+                    <h5 className='story'>{story}</h5>
                 </div>
-                <div className='edit_btn'>
-                    <button className='rounded-md text-teal-400 text-semibold border-2 border-teal-400 py-2 px-10 hover:bg-teal-300 hover:text-white'>
+                <div className='edit_btn whitespace-nowrap'>
+                    <button
+                        onClick={handleEdit}
+                        className='rounded-md text-teal-400 text-semibold border-2 border-teal-400 py-2 px-10 hover:bg-teal-300 hover:text-white'
+                    >
                         Edit Profile
                     </button>
                 </div>
             </div>
+            {edit && <Edit setEdit={setEdit} />}
         </Box>
     );
 }

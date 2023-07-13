@@ -1,23 +1,27 @@
 import { Alert, Snackbar } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { alertSelector } from '../../redux/selector';
 
 function Toast({ status, msg }) {
     const [open, setOpen] = useState(true);
-    useEffect(() => {
-        const timeoutID = setTimeout(() => {
-            setOpen(false);
-        }, 3000);
+    const alert = useSelector(alertSelector);
 
-        return () => {
-            clearTimeout(timeoutID);
-        };
-    }, []);
+    useEffect(() => {
+        if (msg) {
+            setOpen(true);
+        }
+    }, [msg, alert]);
 
     return (
         <>
             <Snackbar
                 open={open}
+                autoHideDuration={2000}
+                onClose={() => {
+                    setOpen(false);
+                }}
                 anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
             >
                 <Alert

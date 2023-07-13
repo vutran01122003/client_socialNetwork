@@ -26,7 +26,7 @@ export const getUser =
         } catch (error) {
             dispatch({
                 type: GLOBALTYPES.ALERT,
-                payload: { error: error.response?.data.msg || 'Error' }
+                payload: { error: error.response?.data.msg || 'Not Found' }
             });
         }
     };
