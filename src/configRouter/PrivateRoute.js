@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { postDataApi } from '../utils/fetchData';
-import SimpleBackdrop from '../components/notify/Loading';
+import SimpleBackdrop from '../components/alert/Loading';
 
 const PrivateRoute = () => {
     const [auth, setAuth] = useState(false);

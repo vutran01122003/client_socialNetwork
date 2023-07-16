@@ -8,10 +8,14 @@ export const postDataApi = (uri, data, token) => {
     return res;
 };
 
-export const getDataApi = (uri, token) => {
-    const res = axios.get(`/api${uri}`, {
-        headers: { Authorization: token }
-    });
+export const getDataApi = (uri) => {
+    const res = axios.get(`/api${uri}`);
+
+    return res;
+};
+
+export const patchDataApi = (uri, data) => {
+    const res = axios.patch(`/api${uri}`, data);
 
     return res;
 };

@@ -1,73 +1,73 @@
 import { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { authSelector } from '../../redux/selector';
+import { authSelector, themSelector } from '../../redux/selector';
 import EditIcon from '@mui/icons-material/Edit';
-import checkImageUpload from '../../utils/checkImageUpload';
+import { checkImageUpload, loadURLToInputFiled } from '../../utils/uploadImage';
 import { GLOBALTYPES } from '../../redux/actions/globalTypes';
+import { updateUser } from '../../redux/actions/profileActions';
 
 function Edit({ setEdit }) {
-    const auth = useSelector(authSelector);
-    const [userData, setUserData] = useState(auth.user);
-    const [avatar, setAvatar] = useState(userData.avatar);
     const refInput = useRef();
-    const { fullname, username, website, story, gender } = userData;
+    const theme = useSelector(themSelector);
     const dispatch = useDispatch();
+    const auth = useSelector(authSelector);
+    const [fileInput, setFileInput] = useState(null);
+    const { avatar, fullname, username, website, story, gender } = auth.user;
+    const [userData, setUserData] = useState({
+        fullname,
+        username,
+        website,
+        story,
+        gender
+    });
+    const [avatarProfile, setAvatarProfile] = useState(avatar);
+    const formData = new FormData();
 
     const handleUserData = (e) => {
         setUserData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     };
 
-    function loadURLToInputFiled(url) {
-        getImgURL(url, (imgBlob) => {
-            // Load img blob to input
-            // WIP: UTF8 character error
-            let fileName = 'hasFilename.jpg';
-            let file = new File(
-                [imgBlob],
-                fileName,
-                { type: 'image/jpeg', lastModified: new Date().getTime() },
-                'utf-8'
-            );
-            let container = new DataTransfer();
-            container.items.add(file);
-            refInput.current.files = container.files;
-        });
-    }
-
-    function getImgURL(url, callback) {
-        var xhr = new XMLHttpRequest();
-        xhr.onload = function () {
-            callback(xhr.response);
-        };
-        xhr.open('GET', url);
-        xhr.responseType = 'blob';
-        xhr.send();
-    }
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        dispatch(updateUser({ auth, fileInput, formData, userData }));
+    };
 
     const handleFile = (e) => {
         const file = e.target.files[0];
         const { inValid, msg } = checkImageUpload(file);
 
         if (inValid && file) {
+            setFileInput(null);
             dispatch({
                 type: GLOBALTYPES.ALERT,
                 payload: {
                     error: msg
                 }
             });
-            loadURLToInputFiled(auth.user.avatar);
+            loadURLToInputFiled(auth.user.avatar, refInput.current);
         }
 
         if (file && !inValid) {
             const imgURL = URL.createObjectURL(file);
-            setAvatar(imgURL);
+            setAvatarProfile(imgURL);
+            setFileInput(file);
         }
     };
 
     return (
-        <div className='edit_wrapper '>
+        <div
+            className={`${theme === true ? 'bg-white/75' : ''} edit_wrapper`}
+            onMouseDown={(e) => {
+                if (e.target === e.currentTarget) {
+                    setEdit(false);
+                }
+            }}
+        >
             <div className=''>
-                <form className='edit_container relative bg-gray-100 p-5 rounded-md mt-10'>
+                <form
+                    onSubmit={handleSubmit}
+                    className='edit_container relative bg-gray-100 p-5 rounded-md mt-10'
+                >
                     <button
                         onClick={() => {
                             setEdit(false);
@@ -82,7 +82,7 @@ function Edit({ setEdit }) {
                     <div className='profile_image flex w-full justify-center'>
                         <div className='img_wrapper relative'>
                             <img
-                                src={avatar}
+                                src={avatarProfile}
                                 alt='avatar'
                                 className='medium rounded-full border border-black object-cover object-center'
                             />
@@ -112,16 +112,16 @@ function Edit({ setEdit }) {
                                 name='fullname'
                                 className='outline-none border border-gray rounded-md w-full py-2 px-4'
                                 type='text'
-                                value={fullname}
+                                value={userData.fullname}
                                 onChange={handleUserData}
                             />
                             <span
                                 className={`${
-                                    fullname.length > 30
+                                    userData.fullname.length > 30
                                         ? 'text-red-500'
                                         : 'text-green-500'
                                 } absolute block right-2 top-1/2 count_letter -translate-y-1/2`}
-                            >{`${fullname.length}/30`}</span>
+                            >{`${userData.fullname.length}/30`}</span>
                         </div>
                     </div>
                     <div className='mb-4'>
@@ -131,16 +131,16 @@ function Edit({ setEdit }) {
                                 name='username'
                                 className='outline-none border border-gray rounded-md w-full py-2 px-4'
                                 type='text'
-                                value={username}
+                                value={userData.username.trim()}
                                 onChange={handleUserData}
                             />
                             <span
                                 className={`${
-                                    username.length > 30
+                                    userData.username.length > 30
                                         ? 'text-red-500'
                                         : 'text-green-500'
                                 } absolute block right-2 top-1/2 count_letter -translate-y-1/2`}
-                            >{`${username.length}/30`}</span>
+                            >{`${userData.username.length}/30`}</span>
                         </div>
                     </div>
                     <div className='mb-4'>
@@ -149,7 +149,7 @@ function Edit({ setEdit }) {
                             name='website'
                             className='outline-none border border-gray rounded-md w-full py-2 px-4'
                             type='text'
-                            value={website}
+                            value={userData.website}
                             onChange={handleUserData}
                         />
                     </div>
@@ -161,23 +161,23 @@ function Edit({ setEdit }) {
                                 name='story'
                                 className='story_textarea block outline-none border border-gray rounded-md p-2 w-full'
                                 placeholder='Write your story here...'
-                                value={story}
+                                value={userData.story}
                                 onChange={handleUserData}
                             />
                             <span
                                 className={`${
-                                    story.length > 200
+                                    userData.story.length > 200
                                         ? 'text-red-500'
                                         : 'text-green-500'
                                 } absolute count_letter block right-2 bottom-0 -translate-y-1/2`}
-                            >{`${story.length}/200`}</span>
+                            >{`${userData.story.length}/200`}</span>
                         </div>
                     </div>
                     <div className='mb-4'>
                         <label className='block p-2'>Gender: </label>
                         <select
                             className='outline-none border border-gray rounded-md w-full py-2 px-4'
-                            value={gender}
+                            value={userData.gender}
                             onChange={handleUserData}
                             name='gender'
                         >
