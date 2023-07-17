@@ -1,0 +1,102 @@
+@media only screen and (max-width: 599px) {
+    .profile_container {
+        margin: 0 !important;
+    }
+
+    .info_wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 10px !important;
+    }
+
+    .edit_btn, .follow_btn {
+        margin: 0 !important;
+    }
+
+    .edit_btn button, .follow_btn button {
+        padding: 4px 40px;
+    }
+
+    .user_avatar_edit_wrapper {
+        gap: 10px;
+        flex-direction: column;
+    }
+
+    .avatar_wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .follow_info  {
+        justify-content: center;
+    }
+
+    .follow_info span {
+        text-align: center;
+    }
+
+    .fullname  {
+        margin-top: 10px;
+    }
+
+    .website_link {
+        display: inline-block;
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .story {
+       width: 100%;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 4;
+        white-space: pre-wrap;
+    }
+
+    .edit_container {
+        max-width: 100vw;
+    }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) and (max-width: 992px) {
+    .profile_container {
+        margin-left: 20px !important;
+        margin-right: 20px !important;
+    }
+
+    .info_wrapper {
+        display: flex;
+        gap: 25px !important;
+    }
+
+    .follow_btn, .edit_btn {
+        margin-left: 40px !important;
+    }
+
+    .edit_btn button, .follow_btn button {
+        padding: 6px 40px;
+    }
+
+    .website_link {
+        display: inline-block;
+        white-space: wrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .story {
+        overflow-wrap: anywhere;
+    }
+}
+
+@media only screen and (max-width: 992px) { 
+    .avatar_wrapper img {
+        width: 150px;
+        height: 150px;
+    }
+}

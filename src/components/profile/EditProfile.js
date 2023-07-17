@@ -44,6 +44,7 @@ function Edit({ setEdit }) {
                     error: msg
                 }
             });
+            // Set Default avatar when an error occurred
             loadURLToInputFiled(auth.user.avatar, refInput.current);
         }
 

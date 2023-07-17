@@ -1,8 +1,13 @@
 import { Box } from '@mui/material';
 import { useState } from 'react';
 import Edit from './EditProfile';
+import { useSelector } from 'react-redux';
+import { authSelector } from '../../redux/selector';
+import Follow from './FollowBtn';
 
-function Info({ userInfo }) {
+function Info({ userInfo, id }) {
+    const auth = useSelector(authSelector);
+
     const { avatar, username, fullname, followers, following, story, website } =
         userInfo || {};
     const [edit, setEdit] = useState(false);
@@ -12,7 +17,7 @@ function Info({ userInfo }) {
 
     return (
         <Box>
-            <div className='info_wrapper flex w-full justify-between'>
+            <div className='info_wrapper flex w-full gap-20'>
                 <div className='avatar_wrapper'>
                     <img
                         src={avatar}
@@ -20,10 +25,24 @@ function Info({ userInfo }) {
                         className='avatar big rounded-full select-none'
                     />
                 </div>
-                <div className='user_wrapper'>
-                    <h3 className='username font-semibold text-3xl mb-2'>
-                        {username}
-                    </h3>
+                <div className='user_wrapper flex-1'>
+                    <div className='user_avatar_edit_wrapper flex pt-2'>
+                        <h3 className='username font-semibold text-3xl'>
+                            {username}
+                        </h3>
+                        {auth.user?._id === id ? (
+                            <div className='edit_btn whitespace-nowrap ml-40'>
+                                <button
+                                    onClick={handleEdit}
+                                    className='rounded-md text-teal-400 text-semibold border-2 border-teal-400 py-2 px-14 hover:bg-teal-300 hover:text-white'
+                                >
+                                    Edit Profile
+                                </button>
+                            </div>
+                        ) : (
+                            <Follow userInfo={userInfo} auth={auth} />
+                        )}
+                    </div>
                     <div className='follow_info flex gap-8 text-teal-400'>
                         <span className='hover:text-teal-300 cursor-pointer'>{`${followers?.length} Followers`}</span>
                         <span className='hover:text-teal-300 cursor-pointer'>{`${following?.length} Following`}</span>
@@ -40,14 +59,6 @@ function Info({ userInfo }) {
                         {website}
                     </a>
                     <h5 className='story'>{story}</h5>
-                </div>
-                <div className='edit_btn whitespace-nowrap'>
-                    <button
-                        onClick={handleEdit}
-                        className='rounded-md text-teal-400 text-semibold border-2 border-teal-400 py-2 px-10 hover:bg-teal-300 hover:text-white'
-                    >
-                        Edit Profile
-                    </button>
                 </div>
             </div>
             {edit && <Edit setEdit={setEdit} />}

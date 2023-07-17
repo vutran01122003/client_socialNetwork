@@ -198,10 +198,7 @@ function Header() {
                                 onClick={handleOpenUserMenu}
                                 sx={{ p: 0 }}
                             >
-                                <Avatar
-                                    alt='Remy Sharp'
-                                    src={auth.user.avatar}
-                                />
+                                <Avatar alt='avatar' src={auth.user.avatar} />
                             </IconButton>
                         </Tooltip>
                         <Menu

@@ -7,16 +7,24 @@
     min-width: 150px;
 }
 
+.follow_info, .fullname   {
+    margin-top: 8px;
+}
+
 .website_link {
-    display: inline-block;
-    max-width: 500px;
-    white-space: nowrap;
+    display: -webkit-box;
+    overflow-wrap: anywhere;
     overflow: hidden;
+    max-width: 500px;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
     text-overflow: ellipsis;
+    margin-top: 8px;
 }
 
 .story {
     max-width: 500px;
+    margin-top: 8px;
     overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;

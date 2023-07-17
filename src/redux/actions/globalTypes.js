@@ -9,6 +9,8 @@ export const GLOBALTYPES = {
     },
     PROFILE: {
         LOADING: 'LOADING',
-        GET_USER: 'GET_USER'
-    }
+        GET_USER: 'GET_USER',
+        SET_USER: 'SET_USER'
+    },
+    FOLLOW_USER: 'FOLLOW_USER'
 };

@@ -1,28 +1,35 @@
 import { useEffect, useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { postDataApi } from '../utils/fetchData';
+import { getDataApi, postDataApi } from '../utils/fetchData';
 import SimpleBackdrop from '../components/alert/Loading';
 
-const PrivateRoute = () => {
-    const [auth, setAuth] = useState(false);
+const PrivateRoute = ({ auth }) => {
+    const [checkAuth, setCheckAuth] = useState(false);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        postDataApi('/refresh_token')
+        getDataApi('/access_token')
             .then(() => {
-                setAuth(true);
+                setCheckAuth(true);
             })
-            .catch(() => {
-                setAuth(false);
+            .catch(async () => {
+                setCheckAuth(false);
+                await postDataApi('/refresh_token')
+                    .then(() => {
+                        setCheckAuth(true);
+                    })
+                    .catch(() => {
+                        setCheckAuth(false);
+                    });
             })
             .finally(() => {
                 setLoading(false);
             });
-    });
+    }, [auth]);
 
     if (loading) return <SimpleBackdrop />;
 
-    return auth ? <Outlet /> : <Navigate to='/' />;
+    return checkAuth ? <Outlet /> : <Navigate to='/' />;
 };
 
 export default PrivateRoute;

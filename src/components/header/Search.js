@@ -1,6 +1,6 @@
 import SearchIcon from '@mui/icons-material/Search';
 import Tippy from '@tippyjs/react/headless';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import 'tippy.js/dist/tippy.css';
 import Account from '../Account';
 import { CircularProgress } from '@mui/material';
@@ -21,16 +21,19 @@ function Search() {
     const handleSearch = (e) => {
         setSearchValue(e.target.value);
     };
-    // eslint-disable-next-line
-    const handleGetUser = async (searchValue) => {
-        if (searchValue !== '') {
-            const formatSearchValue = searchValue
-                .toLowerCase()
-                .replace(/ /g, '');
-            dispatch(getSearchUser(formatSearchValue));
-        }
-        return;
-    };
+
+    const handleGetUser = useCallback(
+        async (searchValue) => {
+            if (searchValue !== '') {
+                const formatSearchValue = searchValue
+                    .toLowerCase()
+                    .replace(/ /g, '');
+                dispatch(getSearchUser(formatSearchValue));
+            }
+            return;
+        },
+        [dispatch]
+    );
 
     useEffect(() => {
         const timeId = setTimeout(() => {
@@ -40,8 +43,7 @@ function Search() {
         return () => {
             clearTimeout(timeId);
         };
-        // eslint-disable-next-line
-    }, [searchValue]);
+    }, [searchValue, handleGetUser]);
 
     const hideResult = () => {
         setOpenResult(false);

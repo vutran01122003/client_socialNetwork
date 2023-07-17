@@ -1,3 +1,4 @@
+import { Avatar } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 function Account({ avatar, fullname, username, id, onClick }) {
@@ -8,11 +9,7 @@ function Account({ avatar, fullname, username, id, onClick }) {
             onClick={onClick}
         >
             <div className='img_wrapper w-10 h-10'>
-                <img
-                    src={avatar}
-                    className='h-full w-full rounded-full '
-                    alt=''
-                />
+                <Avatar src={avatar} alt='' />
             </div>
             <div className='user_description text-black flex-1'>
                 <h3 className='font-bold text-slate-700'>{username}</h3>

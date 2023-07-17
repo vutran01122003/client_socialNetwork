@@ -15,6 +15,11 @@
     background: rgba(1, 1, 1, 0.7);
 }
 
+.user_avatar_edit_wrapper {
+    display: flex;
+    align-items: center;
+}
+
 .edit_container {
     width: 450px;
     box-shadow: 0 0 2px #000;
