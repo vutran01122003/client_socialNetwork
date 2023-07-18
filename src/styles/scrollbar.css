@@ -20,3 +20,13 @@
     width: 0px;
 }
 
+.follow_container::-webkit-scrollbar-thumb{
+    background-color: rgba(22, 24, 35, 0.06);
+    border-radius: 50px;
+}
+
+.follow_container::-webkit-scrollbar {
+    width: 5px;
+}
+
+

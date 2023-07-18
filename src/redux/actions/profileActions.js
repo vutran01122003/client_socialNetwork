@@ -12,7 +12,6 @@ export const getUser =
                 });
 
                 const res = await getDataApi(`/user/${id}`);
-
                 dispatch({
                     type: GLOBALTYPES.PROFILE.GET_USER,
                     payload: res.data.user
@@ -101,13 +100,15 @@ export const follow =
 
         const followingList = auth.user?.following;
 
-        if (!followingList.includes(userInfo._id)) {
+        if (
+            !followingList.find((user) => {
+                return user._id === userInfo?._id;
+            })
+        ) {
             patchDataApi(`/user/${userInfo._id}/follow`, {
                 authId: auth.user._id
             })
                 .then((res) => {
-                    console.log(res);
-
                     dispatch({
                         type: GLOBALTYPES.PROFILE.SET_USER,
                         payload: res.data.user
@@ -140,7 +141,11 @@ export const unFollow =
     ({ userInfo, auth }) =>
     async (dispatch) => {
         const followingList = auth.user?.following;
-        if (followingList.includes(userInfo._id)) {
+        if (
+            followingList.find((user) => {
+                return user._id === userInfo?._id;
+            })
+        ) {
             patchDataApi(`/user/${userInfo._id}/unfollow`, {
                 authId: auth.user._id
             })

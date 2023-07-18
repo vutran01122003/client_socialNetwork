@@ -3,25 +3,29 @@ import Info from '../../components/profile/Info';
 import Post from '../../components/profile/Post';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { profileSelector } from '../../redux/selector';
+import { authSelector, profileSelector } from '../../redux/selector';
 import { getUser } from '../../redux/actions/profileActions';
 import { CircularProgress } from '@mui/material';
 
 function Profile() {
     const { id } = useParams();
     const profile = useSelector(profileSelector);
+    const auth = useSelector(authSelector);
     const [userInfo, setUserInfo] = useState(null);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getUser({ users: profile.users, id }));
-        if (profile.users.length > 0) {
+        if (auth.user?._id === id) {
+            setUserInfo(auth.user);
+        } else {
+            dispatch(getUser({ users: profile.users, id }));
             const currentUser = profile.users.find((user) => user._id === id);
             setUserInfo(currentUser);
         }
-    }, [id, dispatch, profile.users]);
+    }, [id, dispatch, profile.users, auth.user]);
 
-    if (!userInfo) return <span className='font-semibold'>Not Found</span>;
+    if (!userInfo && !profile.loading)
+        return <span className='font-semibold'>Not Found</span>;
 
     return (
         <div className='profile_container flex flex-col mx-10 mt-2 bg-white p-5 rounded-md'>

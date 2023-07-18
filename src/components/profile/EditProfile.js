@@ -6,7 +6,7 @@ import { checkImageUpload, loadURLToInputFiled } from '../../utils/uploadImage';
 import { GLOBALTYPES } from '../../redux/actions/globalTypes';
 import { updateUser } from '../../redux/actions/profileActions';
 
-function Edit({ setEdit }) {
+function Edit({ setOnEdit }) {
     const refInput = useRef();
     const theme = useSelector(themSelector);
     const dispatch = useDispatch();
@@ -60,18 +60,18 @@ function Edit({ setEdit }) {
             className={`${theme === true ? 'bg-white/75' : ''} edit_wrapper`}
             onMouseDown={(e) => {
                 if (e.target === e.currentTarget) {
-                    setEdit(false);
+                    setOnEdit(false);
                 }
             }}
         >
-            <div className=''>
+            <div>
                 <form
                     onSubmit={handleSubmit}
                     className='edit_container relative bg-gray-100 p-5 rounded-md mt-10'
                 >
                     <button
                         onClick={() => {
-                            setEdit(false);
+                            setOnEdit(false);
                         }}
                         className='absolute top-0 right-2 text-gray-400 text-3xl hover:text-red-500 font-semibold transition linear'
                     >

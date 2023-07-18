@@ -12,7 +12,9 @@ function Follow({ userInfo, auth, setUserInfo }) {
         dispatch(unFollow({ userInfo, auth }));
     };
 
-    return auth.user?.following.includes(userInfo?._id) ? (
+    return auth.user?.following.find((user) => {
+        return user._id === userInfo?._id;
+    }) ? (
         <div
             onClick={handleUnFollow}
             className='follow_btn whitespace-nowrap ml-40'

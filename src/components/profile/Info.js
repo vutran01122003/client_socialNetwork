@@ -4,15 +4,25 @@ import Edit from './EditProfile';
 import { useSelector } from 'react-redux';
 import { authSelector } from '../../redux/selector';
 import Follow from './FollowBtn';
+import FollowInfo from '../FollowInfo';
 
 function Info({ userInfo, id }) {
     const auth = useSelector(authSelector);
 
     const { avatar, username, fullname, followers, following, story, website } =
         userInfo || {};
-    const [edit, setEdit] = useState(false);
+    const [onEdit, setOnEdit] = useState(false);
+    const [audience, setAudience] = useState(null);
+
     const handleEdit = () => {
-        setEdit((prev) => !prev);
+        setOnEdit((prev) => !prev);
+    };
+
+    const handleAudience = (title, users) => {
+        setAudience({
+            title,
+            users
+        });
     };
 
     return (
@@ -44,8 +54,18 @@ function Info({ userInfo, id }) {
                         )}
                     </div>
                     <div className='follow_info flex gap-8 text-teal-400'>
-                        <span className='hover:text-teal-300 cursor-pointer'>{`${followers?.length} Followers`}</span>
-                        <span className='hover:text-teal-300 cursor-pointer'>{`${following?.length} Following`}</span>
+                        <span
+                            onClick={() => {
+                                handleAudience('Followers', followers);
+                            }}
+                            className='hover:text-teal-300 cursor-pointer'
+                        >{`${followers?.length} Followers`}</span>
+                        <span
+                            onClick={() => {
+                                handleAudience('Following', following);
+                            }}
+                            className='hover:text-teal-300 cursor-pointer'
+                        >{`${following?.length} Following`}</span>
                     </div>
                     <h4 className='fullname text-gray-500 font-bold'>
                         {fullname}
@@ -61,7 +81,10 @@ function Info({ userInfo, id }) {
                     <h5 className='story'>{story}</h5>
                 </div>
             </div>
-            {edit && <Edit setEdit={setEdit} />}
+            {onEdit && <Edit setOnEdit={setOnEdit} />}
+            {audience && (
+                <FollowInfo audience={audience} setAudience={setAudience} />
+            )}
         </Box>
     );
 }

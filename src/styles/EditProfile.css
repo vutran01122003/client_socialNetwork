@@ -11,10 +11,6 @@
     z-index: 1200;
 }
 
-.edit_wrapper.edit_wrapper_invert {
-    background: rgba(1, 1, 1, 0.7);
-}
-
 .user_avatar_edit_wrapper {
     display: flex;
     align-items: center;
