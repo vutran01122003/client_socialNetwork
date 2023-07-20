@@ -7,7 +7,6 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import MessageIcon from '@mui/icons-material/Message';
@@ -19,6 +18,7 @@ import Person3Icon from '@mui/icons-material/Person3';
 import Person4Icon from '@mui/icons-material/Person4';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
+import Avatar from '../Avatar';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../redux/actions/authAction';
@@ -198,7 +198,10 @@ function Header() {
                                 onClick={handleOpenUserMenu}
                                 sx={{ p: 0 }}
                             >
-                                <Avatar alt='avatar' src={auth.user.avatar} />
+                                <Avatar
+                                    avatar={auth.user.avatar}
+                                    size='small'
+                                />
                             </IconButton>
                         </Tooltip>
                         <Menu

@@ -23,6 +23,32 @@ export function checkImageUpload(file) {
     };
 }
 
+export const uploadImage = (files = []) => {
+    const newImages = [];
+    files.forEach(async (file) => {
+        const formData = new FormData();
+        formData.append('upload_preset', 'oyptwxxs');
+        formData.append('cloud_name', 'dzm0nupxy');
+        formData.append('file', file);
+
+        const res = await fetch(
+            'https://api.cloudinary.com/v1_1/dzm0nupxy/upload',
+            {
+                method: 'POST',
+                body: formData
+            }
+        );
+
+        const imgData = await res.json();
+
+        newImages.push({
+            id: imgData.public_id,
+            url: imgData.secure_url
+        });
+    });
+    return newImages;
+};
+
 export function loadURLToInputFiled(url, element) {
     getImgURL(url, (imgBlob) => {
         let fileName = 'hasFilename.jpg';

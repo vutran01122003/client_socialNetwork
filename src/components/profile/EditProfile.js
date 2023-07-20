@@ -2,7 +2,11 @@ import { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { authSelector, themSelector } from '../../redux/selector';
 import EditIcon from '@mui/icons-material/Edit';
-import { checkImageUpload, loadURLToInputFiled } from '../../utils/uploadImage';
+import {
+    checkImageUpload,
+    loadURLToInputFiled,
+    uploadImage
+} from '../../utils/uploadImage';
 import { GLOBALTYPES } from '../../redux/actions/globalTypes';
 import { updateUser } from '../../redux/actions/profileActions';
 
@@ -22,7 +26,7 @@ function Edit({ setOnEdit }) {
     });
     const [avatarProfile, setAvatarProfile] = useState(avatar);
     const formData = new FormData();
-
+    uploadImage();
     const handleUserData = (e) => {
         setUserData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     };

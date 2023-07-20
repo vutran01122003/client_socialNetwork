@@ -28,7 +28,7 @@ function Profile() {
         return <span className='font-semibold'>Not Found</span>;
 
     return (
-        <div className='profile_container flex flex-col mx-10 mt-2 bg-white p-5 rounded-md'>
+        <div className='profile_container flex flex-col'>
             {profile.loading ? (
                 <div className='flex justify-center w-full'>
                     <CircularProgress size={50} />

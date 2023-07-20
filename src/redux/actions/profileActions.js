@@ -1,6 +1,6 @@
 import { getDataApi, patchDataApi } from '../../utils/fetchData';
 import { GLOBALTYPES } from './globalTypes';
-
+import { uploadImage } from '../../utils/uploadImage';
 export const getUser =
     ({ users, id }) =>
     async (dispatch) => {
@@ -48,6 +48,8 @@ export const updateUser =
 
         patchDataApi(`/user/${auth.user._id}`, formData)
             .then((res) => {
+                uploadImage([fileInput]);
+
                 dispatch({
                     type: GLOBALTYPES.AUTH,
                     payload: {

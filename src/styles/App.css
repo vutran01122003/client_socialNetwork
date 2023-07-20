@@ -16,6 +16,10 @@ html, body, #root {
     filter: invert(1);
 }
 
+#theme:checked ~ .App  video {
+    filter: invert(1);
+}
+
 /* Prevent image dragging*/
 img { 
     -webkit-user-drag: none; 
@@ -25,7 +29,7 @@ img {
 }
 
 /* Prevent link dragging */
-a{
+a {
     user-select: none;
     -webkit-user-drag: none;
 }

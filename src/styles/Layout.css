@@ -1,6 +1,7 @@
 main {
     color: black;
     margin: 0 auto 0;
+    max-width: 900px;
     min-height: 100vh;
-    padding: 5px;
+    padding: 8px 10px 8px;
 }

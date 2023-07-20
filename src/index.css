@@ -9,7 +9,6 @@
 @import url(./styles/tippy.css);
 @import url(./styles/scrollbar.css);
 @import url(./styles/reset.css);
-@import url(./styles/Profile.css);
 @import url(./styles/Avatar.css);
 @import url(./styles/Layout.css);
 @import url(./styles/Info.css);
@@ -17,5 +16,6 @@
 @import url(./styles/EditProfile.css);
 @import url(./styles/global.css);
 @import url(./styles/FollowInfo.css);
+@import url(./styles/Status.css);
 
 

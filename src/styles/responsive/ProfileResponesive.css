@@ -93,10 +93,3 @@
         overflow-wrap: anywhere;
     }
 }
-
-@media only screen and (max-width: 992px) { 
-    .avatar_wrapper img {
-        width: 150px;
-        height: 150px;
-    }
-}

@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { authSelector } from '../../redux/selector';
 import Follow from './FollowBtn';
 import FollowInfo from '../FollowInfo';
+import Avatar from '../Avatar';
 
 function Info({ userInfo, id }) {
     const auth = useSelector(authSelector);
@@ -27,13 +28,9 @@ function Info({ userInfo, id }) {
 
     return (
         <Box>
-            <div className='info_wrapper flex w-full gap-20'>
+            <div className='info_wrapper wrapper flex w-full gap-20'>
                 <div className='avatar_wrapper'>
-                    <img
-                        src={avatar}
-                        alt='avatar'
-                        className='avatar big rounded-full select-none'
-                    />
+                    <Avatar avatar={avatar} size='big' />
                 </div>
                 <div className='user_wrapper flex-1'>
                     <div className='user_avatar_edit_wrapper flex pt-2'>
