@@ -2,6 +2,7 @@ main {
     color: black;
     margin: 0 auto 0;
     max-width: 900px;
+    /* min-height: calc(100vh - 64px); */
     min-height: 100vh;
     padding: 8px 10px 8px;
 }

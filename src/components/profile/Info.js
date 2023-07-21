@@ -4,7 +4,7 @@ import Edit from './EditProfile';
 import { useSelector } from 'react-redux';
 import { authSelector } from '../../redux/selector';
 import Follow from './FollowBtn';
-import FollowInfo from '../FollowInfo';
+import FollowInfo from './FollowInfo';
 import Avatar from '../Avatar';
 
 function Info({ userInfo, id }) {

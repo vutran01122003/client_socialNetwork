@@ -4,10 +4,11 @@ import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 import CloseIcon from '@mui/icons-material/Close';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useDispatch, useSelector } from 'react-redux';
-import { themSelector } from '../redux/selector';
-import { checkImageUpload } from '../utils/uploadImage';
-import { GLOBALTYPES } from '../redux/actions/globalTypes';
+import { themSelector } from '../../redux/selector';
+import { checkImageUpload, uploadImage } from '../../utils/uploadImage';
+import { GLOBALTYPES } from '../../redux/actions/globalTypes';
 import { useRef, useState } from 'react';
+import { createPost } from '../../redux/actions/postAction';
 
 function ModalPost({ handleHideModalPost, auth }) {
     const theme = useSelector(themSelector);
@@ -18,6 +19,7 @@ function ModalPost({ handleHideModalPost, auth }) {
     const [images, setImages] = useState([]);
     const [openVideo, setOpenVideo] = useState(false);
     const [stream, setStream] = useState(null);
+    const [content, setContent] = useState('');
 
     const handleClearImages = () => {
         setImages([]);
@@ -63,6 +65,7 @@ function ModalPost({ handleHideModalPost, auth }) {
                     }
                 });
             } else {
+                uploadImage();
                 newImages.push(file);
             }
         });
@@ -82,6 +85,26 @@ function ModalPost({ handleHideModalPost, auth }) {
         let image_data_url = canvas.toDataURL('image/jpeg');
 
         setImages((prev) => [...prev, { imgCamera: image_data_url }]);
+    };
+
+    const handleChangeValueTextarea = (e) => {
+        setContent(e.target.value);
+    };
+
+    const handleSumbitPost = async (e) => {
+        e.preventDefault();
+        await dispatch(
+            createPost({
+                user: auth.user,
+                content,
+                images
+            })
+        );
+
+        setContent('');
+        setImages([]);
+        if (stream) handleStopCamera(stream);
+        handleHideModalPost();
     };
 
     return (
@@ -113,6 +136,8 @@ function ModalPost({ handleHideModalPost, auth }) {
                 <textarea
                     className='post_textarea w-full outline-none overflow-auto'
                     placeholder={`What's on your mind, ${auth.user?.username}?`}
+                    value={content}
+                    onChange={handleChangeValueTextarea}
                 ></textarea>
                 {openVideo && (
                     <div className='camera_wrapper'>
@@ -198,9 +223,10 @@ function ModalPost({ handleHideModalPost, auth }) {
                             </>
                         )}
                     </div>
-                    <div className='post_btn_wrapper'>
-                        <button className='post_btn'>Post</button>
-                    </div>
+
+                    <button onClick={handleSumbitPost} className='post_btn'>
+                        Post
+                    </button>
                 </div>
             </form>
         </div>

@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
-import { profileSelector, themSelector } from '../redux/selector';
-import Account from '../components/Account';
+import { themSelector } from '../../redux/selector';
+import Account from '../Account';
 
 function FollowInfo({ audience, setAudience }) {
     const theme = useSelector(themSelector);

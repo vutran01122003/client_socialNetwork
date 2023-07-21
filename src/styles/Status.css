@@ -122,11 +122,8 @@
     background: #e7e9eb;
 }
 
-.post_btn_wrapper {
-    padding-top: 20px;
-}
-
 .post_btn {
+    margin-top: 20px;
     width: 100%;
     color: white;
     font-weight: 500;

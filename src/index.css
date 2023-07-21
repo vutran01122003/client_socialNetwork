@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url(./styles/responsive/scrollResponsive.css);
 @import url(./styles/responsive/ProfileResponesive.css);
 @import url(./styles/App.css);
 @import url(./styles/Header.css);

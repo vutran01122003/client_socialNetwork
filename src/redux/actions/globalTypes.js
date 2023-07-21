@@ -12,5 +12,9 @@ export const GLOBALTYPES = {
         GET_USER: 'GET_USER',
         SET_USER: 'SET_USER'
     },
-    FOLLOW_USER: 'FOLLOW_USER'
+    POST: {
+        CREATE_POST: 'CREATE_POST',
+        LOADING_POST: 'LOADING_POST',
+        GET_POST: 'GET_POST'
+    }
 };

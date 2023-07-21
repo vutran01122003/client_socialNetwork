@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import { authSelector } from '../../redux/selector';
 import Avatar from '../Avatar';
 import { useState } from 'react';
-import ModalPost from '../ModalPost';
+import ModalPost from './ModalPost';
 
 function Status() {
     const auth = useSelector(authSelector);

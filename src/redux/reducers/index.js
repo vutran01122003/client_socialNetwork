@@ -5,6 +5,7 @@ import { themeReducer } from './themeReducer';
 import activePageReducer from './activePageReducer';
 import usersReducer from './usersReducer';
 import profileReducer from './profileReducer';
+import postReducer from './postReducer';
 
 const rootReducer = combineReducers({
     auth: authReducer,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
     theme: themeReducer,
     activePage: activePageReducer,
     users: usersReducer,
-    profile: profileReducer
+    profile: profileReducer,
+    homePost: postReducer
 });
 
 export default rootReducer;

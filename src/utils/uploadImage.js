@@ -23,13 +23,17 @@ export function checkImageUpload(file) {
     };
 }
 
-export const uploadImage = (files = []) => {
+export const uploadImage = async (files = []) => {
     const newImages = [];
-    files.forEach(async (file) => {
+    for (let file of files) {
         const formData = new FormData();
         formData.append('upload_preset', 'oyptwxxs');
         formData.append('cloud_name', 'dzm0nupxy');
-        formData.append('file', file);
+        if (file.imgCamera) {
+            formData.append('file', file.imgCamera);
+        } else {
+            formData.append('file', file);
+        }
 
         const res = await fetch(
             'https://api.cloudinary.com/v1_1/dzm0nupxy/upload',
@@ -45,7 +49,8 @@ export const uploadImage = (files = []) => {
             id: imgData.public_id,
             url: imgData.secure_url
         });
-    });
+    }
+
     return newImages;
 };
 

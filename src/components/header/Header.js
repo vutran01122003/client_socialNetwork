@@ -13,7 +13,7 @@ import MessageIcon from '@mui/icons-material/Message';
 import ExploreIcon from '@mui/icons-material/Explore';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import HomeIcon from '@mui/icons-material/Home';
-import LogoutIcon from '@mui/icons-material/Logout';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import Person3Icon from '@mui/icons-material/Person3';
 import Person4Icon from '@mui/icons-material/Person4';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
@@ -193,7 +193,10 @@ function Header() {
                                 ))}
                             </Menu>
                         </Box>
-                        <Tooltip title='Open settings'>
+                        <Tooltip
+                            title='Open settings'
+                            sx={{ padding: 0, overflow: 'visible' }}
+                        >
                             <IconButton
                                 onClick={handleOpenUserMenu}
                                 sx={{ p: 0 }}
@@ -205,7 +208,8 @@ function Header() {
                             </IconButton>
                         </Tooltip>
                         <Menu
-                            sx={{ mt: '45px', width: '200px' }}
+                            disableScrollLock={true}
+                            sx={{ mt: '45px' }}
                             id='menu-appbar'
                             anchorEl={anchorElUser}
                             anchorOrigin={{
@@ -220,10 +224,17 @@ function Header() {
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
-                            <MenuItem onClick={handleCloseUserMenu}>
+                            <MenuItem
+                                onClick={handleCloseUserMenu}
+                                sx={{
+                                    padding: 0,
+                                    height: '40px',
+                                    minWidth: '150px'
+                                }}
+                            >
                                 <Link
                                     to={`/profile/${auth.user._id}`}
-                                    className='flex gap-2 items-center w-full'
+                                    className='flex gap-2 items-center w-full h-full ml-2'
                                 >
                                     {(auth.user.gender === 'male' ||
                                         auth.user.gender === 'other') && (
@@ -236,14 +247,20 @@ function Header() {
                                     <span className='flex-1'>Profile</span>
                                 </Link>
                             </MenuItem>
-                            <MenuItem onClick={handleCloseUserMenu}>
-                                <Typography
-                                    textAlign='center'
-                                    onClick={handleTheme}
-                                >
+                            <MenuItem
+                                sx={{
+                                    padding: 0,
+                                    height: '40px'
+                                }}
+                                onClick={() => {
+                                    handleCloseUserMenu();
+                                    handleTheme();
+                                }}
+                            >
+                                <div>
                                     <label
                                         htmlFor='theme'
-                                        className='flex items-center gap-2'
+                                        className='flex items-center gap-2 ml-2'
                                     >
                                         {theme ? (
                                             <>
@@ -257,19 +274,25 @@ function Header() {
                                             </>
                                         )}
                                     </label>
-                                </Typography>
+                                </div>
                             </MenuItem>
                             <MenuItem
-                                onClick={handleCloseUserMenu}
+                                sx={{
+                                    padding: 0,
+                                    height: '40px'
+                                }}
+                                onClick={() => {
+                                    handleCloseUserMenu();
+                                    handleLogout();
+                                }}
                                 className='border-t-2 border-gray-500'
                             >
-                                <Typography
-                                    onClick={handleLogout}
-                                    className='flex gap-2 items-center w-full'
+                                <div
+                                    className='flex gap-2 items-center w-full ml-2'
                                     textAlign='center'
                                 >
-                                    <LogoutIcon /> <span>Logout</span>
-                                </Typography>
+                                    <ExitToAppIcon /> <span>Logout</span>
+                                </div>
                             </MenuItem>
                         </Menu>
                     </Box>

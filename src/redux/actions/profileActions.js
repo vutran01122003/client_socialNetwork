@@ -31,7 +31,7 @@ export const getUser =
     };
 
 export const updateUser =
-    ({ auth, fileInput, formData, userData }) =>
+    ({ auth, fileInput, userData }) =>
     async (dispatch) => {
         dispatch({
             type: GLOBALTYPES.ALERT,
@@ -40,16 +40,12 @@ export const updateUser =
             }
         });
 
-        if (fileInput) formData.set('cover', fileInput);
-
-        Object.keys(userData).forEach((key) => {
-            formData.set(key, userData[key]);
-        });
-
-        patchDataApi(`/user/${auth.user._id}`, formData)
+        const imgAvatar = await uploadImage([fileInput]);
+        userData.avatar = imgAvatar[0]?.url || userData.avatar;
+        patchDataApi(`/user/${auth.user._id}`, {
+            ...userData
+        })
             .then((res) => {
-                uploadImage([fileInput]);
-
                 dispatch({
                     type: GLOBALTYPES.AUTH,
                     payload: {
