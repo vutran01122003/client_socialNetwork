@@ -18,5 +18,8 @@
 @import url(./styles/global.css);
 @import url(./styles/FollowInfo.css);
 @import url(./styles/Status.css);
+@import url(./styles/PostCard.css);
+@import url(./styles/Carousel.css);
+@import url(./styles/swiper.css);
 
 

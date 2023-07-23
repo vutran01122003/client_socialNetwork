@@ -3,7 +3,7 @@ function Avatar({ avatar, size }) {
         <div className={`${size} border border-gray rounded-full select-none`}>
             <img
                 src={avatar}
-                className='w-full h-full object-cover overflow-hidden rounded-full'
+                className={`object-cover overflow-hidden rounded-full ${size}`}
                 alt='avatar'
             />
         </div>

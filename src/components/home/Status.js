@@ -3,6 +3,7 @@ import { authSelector } from '../../redux/selector';
 import Avatar from '../Avatar';
 import { useState } from 'react';
 import ModalPost from './ModalPost';
+import { Link } from 'react-router-dom';
 
 function Status() {
     const auth = useSelector(authSelector);
@@ -19,7 +20,9 @@ function Status() {
     return (
         <>
             <div className='status_wrapper wrapper flex gap-2'>
-                <Avatar avatar={auth.user.avatar} size='small' />
+                <Link to={`/profile/${auth.user._id}`}>
+                    <Avatar avatar={auth.user.avatar} size='small' />
+                </Link>
                 <button
                     onClick={handleOpenModalPost}
                     className='btn_status_popup'

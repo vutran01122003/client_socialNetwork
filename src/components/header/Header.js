@@ -287,10 +287,7 @@ function Header() {
                                 }}
                                 className='border-t-2 border-gray-500'
                             >
-                                <div
-                                    className='flex gap-2 items-center w-full ml-2'
-                                    textAlign='center'
-                                >
+                                <div className='flex gap-2 items-center w-full ml-2'>
                                     <ExitToAppIcon /> <span>Logout</span>
                                 </div>
                             </MenuItem>
