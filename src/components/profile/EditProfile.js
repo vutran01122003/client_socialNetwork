@@ -49,7 +49,7 @@ function Edit({ setOnEdit }) {
                 }
             });
             // Set Default avatar when an error occurred
-            loadURLToInputFiled(auth.user.avatar, refInput.current);
+            loadURLToInputFiled(auth.user?.avatar, refInput.current);
         }
 
         if (file && !inValid) {

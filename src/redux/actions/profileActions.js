@@ -42,7 +42,7 @@ export const updateUser =
 
         const imgAvatar = await uploadImage([fileInput]);
         userData.avatar = imgAvatar[0]?.url || userData.avatar;
-        patchDataApi(`/user/${auth.user._id}`, {
+        patchDataApi(`/user/${auth.user?._id}`, {
             ...userData
         })
             .then((res) => {
@@ -104,7 +104,7 @@ export const follow =
             })
         ) {
             patchDataApi(`/user/${userInfo._id}/follow`, {
-                authId: auth.user._id
+                authId: auth.user?._id
             })
                 .then((res) => {
                     dispatch({
@@ -145,7 +145,7 @@ export const unFollow =
             })
         ) {
             patchDataApi(`/user/${userInfo._id}/unfollow`, {
-                authId: auth.user._id
+                authId: auth.user?._id
             })
                 .then((res) => {
                     dispatch({

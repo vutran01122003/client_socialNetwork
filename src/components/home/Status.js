@@ -1,27 +1,33 @@
-import { useSelector } from 'react-redux';
-import { authSelector } from '../../redux/selector';
-import Avatar from '../Avatar';
-import { useState } from 'react';
-import ModalPost from './ModalPost';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import Avatar from '../Avatar';
+import ModalPost from './ModalPost';
+import { GLOBALTYPES } from '../../redux/actions/globalTypes';
+import { authSelector, statusSelector } from '../../redux/selector';
 
 function Status() {
     const auth = useSelector(authSelector);
-    const [openModalPost, setOpenModalPost] = useState(false);
+    const status = useSelector(statusSelector);
+    const openModalPost = status.open;
+    const dispatch = useDispatch();
 
     const handleOpenModalPost = () => {
-        setOpenModalPost(true);
+        dispatch({
+            type: GLOBALTYPES.STATUS.OPEN_MODAL
+        });
     };
 
     const handleHideModalPost = () => {
-        setOpenModalPost(false);
+        dispatch({
+            type: GLOBALTYPES.STATUS.HIDE_MODAL
+        });
     };
 
     return (
         <>
             <div className='status_wrapper wrapper flex gap-2'>
-                <Link to={`/profile/${auth.user._id}`}>
-                    <Avatar avatar={auth.user.avatar} size='small' />
+                <Link to={`/profile/${auth.user?._id}`}>
+                    <Avatar avatar={auth.user?.avatar} size='small' />
                 </Link>
                 <button
                     onClick={handleOpenModalPost}
@@ -34,6 +40,7 @@ function Status() {
                 <ModalPost
                     handleHideModalPost={handleHideModalPost}
                     auth={auth}
+                    status={status}
                 />
             )}
         </>

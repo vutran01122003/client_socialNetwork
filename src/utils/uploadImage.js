@@ -25,7 +25,15 @@ export function checkImageUpload(file) {
 
 export const uploadImage = async (files = []) => {
     const newImages = [];
-    for (let file of files) {
+    const userfiles = [];
+    files.forEach((file) => {
+        if (file.url) newImages.push(file);
+        else {
+            userfiles.push(file);
+        }
+    });
+
+    for (let file of userfiles) {
         const formData = new FormData();
         formData.append('upload_preset', 'oyptwxxs');
         formData.append('cloud_name', 'dzm0nupxy');

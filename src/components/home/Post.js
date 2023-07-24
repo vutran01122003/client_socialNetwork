@@ -13,7 +13,7 @@ function Post() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getPost({ id: auth.user._id }));
+        dispatch(getPost({ id: auth.user?._id }));
         // eslint-disable-next-line
     }, [posts.result]);
 

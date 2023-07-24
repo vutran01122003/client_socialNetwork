@@ -9,7 +9,6 @@ const initialState = {
 function postReducer(state = initialState, action) {
     switch (action.type) {
         case GLOBALTYPES.POST.CREATE_POST:
-            console.log('ok');
             return {
                 ...state,
                 posts: [...state.posts, action.payload],
@@ -22,6 +21,18 @@ function postReducer(state = initialState, action) {
                 ...state,
                 posts: [...action.payload.posts],
                 result: action.payload.result
+            };
+        case GLOBALTYPES.POST.UPDATE_POST:
+            const newPosts = [...state.posts];
+            for (let i = 0; i < newPosts.length; i++) {
+                if (newPosts[i]._id === action.payload._id) {
+                    newPosts.splice(i, 1, action.payload);
+                    break;
+                }
+            }
+            return {
+                ...state,
+                posts: [...newPosts]
             };
         default:
             return state;

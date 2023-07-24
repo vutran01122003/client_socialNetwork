@@ -13,11 +13,15 @@ function profileReducer(state = initialState, action) {
         case GLOBALTYPES.PROFILE.GET_USER:
             return { ...state, users: [...state.users, action.payload] };
         case GLOBALTYPES.PROFILE.SET_USER: {
-            const newUsers = [...state.users].filter(
-                (user) => user._id !== action.payload._id
-            );
+            const newUsers = [...state.users];
+            for (let i = 0; i < newUsers.length; i++) {
+                if (newUsers[i]._id === action.payload._id) {
+                    newUsers.splice(i, 1, action.payload);
+                    break;
+                }
+            }
 
-            return { ...state, users: [...newUsers, action.payload] };
+            return { ...state, users: [...newUsers] };
         }
         default:
             return state;

@@ -6,16 +6,35 @@ import { useState } from 'react';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { GLOBALTYPES } from '../../../redux/actions/globalTypes';
+import { deletePost } from '../../../redux/actions/postAction';
 
 function HeaderCard({ post }) {
     const user = post.user;
+    const dispatch = useDispatch();
     const [openMoreBtn, setOpenMoreBtn] = useState(false);
 
     const handleToggleMoreBtn = () => {
         setOpenMoreBtn((prev) => !prev);
     };
+
     const handleHideMoreBtn = () => {
         setOpenMoreBtn(false);
+    };
+
+    const handleOpenModalPost = () => {
+        dispatch({
+            type: GLOBALTYPES.STATUS.OPEN_MODAL
+        });
+        dispatch({
+            type: GLOBALTYPES.STATUS.CURRENT_EDIT_STATUS,
+            payload: post
+        });
+    };
+
+    const handleRemovePost = () => {
+        dispatch(deletePost({ postId: post._id }));
     };
 
     return (
@@ -38,12 +57,29 @@ function HeaderCard({ post }) {
                 visible={openMoreBtn}
                 onClickOutside={handleHideMoreBtn}
                 interactive
+                zIndex={999}
                 render={(attrs) => (
-                    <div className='more_wrapper' tabIndex='-1' {...attrs}>
-                        <div className='more_item'>
+                    <div
+                        className='more_wrapper select-none'
+                        tabIndex='-1'
+                        {...attrs}
+                    >
+                        <div
+                            className='more_item'
+                            onClick={() => {
+                                handleHideMoreBtn();
+                                handleOpenModalPost();
+                            }}
+                        >
                             <EditOutlinedIcon /> Edit post
                         </div>
-                        <div className='more_item'>
+                        <div
+                            className='more_item'
+                            onClick={() => {
+                                handleRemovePost();
+                                handleHideMoreBtn();
+                            }}
+                        >
                             <DeleteOutlineIcon /> Remove post
                         </div>
                     </div>

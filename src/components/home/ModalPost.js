@@ -7,10 +7,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { themSelector } from '../../redux/selector';
 import { checkImageUpload, uploadImage } from '../../utils/uploadImage';
 import { GLOBALTYPES } from '../../redux/actions/globalTypes';
-import { useRef, useState } from 'react';
-import { createPost } from '../../redux/actions/postAction';
+import { useEffect, useRef, useState } from 'react';
+import { createPost, updatePost } from '../../redux/actions/postAction';
 
-function ModalPost({ handleHideModalPost, auth }) {
+function ModalPost({ handleHideModalPost, auth, status }) {
     const theme = useSelector(themSelector);
     const inputRef = useRef();
     const videoRef = useRef();
@@ -20,6 +20,18 @@ function ModalPost({ handleHideModalPost, auth }) {
     const [openVideo, setOpenVideo] = useState(false);
     const [stream, setStream] = useState(null);
     const [content, setContent] = useState('');
+
+    const handleCloseModalPost = (stream) => {
+        if (stream) handleStopCamera(stream);
+        handleHideModalPost();
+        setImages([]);
+        setContent('');
+        if (Object.keys(status.currentPost).length > 0)
+            dispatch({
+                type: GLOBALTYPES.STATUS.CURRENT_EDIT_STATUS,
+                payload: {}
+            });
+    };
 
     const handleClearImages = () => {
         setImages([]);
@@ -93,26 +105,41 @@ function ModalPost({ handleHideModalPost, auth }) {
 
     const handleSumbitPost = async (e) => {
         e.preventDefault();
-        await dispatch(
-            createPost({
-                user: auth.user,
-                content,
-                images
-            })
-        );
+        if (Object.keys(status.currentPost).length > 0) {
+            await dispatch(
+                updatePost({
+                    postId: status.currentPost._id,
+                    content,
+                    images,
+                    currentPost: status.currentPost
+                })
+            );
+        } else {
+            await dispatch(
+                createPost({
+                    user: auth.user,
+                    content,
+                    images
+                })
+            );
+        }
 
-        setContent('');
-        setImages([]);
-        if (stream) handleStopCamera(stream);
-        handleHideModalPost();
+        handleCloseModalPost(stream);
     };
+
+    useEffect(() => {
+        const currentPost = status.currentPost;
+        if (currentPost) {
+            setContent(currentPost.content);
+            setImages(currentPost.images || []);
+        }
+    }, [status.currentPost]);
 
     return (
         <div
             onMouseDown={(e) => {
                 if (e.target === e.currentTarget) {
-                    if (stream) handleStopCamera(stream);
-                    handleHideModalPost();
+                    handleCloseModalPost(stream);
                 }
             }}
             className={`${theme === true ? 'bg-white/75' : ''} post_modal`}
@@ -120,12 +147,13 @@ function ModalPost({ handleHideModalPost, auth }) {
             <form className='post_form overflow-auto'>
                 <div className='post_title relative'>
                     <h1 className='text-center font-bold text-xl'>
-                        Create Post
+                        {Object.keys(status.currentPost).length > 0
+                            ? 'Edit Post'
+                            : 'Create Post'}
                     </h1>
                     <div
                         onClick={() => {
-                            if (stream) handleStopCamera(stream);
-                            handleHideModalPost();
+                            handleCloseModalPost(stream);
                         }}
                         className='post_close_btn hover:text-red-500'
                     >
@@ -146,7 +174,7 @@ function ModalPost({ handleHideModalPost, auth }) {
                     </div>
                 )}
 
-                {images.length > 0 && (
+                {images?.length > 0 && (
                     <div className='show_images'>
                         <div className='images_wrapper relative'>
                             <div className='absolute top-5 right-2 post_close_btn hover:text-red-500'>
@@ -159,7 +187,8 @@ function ModalPost({ handleHideModalPost, auth }) {
                                 <img
                                     src={
                                         image?.imgCamera ||
-                                        URL.createObjectURL(image)
+                                        (image.url ??
+                                            URL.createObjectURL(image))
                                     }
                                     key={index}
                                     alt='pre_image'
@@ -225,7 +254,9 @@ function ModalPost({ handleHideModalPost, auth }) {
                     </div>
 
                     <button onClick={handleSumbitPost} className='post_btn'>
-                        Post
+                        {Object.keys(status.currentPost).length > 0
+                            ? 'Save'
+                            : 'Post'}
                     </button>
                 </div>
             </form>

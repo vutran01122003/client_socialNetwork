@@ -1,15 +1,20 @@
 import { uploadImage } from '../../utils/uploadImage';
 import { GLOBALTYPES } from './globalTypes';
-import { getDataApi, postDataApi } from '../../utils/fetchData';
+import {
+    deleteDataApi,
+    getDataApi,
+    patchDataApi,
+    postDataApi
+} from '../../utils/fetchData';
 
 export const createPost =
     ({ user, content, images }) =>
     async (dispatch) => {
-        if (content === '' && images.length === 0) {
+        if (!content) {
             dispatch({
                 type: GLOBALTYPES.ALERT,
                 payload: {
-                    error: 'post empty'
+                    error: 'empty content'
                 }
             });
         } else {
@@ -85,4 +90,100 @@ export const getPost =
                 }
             });
         }
+    };
+
+export const updatePost =
+    ({ postId, content, images, currentPost }) =>
+    async (dispatch) => {
+        if (!content) {
+            dispatch({
+                type: GLOBALTYPES.ALERT,
+                payload: {
+                    error: 'empty content'
+                }
+            });
+        } else {
+            if (
+                currentPost.content === content &&
+                JSON.stringify(currentPost.images) === JSON.stringify(images)
+            ) {
+                dispatch({
+                    type: GLOBALTYPES.ALERT,
+                    payload: {
+                        success: 'nothing updated'
+                    }
+                });
+                return;
+            }
+
+            dispatch({
+                type: GLOBALTYPES.ALERT,
+                payload: {
+                    loading: true
+                }
+            });
+
+            let imgUrlArr = [];
+            if (images.length > 0) {
+                imgUrlArr = await uploadImage(images);
+            }
+
+            patchDataApi(`/post`, {
+                data: {
+                    postId,
+                    updatedData: {
+                        content,
+                        images: imgUrlArr
+                    }
+                }
+            })
+                .then((res) => {
+                    dispatch({
+                        type: GLOBALTYPES.POST.UPDATE_POST,
+                        payload: res.data.postData
+                    });
+                    dispatch({
+                        type: GLOBALTYPES.ALERT,
+                        payload: {
+                            success: res.data.status
+                        }
+                    });
+                })
+                .catch((err) => {
+                    dispatch({
+                        type: GLOBALTYPES.ALERT,
+                        payload: {
+                            error: err.response?.data.msg || 'Error'
+                        }
+                    });
+                });
+        }
+    };
+
+export const deletePost =
+    ({ postId }) =>
+    async (dispatch) => {
+        dispatch({
+            type: GLOBALTYPES.ALERT,
+            payload: {
+                loading: true
+            }
+        });
+        deleteDataApi(`/post/${postId}`)
+            .then((res) => {
+                dispatch({
+                    type: GLOBALTYPES.ALERT,
+                    payload: {
+                        success: res.data.status
+                    }
+                });
+            })
+            .catch((e) => {
+                dispatch({
+                    type: GLOBALTYPES.ALERT,
+                    payload: {
+                        error: e.response?.data.msg || 'Error'
+                    }
+                });
+            });
     };

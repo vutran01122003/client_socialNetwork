@@ -9,3 +9,5 @@ export const activePageSelector = (state) => state.activePage;
 export const userSelector = (state) => state.users;
 
 export const profileSelector = (state) => state.profile;
+
+export const statusSelector = (state) => state.status;

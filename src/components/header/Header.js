@@ -202,7 +202,7 @@ function Header() {
                                 sx={{ p: 0 }}
                             >
                                 <Avatar
-                                    avatar={auth.user.avatar}
+                                    avatar={auth.user?.avatar}
                                     size='small'
                                 />
                             </IconButton>
@@ -233,14 +233,14 @@ function Header() {
                                 }}
                             >
                                 <Link
-                                    to={`/profile/${auth.user._id}`}
+                                    to={`/profile/${auth.user?._id}`}
                                     className='flex gap-2 items-center w-full h-full ml-2'
                                 >
-                                    {(auth.user.gender === 'male' ||
-                                        auth.user.gender === 'other') && (
+                                    {(auth.user?.gender === 'male' ||
+                                        auth.user?.gender === 'other') && (
                                         <Person4Icon />
                                     )}
-                                    {auth.user.gender === 'female' && (
+                                    {auth.user?.gender === 'female' && (
                                         <Person3Icon />
                                     )}
 

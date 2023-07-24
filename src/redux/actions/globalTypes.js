@@ -15,6 +15,13 @@ export const GLOBALTYPES = {
     POST: {
         CREATE_POST: 'CREATE_POST',
         LOADING_POST: 'LOADING_POST',
-        GET_POST: 'GET_POST'
+        GET_POST: 'GET_POST',
+        UPDATE_POST: 'UPDATE_POST',
+        DELETE_POST: 'DELETE_POST'
+    },
+    STATUS: {
+        OPEN_MODAL: 'OPEN_MODAL',
+        HIDE_MODAL: 'HIDE_MODAL',
+        CURRENT_EDIT_STATUS: 'CURRENT_EDIT_STATUS'
     }
 };
