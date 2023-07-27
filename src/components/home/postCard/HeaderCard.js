@@ -5,12 +5,13 @@ import Tippy from '@tippyjs/react/headless';
 import { useState } from 'react';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { GLOBALTYPES } from '../../../redux/actions/globalTypes';
 import { deletePost } from '../../../redux/actions/postAction';
 
-function HeaderCard({ post }) {
+function HeaderCard({ post, auth }) {
     const user = post.user;
     const dispatch = useDispatch();
     const [openMoreBtn, setOpenMoreBtn] = useState(false);
@@ -64,24 +65,37 @@ function HeaderCard({ post }) {
                         tabIndex='-1'
                         {...attrs}
                     >
-                        <div
-                            className='more_item'
-                            onClick={() => {
-                                handleHideMoreBtn();
-                                handleOpenModalPost();
-                            }}
-                        >
-                            <EditOutlinedIcon /> Edit post
-                        </div>
-                        <div
-                            className='more_item'
-                            onClick={() => {
-                                handleRemovePost();
-                                handleHideMoreBtn();
-                            }}
-                        >
-                            <DeleteOutlineIcon /> Remove post
-                        </div>
+                        {auth.user?._id === user._id ? (
+                            <>
+                                <div
+                                    className='more_item'
+                                    onClick={() => {
+                                        handleHideMoreBtn();
+                                        handleOpenModalPost();
+                                    }}
+                                >
+                                    <EditOutlinedIcon /> Edit post
+                                </div>
+                                <div
+                                    className='more_item'
+                                    onClick={() => {
+                                        handleRemovePost();
+                                        handleHideMoreBtn();
+                                    }}
+                                >
+                                    <DeleteOutlineIcon /> Remove post
+                                </div>
+                            </>
+                        ) : (
+                            <div
+                                className='more_item'
+                                onClick={() => {
+                                    handleHideMoreBtn();
+                                }}
+                            >
+                                <ReportGmailerrorredIcon /> Report post
+                            </div>
+                        )}
                     </div>
                 )}
             >

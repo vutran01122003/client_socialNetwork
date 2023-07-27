@@ -1,15 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url(./styles/responsive/PostCardResponesive.css);
 @import url(./styles/responsive/scrollResponsive.css);
 @import url(./styles/responsive/ProfileResponesive.css);
 @import url(./styles/App.css);
-@import url(./styles/Header.css);
 @import url(./styles/NotFound.css);
 @import url(./styles/Search.css);
-@import url(./styles/tippy.css);
 @import url(./styles/scrollbar.css);
-@import url(./styles/reset.css);
 @import url(./styles/Avatar.css);
 @import url(./styles/Layout.css);
 @import url(./styles/Info.css);
@@ -21,5 +19,6 @@
 @import url(./styles/PostCard.css);
 @import url(./styles/Carousel.css);
 @import url(./styles/swiper.css);
+@import url(./styles/Comment.css);
 
 

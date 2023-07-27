@@ -1,10 +1,16 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 html, body, #root {
     height: 100%;
 }
-    
+
 .App {
     height: 100%;
-    background-color: #F0F2F5;
+    background: var(--app-background-color);
     margin: 0;
 }
 
@@ -17,6 +23,9 @@ html, body, #root {
 }
 
 #theme:checked ~ .App  video {
+    filter: invert(1);
+}
+#theme:checked ~ .App .interactive_icons_wrapper .active {
     filter: invert(1);
 }
 

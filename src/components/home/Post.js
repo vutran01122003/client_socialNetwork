@@ -6,16 +6,16 @@ import { getPost } from '../../redux/actions/postAction';
 import HeaderCard from './postCard/HeaderCard';
 import BodyCard from './postCard/BodyCard';
 import FooterCard from './postCard/FooterCard';
+import InputComment from './postCard/InputComment';
+import Comment from './postCard/Comment';
 
 function Post() {
     const auth = useSelector(authSelector);
     const posts = useSelector((state) => state.homePost);
     const dispatch = useDispatch();
-
     useEffect(() => {
         dispatch(getPost({ id: auth.user?._id }));
-        // eslint-disable-next-line
-    }, [posts.result]);
+    }, [posts.result, auth.user?._id, dispatch]);
 
     return (
         <div className='post_wrapper wrapper'>
@@ -26,9 +26,11 @@ function Post() {
             ) : (
                 posts.posts.map((post) => (
                     <div key={post._id} className='post_item'>
-                        <HeaderCard post={post} />
+                        <HeaderCard post={post} auth={auth} />
                         <BodyCard post={post} />
-                        <FooterCard post={post} />
+                        <FooterCard post={post} auth={auth} />
+                        <Comment post={post} auth={auth} />
+                        <InputComment post={post} auth={auth} />
                     </div>
                 ))
             )}

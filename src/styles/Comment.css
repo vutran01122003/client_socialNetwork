@@ -1,0 +1,128 @@
+.comment_item {
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 8px 15px 0;
+}
+
+.comment_item:hover .comment_more_btn {
+   visibility: visible;
+   opacity: 1;
+}
+
+.comment_body {
+    display: flex;
+    gap: 4px;
+}
+
+.comment_content_wrapper {
+    padding: 8px 12px;
+    border-radius: 14px;
+    min-width: 100px;
+    background: var(--comment-background-color);
+}
+
+.comment_content_wrapper .comment_username {
+    font-weight: 600;
+}
+
+.btn_like_active_comment, .btn_reply_comment, .btn_like_default_comment {
+    user-select: none;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 12px;
+    color: var(--sencondary-text-color);
+}
+
+.btn_like_active_comment {
+    color: var(--favourite-active-color)
+}
+
+.btn_like_active_comment:hover, .btn_like_default_comment:hover, .btn_reply_comment:hover {
+    text-decoration: underline;
+}
+
+.time_createdAt_comment {
+    user-select: none;
+    font-weight: 300;
+    font-size: 12px;
+    color: var(--sencondary-text-color);
+}
+
+.comment_btn_wrapper {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-left: 8px;
+    padding-top: 3px;
+}
+
+.comment_more_btn_wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.comment_more_btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    transition: 0.1s linear;
+    opacity: 0;
+    color: var(--sencondary-text-color);
+    visibility: hidden;
+}
+
+.comment_more_btn:hover {
+    background: var(--hover-background-color);
+}
+
+.comment_more_popup {
+    background: var(--white-color);
+    min-width: 150px;
+    border-radius: 8px;
+    padding: 8px;
+    box-shadow: var(--box-shadow-gray);
+}
+
+.comment_more_popup_item {
+    user-select: none;
+    font-weight: 500;
+    border-radius: 8px;
+    padding: 4px 8px;
+    transition: 0.1s linear;
+}
+
+.comment_more_popup_item:hover {
+    background: var(--hover-background-color);
+}
+
+.edit_comment_wrapper {
+    position: relative;
+    flex: 1;
+}
+
+.update_comment_btn {
+    position: absolute;
+    bottom: 26px;
+    right: 2px;
+}
+
+.edit_comment_textarea {
+    width: 100%;
+    outline: none;
+    border-radius: 14px;
+    padding: 8px 16px 30px 16px;
+    background: var(--comment-background-color);
+    resize: none;
+    overflow-y: hidden;
+}
+
+.cancel_edit_notify {
+    font-size: 12px;
+    color: var(--sencondary-text-color);
+    margin-left: 4px;
+}

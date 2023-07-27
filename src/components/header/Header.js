@@ -92,6 +92,9 @@ function Header() {
                         <Link
                             to='/'
                             className='flex items-center gap-2 font-semibold'
+                            onClick={() => {
+                                window.scrollTo({ top: 0 });
+                            }}
                         >
                             <img
                                 src={require('../../images/logo2.png')}

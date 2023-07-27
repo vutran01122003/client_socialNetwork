@@ -1,15 +1,11 @@
 import { Box } from '@mui/material';
 import { useState } from 'react';
 import Edit from './EditProfile';
-import { useSelector } from 'react-redux';
-import { authSelector } from '../../redux/selector';
 import Follow from './FollowBtn';
 import FollowInfo from './FollowInfo';
 import Avatar from '../Avatar';
 
-function Info({ userInfo, id }) {
-    const auth = useSelector(authSelector);
-
+function Info({ userInfo, id, auth }) {
     const { avatar, username, fullname, followers, following, story, website } =
         userInfo || {};
     const [onEdit, setOnEdit] = useState(false);

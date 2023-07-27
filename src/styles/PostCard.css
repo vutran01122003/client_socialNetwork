@@ -30,9 +30,8 @@
 }
 
 .more_item:hover {
-    background: #F2F3F5;
+    background: var(--hover-background-color);
 }
-
 
 /* Body card */
 .body_content {
@@ -44,4 +43,8 @@
 .footer_card {
     border-top: 1px solid #8D949E;
     padding: 8px 15px;
+}
+
+.footer_card .active {
+    color: var(--favourite-active-color);
 }

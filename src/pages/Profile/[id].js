@@ -34,7 +34,7 @@ function Profile() {
                     <CircularProgress size={50} />
                 </div>
             ) : (
-                <Info userInfo={userInfo} id={id} />
+                <Info userInfo={userInfo} id={id} auth={auth} />
             )}
             <Post />
         </div>

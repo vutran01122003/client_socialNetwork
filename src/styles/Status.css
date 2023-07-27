@@ -119,7 +119,7 @@
 }
 
 .icon-item:hover {
-    background: #e7e9eb;
+    background: var(--hover-background-color);
 }
 
 .post_btn {
