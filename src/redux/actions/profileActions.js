@@ -5,23 +5,21 @@ export const getUser =
     ({ users, id }) =>
     async (dispatch) => {
         try {
-            if (users.every((user) => user._id !== id)) {
-                dispatch({
-                    type: GLOBALTYPES.PROFILE.LOADING,
-                    payload: true
-                });
+            dispatch({
+                type: GLOBALTYPES.PROFILE.LOADING,
+                payload: true
+            });
 
-                const res = await getDataApi(`/user/${id}`);
-                dispatch({
-                    type: GLOBALTYPES.PROFILE.GET_USER,
-                    payload: res.data.user
-                });
+            const res = await getDataApi(`/user/${id}`);
+            dispatch({
+                type: GLOBALTYPES.PROFILE.GET_USER,
+                payload: res.data.user
+            });
 
-                dispatch({
-                    type: GLOBALTYPES.PROFILE.LOADING,
-                    payload: false
-                });
-            }
+            dispatch({
+                type: GLOBALTYPES.PROFILE.LOADING,
+                payload: false
+            });
         } catch (error) {
             dispatch({
                 type: GLOBALTYPES.ALERT,
@@ -40,8 +38,10 @@ export const updateUser =
             }
         });
 
-        const imgAvatar = await uploadImage([fileInput]);
-        userData.avatar = imgAvatar[0]?.url || userData.avatar;
+        if (fileInput) {
+            const imgAvatar = await uploadImage([fileInput]);
+            userData.avatar = imgAvatar[0]?.url;
+        }
         patchDataApi(`/user/${auth.user?._id}`, {
             ...userData
         })

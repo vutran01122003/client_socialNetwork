@@ -30,9 +30,14 @@ function Info({ userInfo, id, auth }) {
                 </div>
                 <div className='user_wrapper flex-1'>
                     <div className='user_avatar_edit_wrapper flex pt-2'>
-                        <h3 className='username font-semibold text-3xl'>
-                            {username}
-                        </h3>
+                        <div className='name_wrapper'>
+                            <h3 className='username font-semibold text-3xl'>
+                                {username}
+                            </h3>
+                            <h5 className='sub_fullname text-center text-gray-500 font-bold text-sm my-2'>
+                                {fullname}
+                            </h5>
+                        </div>
                         {auth.user?._id === id ? (
                             <div className='edit_btn whitespace-nowrap ml-40'>
                                 <button

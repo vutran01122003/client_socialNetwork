@@ -15,14 +15,22 @@ function Profile() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (auth.user?._id === id) {
-            setUserInfo(auth.user);
-        } else {
-            dispatch(getUser({ users: profile.users, id }));
-            const currentUser = profile.users.find((user) => user._id === id);
-            setUserInfo(currentUser);
+        if (auth.user) {
+            if (auth.user?._id === id) {
+                setUserInfo(auth.user);
+            } else {
+                if (!profile.users.some((user) => user._id === id)) {
+                    dispatch(getUser({ users: profile.users, id }));
+                }
+
+                const currentUser = profile.users.find(
+                    (user) => user._id === id
+                );
+
+                if (currentUser) setUserInfo(currentUser);
+            }
         }
-    }, [id, dispatch, profile.users, auth.user]);
+    }, [profile.users, auth.user, id, dispatch]);
 
     if (!userInfo && !profile.loading)
         return <span className='font-semibold'>Not Found</span>;

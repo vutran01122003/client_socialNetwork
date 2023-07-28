@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { createComment } from '../../../redux/actions/postAction';
+import { createComment } from '../../../redux/actions/commentAction';
 import SendIcon from '@mui/icons-material/Send';
 
-function InputComment({ post, auth }) {
+function InputComment({ post, auth, comment }) {
     const [commentValue, setCommentValue] = useState('');
     const dispatch = useDispatch();
 
@@ -17,6 +17,7 @@ function InputComment({ post, auth }) {
             await dispatch(
                 createComment({
                     postId: post._id,
+                    commentId: comment._id,
                     user: auth.user,
                     content: commentValue
                 })
@@ -38,7 +39,11 @@ function InputComment({ post, auth }) {
                 <input
                     type='text'
                     className='outline-none bg-gray-100 pl-4 pr-10 py-2 w-full rounded-lg'
-                    placeholder='write your comment...'
+                    placeholder={
+                        comment
+                            ? 'write your reply...'
+                            : 'write your comment...'
+                    }
                     value={commentValue}
                     onChange={handlecommentValue}
                     onKeyDown={handleKeyDown}

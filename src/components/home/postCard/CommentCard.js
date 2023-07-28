@@ -1,11 +1,14 @@
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import SendIcon from '@mui/icons-material/Send';
 import Tippy from '@tippyjs/react/headless';
+import millify from 'millify';
 import { Link } from 'react-router-dom';
 
 import Avatar from '../../Avatar';
 import moment from 'moment';
 import Content from '../../Content';
+import InputComment from './InputComment';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {
@@ -13,7 +16,7 @@ import {
     updateComment,
     likeComment,
     unlikeComment
-} from '../../../redux/actions/postAction';
+} from '../../../redux/actions/commentAction';
 
 function Comment({ post, auth }) {
     const dispatch = useDispatch();
@@ -21,7 +24,19 @@ function Comment({ post, auth }) {
     const [commentId, setCommentId] = useState(null);
     const [editComment, setEditComment] = useState(false);
     const [editCommentValue, setEditCommentValue] = useState('');
+    const [replyComment, setReplyComment] = useState(false);
+    const [commentData, setCommentData] = useState([]);
+    const [showMore, setShowMore] = useState(2);
+    const limit = 5;
     const textareaRef = useRef();
+
+    const handleShowMoreComments = () => {
+        setShowMore((prev) => prev + limit);
+    };
+
+    const handleHideComments = () => {
+        setShowMore(2);
+    };
 
     const handleToggleMorePopup = () => {
         setOpenMorePopup((prev) => !prev);
@@ -46,6 +61,7 @@ function Comment({ post, auth }) {
             })
         );
     };
+
     const handleDeleteComment = (commentId) => {
         dispatch(
             deleteComment({
@@ -89,18 +105,20 @@ function Comment({ post, auth }) {
             handleHideEditComment();
         }
     };
+
     useEffect(() => {
+        setCommentData(post.comments.slice(0, showMore));
         if (textareaRef.current) {
             textareaRef.current.setAttribute(
                 'style',
                 'height:' + textareaRef.current.scrollHeight + 'px;'
             );
         }
-    }, [editComment]);
+    }, [editComment, post.comments, showMore]);
 
     return (
         <div className='comment_wrapper'>
-            {post.comments.map((comment) => (
+            {commentData.map((comment) => (
                 <div key={comment._id} className='comment_item'>
                     <Link to={`/profile/${comment.user?._id}`}>
                         <Avatar avatar={comment.user?.avatar} size='small' />
@@ -164,6 +182,29 @@ function Comment({ post, auth }) {
                                             limit={200}
                                         />
                                     </div>
+                                    {comment.likes?.length !== 0 && (
+                                        <div
+                                            className={`${
+                                                comment.likes.length === 1
+                                                    ? 'count_one_like_wrapper'
+                                                    : 'count_like_wrapper'
+                                            }`}
+                                        >
+                                            <FavoriteIcon
+                                                fontSize='small'
+                                                className='like_comment_icon'
+                                            />
+                                            {comment.likes?.length > 1 ? (
+                                                <span className='count_like'>
+                                                    {millify(
+                                                        comment.likes?.length
+                                                    )}
+                                                </span>
+                                            ) : (
+                                                ''
+                                            )}
+                                        </div>
+                                    )}
                                 </div>
 
                                 <div className='comment_more_btn_wrapper'>
@@ -261,17 +302,50 @@ function Comment({ post, auth }) {
                                     </button>
                                 )}
 
-                                <button className='btn_reply_comment'>
+                                <button
+                                    onClick={() => {
+                                        setCommentId(comment._id);
+                                        setReplyComment((prev) => !prev);
+                                    }}
+                                    className='btn_reply_comment'
+                                >
                                     Reply
                                 </button>
                                 <span className='time_createdAt_comment'>
                                     {moment(comment.createdAt).fromNow()}
                                 </span>
                             </div>
+
+                            {replyComment && commentId === comment._id ? (
+                                <InputComment
+                                    comment={comment}
+                                    post={post}
+                                    auth={auth}
+                                />
+                            ) : null}
                         </div>
                     )}
                 </div>
             ))}
+            {post.comments?.length > 2 && (
+                <div className='show_more_btn'>
+                    {post.comments?.length - showMore > 0 ? (
+                        <span onClick={handleShowMoreComments}>{`View ${
+                            post.comments.length - showMore > limit
+                                ? limit
+                                : post.comments?.length - showMore
+                        } more ${
+                            post.comments?.length - showMore === 1
+                                ? 'comment'
+                                : 'comments'
+                        }`}</span>
+                    ) : (
+                        <span
+                            onClick={handleHideComments}
+                        >{`Hide comments`}</span>
+                    )}
+                </div>
+            )}
         </div>
     );
 }

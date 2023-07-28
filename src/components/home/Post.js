@@ -7,12 +7,13 @@ import HeaderCard from './postCard/HeaderCard';
 import BodyCard from './postCard/BodyCard';
 import FooterCard from './postCard/FooterCard';
 import InputComment from './postCard/InputComment';
-import Comment from './postCard/Comment';
+import CommentCard from './postCard/CommentCard';
 
 function Post() {
     const auth = useSelector(authSelector);
     const posts = useSelector((state) => state.homePost);
     const dispatch = useDispatch();
+
     useEffect(() => {
         dispatch(getPost({ id: auth.user?._id }));
     }, [posts.result, auth.user?._id, dispatch]);
@@ -29,7 +30,7 @@ function Post() {
                         <HeaderCard post={post} auth={auth} />
                         <BodyCard post={post} />
                         <FooterCard post={post} auth={auth} />
-                        <Comment post={post} auth={auth} />
+                        <CommentCard post={post} auth={auth} />
                         <InputComment post={post} auth={auth} />
                     </div>
                 ))

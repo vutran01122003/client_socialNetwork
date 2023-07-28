@@ -18,14 +18,23 @@ html, body, #root {
     filter: invert(1);
 }
 
-#theme:checked ~ .App  img {
+/* Tag HTML */
+#theme:checked ~ .App :is(img, video) {
     filter: invert(1);
 }
 
-#theme:checked ~ .App  video {
+/* Edit Profile */
+#theme:checked ~ .App :is(.edit_close_btn, .count_letter, .save_edit_btn) {
     filter: invert(1);
 }
-#theme:checked ~ .App .interactive_icons_wrapper .active {
+
+/* Post */
+#theme:checked ~ .App :is(.btn_like_active_comment, .interactive_icons_wrapper) {
+    filter: invert(1);
+}
+
+/* Modal Post */
+#theme:checked ~ .App :is(.icon-item, .post_close_btn, .remove_img_btn, .post_btn) {
     filter: invert(1);
 }
 

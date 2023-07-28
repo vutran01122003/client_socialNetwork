@@ -1,4 +1,5 @@
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import millify from 'millify';
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlined';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -29,14 +30,16 @@ function FooterCard({ post, auth }) {
         <div className='footer_card select-none'>
             <div className='interactive_details flex justify-between text-gray-600 py-1'>
                 <div className='likes_details cursor-pointer hover:underline decoration-1'>
-                    {post.likes.length} likes
+                    {post.likes.length > 1
+                        ? `${millify(post.likes?.length)} likes`
+                        : `${post.likes?.length} like`}
                 </div>
                 <div className='flex gap-3'>
                     <div className='cursor-pointer hover:underline decoration-1'>
-                        {post.comments.length} comments
+                        {millify(post.comments?.length)} comments
                     </div>
                     <div className='cursor-pointer hover:underline decoration-1'>
-                        {post.comments.length} save
+                        {millify(post.comments?.length)} save
                     </div>
                 </div>
             </div>

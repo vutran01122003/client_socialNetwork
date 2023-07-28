@@ -2,11 +2,7 @@ import { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { authSelector, themSelector } from '../../redux/selector';
 import EditIcon from '@mui/icons-material/Edit';
-import {
-    checkImageUpload,
-    loadURLToInputFiled,
-    uploadImage
-} from '../../utils/uploadImage';
+import { checkImageUpload, loadURLToInputFiled } from '../../utils/uploadImage';
 import { GLOBALTYPES } from '../../redux/actions/globalTypes';
 import { updateUser } from '../../redux/actions/profileActions';
 
@@ -17,6 +13,13 @@ function Edit({ setOnEdit }) {
     const auth = useSelector(authSelector);
     const [fileInput, setFileInput] = useState(null);
     const { avatar, fullname, username, website, story, gender } = auth.user;
+    const originUserData = {
+        fullname,
+        username,
+        website,
+        story,
+        gender
+    };
     const [userData, setUserData] = useState({
         fullname,
         username,
@@ -26,12 +29,21 @@ function Edit({ setOnEdit }) {
     });
     const [avatarProfile, setAvatarProfile] = useState(avatar);
     const formData = new FormData();
-    uploadImage();
+
     const handleUserData = (e) => {
         setUserData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     };
 
     const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (
+            JSON.stringify(originUserData) === JSON.stringify(userData) &&
+            !fileInput
+        ) {
+            setOnEdit(false);
+            return;
+        }
+
         e.preventDefault();
         dispatch(updateUser({ auth, fileInput, formData, userData }));
     };
@@ -77,7 +89,7 @@ function Edit({ setOnEdit }) {
                         onClick={() => {
                             setOnEdit(false);
                         }}
-                        className='absolute top-0 right-2 text-gray-400 text-3xl hover:text-red-500 font-semibold transition linear'
+                        className='edit_close_btn absolute top-0 right-2 text-gray-400 text-3xl hover:text-red-500 font-semibold transition linear'
                     >
                         &times;
                     </button>
@@ -191,7 +203,7 @@ function Edit({ setOnEdit }) {
                             <option value='other'>Other</option>
                         </select>
                     </div>
-                    <button className='w-full mt-5 py-3 px-8 bg-blue-600 font-bold text-white rounded-md transform active:scale-95'>
+                    <button className='save_edit_btn w-full mt-5 py-3 px-8 bg-blue-600 font-bold text-white rounded-md transform active:scale-95'>
                         Save Changes
                     </button>
                 </form>

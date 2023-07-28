@@ -23,5 +23,8 @@
     background-color: #fff;
     padding: 12px 8px;
     overflow: auto;
+}
 
+.user_avatar_edit_wrapper {
+    justify-content: space-between;
 }

@@ -177,7 +177,7 @@ function ModalPost({ handleHideModalPost, auth, status }) {
                 {images?.length > 0 && (
                     <div className='show_images'>
                         <div className='images_wrapper relative'>
-                            <div className='absolute top-5 right-2 post_close_btn hover:text-red-500'>
+                            <div className='remove_img_btn hover:text-red-500'>
                                 <CloseIcon
                                     onClick={handleClearImages}
                                     fontSize='small'
@@ -230,6 +230,7 @@ function ModalPost({ handleHideModalPost, auth, status }) {
 
                                     <label className='icon-item'>
                                         <PhotoCameraIcon
+                                            sx={{ color: '#F02849' }}
                                             onClick={handleOpenCamera}
                                         />
                                     </label>

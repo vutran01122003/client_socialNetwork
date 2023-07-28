@@ -13,8 +13,8 @@ function postReducer(state = initialState, action) {
         case GLOBALTYPES.POST.CREATE_POST:
             return {
                 ...state,
-                posts: [...state.posts, action.payload],
-                result: state.result + 1
+                posts: [...state.posts, action.payload]
+                // result: state.result + 1
             };
         case GLOBALTYPES.POST.LOADING_POST:
             return { ...state, ...action.payload };

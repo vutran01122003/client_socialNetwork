@@ -1,4 +1,21 @@
 .swiper-button-next:after, 
 .swiper-button-prev:after {
-    font-weight: 900;
+    opacity: 0.6;
+    font-weight: bolder;
+    transition: 0.2s linear;
 }
+
+.carousel_wrapper:hover .swiper-button-next:after, 
+.carousel_wrapper:hover .swiper-button-prev:after {
+    opacity: 1;
+}
+
+.swiper-pagination {
+    opacity: 0.6;
+    transition: 0.2s linear;
+}
+
+.carousel_wrapper:hover .swiper-pagination {
+    opacity: 1;
+}
+

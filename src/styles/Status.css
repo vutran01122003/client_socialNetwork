@@ -26,7 +26,30 @@
     z-index: 1200;
 }
 
+.remove_img_btn {
+    z-index: 999;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #EBEDF0;
+    position: absolute;
+    top: 2px;
+    right: 4px;
+    color: gray;
+    font-weight: bold;  
+    transition: linear 0.1s;
+}
+
+
+.remove_img_btn:hover {
+    background: #DADDE1;
+}
+
 .post_close_btn {
+    z-index: 999;
     border-radius: 50%;
     width: 30px;
     height: 30px;
@@ -41,7 +64,6 @@
     color: gray;
     font-weight: bold;  
     transition: linear 0.1s;
-    float: right;
 }
 
 .post_close_btn:hover {
