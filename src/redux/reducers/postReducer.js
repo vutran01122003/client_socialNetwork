@@ -11,10 +11,12 @@ const initialState = {
 function postReducer(state = initialState, action) {
     switch (action.type) {
         case GLOBALTYPES.POST.CREATE_POST:
+            const newPosts = [...state.posts];
+            newPosts.unshift(action.payload);
             return {
                 ...state,
-                posts: [...state.posts, action.payload]
-                // result: state.result + 1
+                posts: newPosts,
+                result: state.result + 1
             };
         case GLOBALTYPES.POST.LOADING_POST:
             return { ...state, ...action.payload };
@@ -31,7 +33,10 @@ function postReducer(state = initialState, action) {
                 posts: [...newUpdatedPosts]
             };
         case GLOBALTYPES.POST.DELETE_POST:
-            const newDeletedPosts = removeElem(state.posts, action.payload);
+            const newDeletedPosts = removeElem(
+                state.posts,
+                action.payload.postId
+            );
             return {
                 ...state,
                 posts: [...newDeletedPosts],

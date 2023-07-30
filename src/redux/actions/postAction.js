@@ -41,6 +41,7 @@ export const createPost =
                         type: GLOBALTYPES.POST.CREATE_POST,
                         payload: res.data.postData
                     });
+
                     dispatch({
                         type: GLOBALTYPES.ALERT,
                         payload: {
@@ -71,7 +72,6 @@ export const getPost =
             });
 
             const res = await getDataApi(`/post/${id}`);
-
             dispatch({
                 type: GLOBALTYPES.POST.GET_POST,
                 payload: res.data
@@ -174,8 +174,11 @@ export const deletePost =
             .then((res) => {
                 dispatch({
                     type: GLOBALTYPES.POST.DELETE_POST,
-                    payload: res.data.user
+                    payload: {
+                        postId: res.data.postData._id
+                    }
                 });
+
                 dispatch({
                     type: GLOBALTYPES.ALERT,
                     payload: {

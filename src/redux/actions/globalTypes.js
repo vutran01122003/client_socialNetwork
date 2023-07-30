@@ -10,6 +10,9 @@ export const GLOBALTYPES = {
     PROFILE: {
         LOADING: 'LOADING',
         GET_USER: 'GET_USER',
+        GET_USER_POST: 'GET_USER_POST',
+        ADD_USER_POST: 'ADD_USER_POST',
+        DELETE_USER_POST: 'DELETE_USER_POST',
         SET_USER: 'SET_USER'
     },
     POST: {

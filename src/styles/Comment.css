@@ -5,6 +5,10 @@
     padding: 8px 15px 0;
 }
 
+.comment_body_wrapper {
+    flex: 1
+}
+
 .comment_item:hover .comment_more_btn {
    visibility: visible;
    opacity: 1;
@@ -48,6 +52,10 @@
     font-weight: 300;
     font-size: 12px;
     color: var(--sencondary-text-color);
+}
+
+.input_comment {
+    box-shadow: 0 0 1px gray;
 }
 
 .comment_btn_wrapper {
@@ -108,8 +116,8 @@
 
 .update_comment_btn {
     position: absolute;
-    bottom: 26px;
-    right: 2px;
+    bottom: 28px;
+    right: 8px;
 }
 
 .edit_comment_textarea {
@@ -195,11 +203,12 @@
     text-decoration-thickness: 1px;
 }
 
-.reply_input {
-    background-color: var(--comment-background-color);
-    outline: none;
-    width: 100%;
+.reply_comment_wrapper {
     padding: 8px 15px;
-    border-radius: 12px;
-    margin-top: 8px
+}
+
+.reply_item_wrapper {
+    margin-top: 4px;
+    display: flex;
+    gap: 4px
 }

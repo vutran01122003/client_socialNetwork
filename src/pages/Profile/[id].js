@@ -33,7 +33,11 @@ function Profile() {
     }, [profile.users, auth.user, id, dispatch]);
 
     if (!userInfo && !profile.loading)
-        return <span className='font-semibold'>Not Found</span>;
+        return (
+            <div className='font-semibold w-full h-full text-center mt-10'>
+                User Not Found
+            </div>
+        );
 
     return (
         <div className='profile_container flex flex-col'>
@@ -42,9 +46,11 @@ function Profile() {
                     <CircularProgress size={50} />
                 </div>
             ) : (
-                <Info userInfo={userInfo} id={id} auth={auth} />
+                <>
+                    <Info userInfo={userInfo} id={id} auth={auth} />
+                    <Post userInfo={userInfo} id={id} auth={auth} />
+                </>
             )}
-            <Post />
         </div>
     );
 }

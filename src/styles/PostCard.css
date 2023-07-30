@@ -35,14 +35,30 @@
 
 /* Body card */
 .body_content {
+    font-weight: 500;
     width: 100%;
     padding: 0 15px 15px;
+    border-bottom: var( --border-post-pagination);
 }
 
 /* Footer card */
 .footer_card {
-    border-top: 1px solid #8D949E;
-    padding: 8px 15px;
+    margin: 0px 15px;
+}
+
+.interactive_icons_wrapper {
+    border-top: var( --border-post-pagination);
+    padding: 4px 0;
+    border-bottom: var( --border-post-pagination);
+    
+}
+
+.interactive_icons_wrapper div {
+    padding: 4px;
+}
+
+.interactive_details {
+    padding: 8px 0;
 }
 
 .footer_card .active {

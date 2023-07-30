@@ -3,10 +3,9 @@ import { Link } from 'react-router-dom';
 import Avatar from '../Avatar';
 import ModalPost from './ModalPost';
 import { GLOBALTYPES } from '../../redux/actions/globalTypes';
-import { authSelector, statusSelector } from '../../redux/selector';
+import { statusSelector } from '../../redux/selector';
 
-function Status() {
-    const auth = useSelector(authSelector);
+function Status({ auth }) {
     const status = useSelector(statusSelector);
     const openModalPost = status.open;
     const dispatch = useDispatch();

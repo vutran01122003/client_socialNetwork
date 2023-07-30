@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { createComment } from '../../../redux/actions/commentAction';
 import SendIcon from '@mui/icons-material/Send';
 
-function InputComment({ post, auth, comment }) {
+function InputComment({ inputCommentRef, post, auth, comment }) {
     const [commentValue, setCommentValue] = useState('');
     const dispatch = useDispatch();
 
@@ -16,9 +16,9 @@ function InputComment({ post, auth, comment }) {
         if (commentValue) {
             await dispatch(
                 createComment({
-                    postId: post._id,
-                    commentId: comment._id,
-                    user: auth.user,
+                    postId: post?._id,
+                    commentId: comment?._id,
+                    user: auth?.user,
                     content: commentValue
                 })
             );
@@ -34,11 +34,12 @@ function InputComment({ post, auth, comment }) {
     };
 
     return (
-        <div className='p-2'>
+        <div className='input_comment_wrapper p-2'>
             <form className='flex relative' onSubmit={handleSubmitComment}>
                 <input
+                    ref={inputCommentRef}
                     type='text'
-                    className='outline-none bg-gray-100 pl-4 pr-10 py-2 w-full rounded-lg'
+                    className='input_comment outline-none bg-gray-100 pl-4 pr-10 py-2 w-full rounded-lg'
                     placeholder={
                         comment
                             ? 'write your reply...'

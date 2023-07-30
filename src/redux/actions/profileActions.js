@@ -2,7 +2,7 @@ import { getDataApi, patchDataApi } from '../../utils/fetchData';
 import { GLOBALTYPES } from './globalTypes';
 import { uploadImage } from '../../utils/uploadImage';
 export const getUser =
-    ({ users, id }) =>
+    ({ id }) =>
     async (dispatch) => {
         try {
             dispatch({
@@ -22,8 +22,52 @@ export const getUser =
             });
         } catch (error) {
             dispatch({
+                type: GLOBALTYPES.PROFILE.LOADING,
+                payload: false
+            });
+
+            dispatch({
                 type: GLOBALTYPES.ALERT,
                 payload: { error: error.response?.data.msg || 'Not Found' }
+            });
+        }
+    };
+
+export const getUserPost =
+    ({ id }) =>
+    async (dispatch) => {
+        try {
+            dispatch({
+                type: GLOBALTYPES.PROFILE.LOADING,
+                payload: true
+            });
+
+            const res = await getDataApi(`/post/user/${id}`);
+
+            dispatch({
+                type: GLOBALTYPES.PROFILE.GET_USER_POST,
+                payload: {
+                    userId: id,
+                    posts: res.data.posts,
+                    result: res.data.posts.length
+                }
+            });
+
+            dispatch({
+                type: GLOBALTYPES.PROFILE.LOADING,
+                payload: false
+            });
+        } catch (error) {
+            dispatch({
+                type: GLOBALTYPES.PROFILE.LOADING,
+                payload: false
+            });
+
+            dispatch({
+                type: GLOBALTYPES.ALERT,
+                payload: {
+                    error: error.response?.data.msg
+                }
             });
         }
     };
