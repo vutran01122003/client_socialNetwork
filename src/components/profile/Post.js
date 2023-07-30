@@ -26,12 +26,7 @@ function Post({ userInfo, auth, id }) {
                 (posts) => posts.userId === id
             );
 
-            if (
-                postsData &&
-                JSON.stringify(postsData) !== JSON.stringify(userPosts)
-            ) {
-                setUserPosts(postsData);
-            }
+            if (postsData) setUserPosts(postsData);
         }
         // eslint-disable-next-line
     }, [id, profile.posts, dispatch]);

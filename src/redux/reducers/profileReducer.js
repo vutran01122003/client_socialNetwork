@@ -1,3 +1,4 @@
+import removeElem from '../../utils/removeElem';
 import replaceOldElem from '../../utils/replaceOldElem';
 import { GLOBALTYPES } from '../actions/globalTypes';
 
@@ -15,6 +16,9 @@ function profileReducer(state = initialState, action) {
             return { ...state, users: [...state.users, action.payload] };
         case GLOBALTYPES.PROFILE.GET_USER_POST:
             return { ...state, posts: [...state.posts, action.payload] };
+        case GLOBALTYPES.PROFILE.RESET_USER_POSTS:
+            const newPost = removeElem(state.posts, action.payload.userId);
+            return { ...state, posts: newPost };
         case GLOBALTYPES.PROFILE.SET_USER: {
             const newUsers = replaceOldElem(state.users, action.payload);
             return { ...state, users: [...newUsers] };

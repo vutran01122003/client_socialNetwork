@@ -43,6 +43,13 @@ export const createPost =
                     });
 
                     dispatch({
+                        type: GLOBALTYPES.PROFILE.RESET_USER_POSTS,
+                        payload: {
+                            userId: user._id
+                        }
+                    });
+
+                    dispatch({
                         type: GLOBALTYPES.ALERT,
                         payload: {
                             success: res.data.status
@@ -71,7 +78,7 @@ export const getPost =
                 }
             });
 
-            const res = await getDataApi(`/post/${id}`);
+            const res = await getDataApi(`/post/posts/${id}`);
             dispatch({
                 type: GLOBALTYPES.POST.GET_POST,
                 payload: res.data
@@ -143,6 +150,7 @@ export const updatePost =
                         type: GLOBALTYPES.POST.UPDATE_POST,
                         payload: res.data.postData
                     });
+
                     dispatch({
                         type: GLOBALTYPES.ALERT,
                         payload: {
@@ -176,6 +184,13 @@ export const deletePost =
                     type: GLOBALTYPES.POST.DELETE_POST,
                     payload: {
                         postId: res.data.postData._id
+                    }
+                });
+
+                dispatch({
+                    type: GLOBALTYPES.PROFILE.RESET_USER_POSTS,
+                    payload: {
+                        userId: res.data.postData.user
                     }
                 });
 

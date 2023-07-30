@@ -11,8 +11,7 @@ export const GLOBALTYPES = {
         LOADING: 'LOADING',
         GET_USER: 'GET_USER',
         GET_USER_POST: 'GET_USER_POST',
-        ADD_USER_POST: 'ADD_USER_POST',
-        DELETE_USER_POST: 'DELETE_USER_POST',
+        RESET_USER_POSTS: 'RESET_USER_POSTS',
         SET_USER: 'SET_USER'
     },
     POST: {

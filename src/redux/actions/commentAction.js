@@ -23,7 +23,6 @@ export const createComment =
             }
         })
             .then((res) => {
-                console.log(res);
                 dispatch({
                     type: GLOBALTYPES.POST.CREATE_COMMENT,
                     payload: res.data.newPost
