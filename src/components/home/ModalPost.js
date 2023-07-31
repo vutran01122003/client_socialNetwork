@@ -10,7 +10,7 @@ import { GLOBALTYPES } from '../../redux/actions/globalTypes';
 import { useEffect, useRef, useState } from 'react';
 import { createPost, updatePost } from '../../redux/actions/postAction';
 
-function ModalPost({ handleHideModalPost, auth, status }) {
+function ModalPost({ auth, currentPost, detailPost }) {
     const theme = useSelector(themSelector);
     const inputRef = useRef();
     const videoRef = useRef();
@@ -23,10 +23,21 @@ function ModalPost({ handleHideModalPost, auth, status }) {
 
     const handleCloseModalPost = (stream) => {
         if (stream) handleStopCamera(stream);
-        handleHideModalPost();
+
+        if (detailPost) {
+            dispatch({
+                type: GLOBALTYPES.STATUS.HIDE_MODAL_DETAIL_POST
+            });
+        } else {
+            dispatch({
+                type: GLOBALTYPES.STATUS.HIDE_MODAL_HOME_POST
+            });
+        }
+
         setImages([]);
         setContent('');
-        if (Object.keys(status.currentPost).length > 0)
+
+        if (Object.keys(currentPost).length > 0)
             dispatch({
                 type: GLOBALTYPES.STATUS.CURRENT_EDIT_STATUS,
                 payload: {}
@@ -105,13 +116,13 @@ function ModalPost({ handleHideModalPost, auth, status }) {
 
     const handleSumbitPost = async (e) => {
         e.preventDefault();
-        if (Object.keys(status.currentPost).length > 0) {
+        if (Object.keys(currentPost).length > 0) {
             await dispatch(
                 updatePost({
-                    postId: status.currentPost._id,
+                    postId: currentPost._id,
                     content,
                     images,
-                    currentPost: status.currentPost
+                    currentPost: currentPost
                 })
             );
         } else {
@@ -128,12 +139,12 @@ function ModalPost({ handleHideModalPost, auth, status }) {
     };
 
     useEffect(() => {
-        const currentPost = status.currentPost;
-        if (currentPost) {
-            setContent(currentPost.content);
-            setImages(currentPost.images || []);
+        const post = currentPost;
+        if (post) {
+            setContent(post.content);
+            setImages(post.images || []);
         }
-    }, [status.currentPost]);
+    }, [currentPost]);
 
     return (
         <div
@@ -147,7 +158,7 @@ function ModalPost({ handleHideModalPost, auth, status }) {
             <form className='post_form overflow-auto'>
                 <div className='post_title relative'>
                     <h1 className='text-center font-bold text-xl'>
-                        {Object.keys(status.currentPost).length > 0
+                        {Object.keys(currentPost).length > 0
                             ? 'Edit Post'
                             : 'Create Post'}
                     </h1>
@@ -255,9 +266,7 @@ function ModalPost({ handleHideModalPost, auth, status }) {
                     </div>
 
                     <button onClick={handleSumbitPost} className='post_btn'>
-                        {Object.keys(status.currentPost).length > 0
-                            ? 'Save'
-                            : 'Post'}
+                        {Object.keys(currentPost).length > 0 ? 'Save' : 'Post'}
                     </button>
                 </div>
             </form>

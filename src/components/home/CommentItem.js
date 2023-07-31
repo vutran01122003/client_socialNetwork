@@ -275,29 +275,27 @@ function CommentItem({ reply, comment, auth, post }) {
                     </div>
 
                     <div className='comment_btn_wrapper'>
-                        {comment?.like ? (
-                            comment.likes.find(
-                                (user) => user._id === auth.user?._id
-                            ) ? (
-                                <button
-                                    onClick={() => {
-                                        handleUnlikeComment(comment._id);
-                                    }}
-                                    className='btn_like_active_comment'
-                                >
-                                    Like
-                                </button>
-                            ) : (
-                                <button
-                                    onClick={() => {
-                                        handleLikeComment(comment._id);
-                                    }}
-                                    className='btn_like_default_comment'
-                                >
-                                    Like
-                                </button>
-                            )
-                        ) : null}
+                        {comment.likes.find(
+                            (user) => user._id === auth.user?._id
+                        ) ? (
+                            <button
+                                onClick={() => {
+                                    handleUnlikeComment(comment._id);
+                                }}
+                                className='btn_like_active_comment'
+                            >
+                                Like
+                            </button>
+                        ) : (
+                            <button
+                                onClick={() => {
+                                    handleLikeComment(comment._id);
+                                }}
+                                className='btn_like_default_comment'
+                            >
+                                Like
+                            </button>
+                        )}
 
                         {!reply && (
                             <button

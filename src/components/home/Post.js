@@ -1,7 +1,5 @@
 import CircularProgress from '@mui/material/CircularProgress';
-import HeaderCard from './postCard/HeaderCard';
-import BodyCard from './postCard/BodyCard';
-import FooterCard from './postCard/FooterCard';
+import PostCard from './postCard/PostCard';
 
 function Post({ auth, posts }) {
     return (
@@ -13,9 +11,7 @@ function Post({ auth, posts }) {
             ) : (
                 posts.posts.map((post) => (
                     <div key={post._id} className='post_item'>
-                        <HeaderCard post={post} auth={auth} />
-                        <BodyCard post={post} />
-                        <FooterCard post={post} auth={auth} />
+                        <PostCard auth={auth} post={post} />
                     </div>
                 ))
             )}

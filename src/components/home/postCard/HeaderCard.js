@@ -2,6 +2,7 @@ import Avatar from '../../Avatar';
 import moment from 'moment';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import Tippy from '@tippyjs/react/headless';
+import { Navigate } from 'react-router-dom';
 import { useState } from 'react';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
@@ -11,7 +12,7 @@ import { useDispatch } from 'react-redux';
 import { GLOBALTYPES } from '../../../redux/actions/globalTypes';
 import { deletePost } from '../../../redux/actions/postAction';
 
-function HeaderCard({ post, auth }) {
+function HeaderCard({ post, auth, detailPost }) {
     const user = post.user;
     const dispatch = useDispatch();
     const [openMoreBtn, setOpenMoreBtn] = useState(false);
@@ -25,17 +26,27 @@ function HeaderCard({ post, auth }) {
     };
 
     const handleOpenModalPost = () => {
-        dispatch({
-            type: GLOBALTYPES.STATUS.OPEN_MODAL
-        });
-        dispatch({
-            type: GLOBALTYPES.STATUS.CURRENT_EDIT_STATUS,
-            payload: post
-        });
+        if (detailPost) {
+            dispatch({
+                type: GLOBALTYPES.STATUS.OPEN_MODAL_DETAIL_POST
+            });
+        } else {
+            dispatch({
+                type: GLOBALTYPES.STATUS.OPEN_MODAL_HOME_POST
+            });
+            dispatch({
+                type: GLOBALTYPES.STATUS.CURRENT_EDIT_STATUS,
+                payload: post
+            });
+        }
     };
 
     const handleRemovePost = () => {
         dispatch(deletePost({ postId: post._id }));
+
+        if (detailPost) {
+            window.location.reload();
+        }
     };
 
     return (
@@ -101,7 +112,7 @@ function HeaderCard({ post, auth }) {
             >
                 <div
                     onClick={handleToggleMoreBtn}
-                    className='more_horz_wrapper'
+                    className='more_horz_wrapper cursor-pointer'
                 >
                     <MoreHorizIcon />
                 </div>

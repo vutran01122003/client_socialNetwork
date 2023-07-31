@@ -6,6 +6,7 @@
 
 html, body, #root {
     height: 100%;
+    background: var(--app-background-color);
 }
 
 .App {
@@ -23,13 +24,28 @@ html, body, #root {
     filter: invert(1);
 }
 
+/* Toast */
+#theme:checked ~ .App .toast {
+    filter: invert(1);
+}
+
+/* Swiper */
+#theme:checked ~ .App :is(.swiper-button-next, .swiper-button-prev, .swiper-pagination) {
+    filter: invert(1);
+}
+
+/* Profile */
+#theme:checked ~ .App :is(.post_thumb_item_info, .website_link) {
+    filter: invert(1);
+}    
+
 /* Edit Profile */
 #theme:checked ~ .App :is(.edit_close_btn, .count_letter, .save_edit_btn) {
     filter: invert(1);
 }
 
 /* Post */
-#theme:checked ~ .App :is(.btn_like_active_comment, .interactive_icons_wrapper) {
+#theme:checked ~ .App :is(.btn_like_active_comment, .interactive_icons_wrapper, .count_one_like_wrapper, .count_like_wrapper) {
     filter: invert(1);
 }
 

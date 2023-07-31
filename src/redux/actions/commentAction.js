@@ -24,7 +24,7 @@ export const createComment =
         })
             .then((res) => {
                 dispatch({
-                    type: GLOBALTYPES.POST.CREATE_COMMENT,
+                    type: GLOBALTYPES.POST.UPDATE_POST,
                     payload: res.data.newPost
                 });
                 dispatch({
@@ -59,7 +59,7 @@ export const deleteComment =
         })
             .then((res) => {
                 dispatch({
-                    type: GLOBALTYPES.POST.DELETE_COMMENT,
+                    type: GLOBALTYPES.POST.UPDATE_POST,
                     payload: res.data.newPost
                 });
                 dispatch({
@@ -97,9 +97,10 @@ export const updateComment =
         })
             .then((res) => {
                 dispatch({
-                    type: GLOBALTYPES.POST.UPDATE_COMMENT,
+                    type: GLOBALTYPES.POST.UPDATE_POST,
                     payload: res.data.newPost
                 });
+
                 dispatch({
                     type: GLOBALTYPES.ALERT,
                     payload: {
@@ -135,7 +136,7 @@ export const likeComment =
         })
             .then((res) => {
                 dispatch({
-                    type: GLOBALTYPES.POST.LIKE_COMMENT,
+                    type: GLOBALTYPES.POST.UPDATE_POST,
                     payload: res.data.newPost
                 });
 
@@ -174,7 +175,7 @@ export const unlikeComment =
         })
             .then((res) => {
                 dispatch({
-                    type: GLOBALTYPES.POST.UNLIKE_COMMENT,
+                    type: GLOBALTYPES.POST.UPDATE_POST,
                     payload: res.data.newPost
                 });
 

@@ -4,6 +4,7 @@
     max-width: 100%;
     margin-bottom: 50px;
     border-radius: 8px;
+    background: var(--white-color);
     box-shadow: 0 0 3px gray;
 }
 

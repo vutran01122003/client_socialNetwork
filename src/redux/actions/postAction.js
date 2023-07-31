@@ -29,7 +29,7 @@ export const createPost =
             if (images.length > 0) {
                 imgUrlArr = await uploadImage(images);
             }
-            postDataApi(`/post/${user._id}`, {
+            postDataApi(`/post`, {
                 postData: {
                     user,
                     content,
@@ -67,7 +67,7 @@ export const createPost =
         }
     };
 
-export const getPost =
+export const getPosts =
     ({ id }) =>
     async (dispatch) => {
         try {
@@ -218,14 +218,16 @@ export const likePost = (postId, user) => async (dispatch) => {
             loading: true
         }
     });
+
     patchDataApi(`/post/${postId}/like`, {
         userData: user
     })
         .then((res) => {
             dispatch({
-                type: GLOBALTYPES.POST.LIKE_POST,
+                type: GLOBALTYPES.POST.UPDATE_POST,
                 payload: res.data.newPost
             });
+
             dispatch({
                 type: GLOBALTYPES.ALERT,
                 payload: {
@@ -250,14 +252,16 @@ export const unlikePost = (postId, user) => async (dispatch) => {
             loading: true
         }
     });
+
     patchDataApi(`/post/${postId}/unlike`, {
         userData: user
     })
         .then((res) => {
             dispatch({
-                type: GLOBALTYPES.POST.UNLIKE_POST,
+                type: GLOBALTYPES.POST.UPDATE_POST,
                 payload: res.data.newPost
             });
+
             dispatch({
                 type: GLOBALTYPES.ALERT,
                 payload: {
@@ -269,8 +273,41 @@ export const unlikePost = (postId, user) => async (dispatch) => {
             dispatch({
                 type: GLOBALTYPES.ALERT,
                 payload: {
-                    error: e.response?.data.msg
+                    error: e.response?.data.msg || 'Error'
                 }
             });
         });
 };
+
+export const getPost =
+    ({ postId }) =>
+    async (dispatch) => {
+        dispatch({
+            type: GLOBALTYPES.ALERT,
+            payload: {
+                loading: true
+            }
+        });
+        getDataApi(`/post/${postId}`)
+            .then((res) => {
+                dispatch({
+                    type: GLOBALTYPES.DETAILPOST.GET_DETAILPOST,
+                    payload: res.data.post
+                });
+
+                dispatch({
+                    type: GLOBALTYPES.ALERT,
+                    payload: {
+                        success: res.data.status
+                    }
+                });
+            })
+            .catch((e) => {
+                dispatch({
+                    type: GLOBALTYPES.ALERT,
+                    payload: {
+                        error: e.response?.data.msg || 'Error'
+                    }
+                });
+            });
+    };

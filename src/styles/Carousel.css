@@ -1,6 +1,7 @@
 .carousel_wrapper {
     width: 100%;
     height: 500px;
+    user-select: none;
 }
 
 .swiper {

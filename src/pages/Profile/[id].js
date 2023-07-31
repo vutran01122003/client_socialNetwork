@@ -42,7 +42,7 @@ function Profile() {
     return (
         <div className='profile_container flex flex-col'>
             {profile.loading ? (
-                <div className='flex justify-center w-full'>
+                <div className='flex justify-center w-full mt-20'>
                     <CircularProgress size={50} />
                 </div>
             ) : (
