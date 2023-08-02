@@ -14,7 +14,7 @@
 @import url(./styles/Post.css);
 @import url(./styles/EditProfile.css);
 @import url(./styles/global.css);
-@import url(./styles/FollowInfo.css);
+@import url(./styles/UserModal.css);
 @import url(./styles/Status.css);
 @import url(./styles/PostCard.css);
 @import url(./styles/Carousel.css);
@@ -22,5 +22,6 @@
 @import url(./styles/Comment.css);
 @import url(./styles/UserPost.css);
 @import url(./styles/DetailPost.css);
+@import url(./styles/Discover.css);
 
 

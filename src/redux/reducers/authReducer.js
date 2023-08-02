@@ -1,5 +1,8 @@
 import { GLOBALTYPES } from '../actions/globalTypes';
-const initialState = {};
+const initialState = {
+    user: '',
+    token: ''
+};
 
 const authReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -7,7 +10,7 @@ const authReducer = (state = initialState, action) => {
             return action.payload;
 
         default:
-            return state;
+            return { ...state };
     }
 };
 

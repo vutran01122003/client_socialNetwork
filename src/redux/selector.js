@@ -15,3 +15,5 @@ export const profileSelector = (state) => state.profile;
 export const statusSelector = (state) => state.status;
 
 export const detailPostListSelector = (state) => state.detailPostList;
+
+export const postsDiscoverSelector = (state) => state.postsDiscover;

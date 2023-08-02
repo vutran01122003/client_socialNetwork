@@ -1,0 +1,7 @@
+.discover_wrapper {
+    position: relative;
+    background: var(--white-color);
+    padding: 5px;
+    min-height: inherit;
+    border-radius: 5px;
+}

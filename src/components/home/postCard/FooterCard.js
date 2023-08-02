@@ -8,9 +8,12 @@ import { useDispatch } from 'react-redux';
 import { likePost, unlikePost } from '../../../redux/actions/postAction';
 import InputComment from '../postCard/InputComment';
 import CommentCard from '../postCard/CommentCard';
+import UserModal from '../../UserModal';
 
 function FooterCard({ post, auth }) {
     const [like, setLike] = useState(false);
+    const [likesPopup, setLikesPopup] = useState(false);
+
     const dispatch = useDispatch();
     const inputCommentRef = useRef();
 
@@ -38,15 +41,33 @@ function FooterCard({ post, auth }) {
 
     return (
         <>
+            {likesPopup && (
+                <UserModal
+                    modalInfo={{
+                        title: 'Likes',
+                        users: post.likes
+                    }}
+                    setPopup={setLikesPopup}
+                />
+            )}
+
             <div className='footer_card select-none'>
                 <div className='interactive_details flex justify-between text-gray-600'>
-                    <div className='likes_details cursor-pointer hover:underline decoration-1'>
+                    <div
+                        onClick={() => {
+                            setLikesPopup(true);
+                        }}
+                        className='likes_details cursor-pointer hover:underline decoration-1'
+                    >
                         {post.likes.length > 1
                             ? `${millify(post.likes?.length)} likes`
                             : `${post.likes?.length} like`}
                     </div>
                     <div className='flex gap-3'>
-                        <div className='cursor-pointer hover:underline decoration-1'>
+                        <div
+                            onClick={handleScrollToInputComment}
+                            className='cursor-pointer hover:underline decoration-1'
+                        >
                             {millify(post.comments?.length)} comments
                         </div>
                         <div className='cursor-pointer hover:underline decoration-1'>

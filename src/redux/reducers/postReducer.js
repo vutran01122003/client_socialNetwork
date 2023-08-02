@@ -5,7 +5,9 @@ import { GLOBALTYPES } from '../actions/globalTypes';
 const initialState = {
     loading: false,
     result: 0,
-    posts: []
+    posts: [],
+    page: 0,
+    maxPage: false
 };
 
 function postReducer(state = initialState, action) {
@@ -20,11 +22,13 @@ function postReducer(state = initialState, action) {
             };
         case GLOBALTYPES.POST.LOADING_POST:
             return { ...state, ...action.payload };
-        case GLOBALTYPES.POST.GET_POST:
+        case GLOBALTYPES.POST.GET_POSTS:
             return {
                 ...state,
-                posts: [...action.payload.posts],
-                result: action.payload.result
+                posts: [...state.posts, ...action.payload.posts],
+                result: state.posts.length + action.payload.posts.length,
+                page: action.payload.page,
+                maxPage: action.payload.maxPage
             };
         case GLOBALTYPES.POST.UPDATE_POST:
             const newUpdatedPosts = replaceOldElem(state.posts, action.payload);
@@ -41,60 +45,6 @@ function postReducer(state = initialState, action) {
                 ...state,
                 posts: [...newDeletedPosts],
                 result: state.result - 1
-            };
-        case GLOBALTYPES.POST.LIKE_POST:
-            const newLikePosts = replaceOldElem(state.posts, action.payload);
-            return {
-                ...state,
-                posts: [...newLikePosts]
-            };
-        case GLOBALTYPES.POST.UNLIKE_POST:
-            const newUnlikePosts = replaceOldElem(state.posts, action.payload);
-            return {
-                ...state,
-                posts: [...newUnlikePosts]
-            };
-        case GLOBALTYPES.POST.CREATE_COMMENT:
-            const newCommentPosts = replaceOldElem(state.posts, action.payload);
-            return {
-                ...state,
-                posts: [...newCommentPosts]
-            };
-        case GLOBALTYPES.POST.DELETE_COMMENT:
-            const newDelCommentPosts = replaceOldElem(
-                state.posts,
-                action.payload
-            );
-            return {
-                ...state,
-                posts: [...newDelCommentPosts]
-            };
-        case GLOBALTYPES.POST.UPDATE_COMMENT:
-            const newUpdateCommentPosts = replaceOldElem(
-                state.posts,
-                action.payload
-            );
-            return {
-                ...state,
-                posts: [...newUpdateCommentPosts]
-            };
-        case GLOBALTYPES.POST.LIKE_COMMENT:
-            const newLikeCommentPosts = replaceOldElem(
-                state.posts,
-                action.payload
-            );
-            return {
-                ...state,
-                posts: [...newLikeCommentPosts]
-            };
-        case GLOBALTYPES.POST.UNLIKE_COMMENT:
-            const newUnlikeCommentPosts = replaceOldElem(
-                state.posts,
-                action.payload
-            );
-            return {
-                ...state,
-                posts: [...newUnlikeCommentPosts]
             };
         default:
             return state;

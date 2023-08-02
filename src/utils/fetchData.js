@@ -1,23 +1,21 @@
-import axios from 'axios';
+import instance from '../config/axiosConfig';
 
-export const postDataApi = (uri, data, token) => {
-    const res = axios.post(`/api${uri}`, data, {
-        headers: { Authorization: token }
-    });
+export const postDataApi = (uri, data) => {
+    const res = instance.post(uri, data);
     return res;
 };
 
 export const getDataApi = (uri) => {
-    const res = axios.get(`/api${uri}`);
+    const res = instance.get(uri);
     return res;
 };
 
 export const patchDataApi = (uri, data) => {
-    const res = axios.patch(`/api${uri}`, data);
+    const res = instance.patch(uri, data);
     return res;
 };
 
 export const deleteDataApi = (uri, data) => {
-    const res = axios.delete(`/api${uri}`, data);
+    const res = instance.delete(uri, data);
     return res;
 };

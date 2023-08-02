@@ -64,6 +64,7 @@ export default function Login() {
     };
 
     if (auth.token) return <Navigate to='/' />;
+    if (localStorage.getItem('logged')) return <></>;
 
     return (
         <>

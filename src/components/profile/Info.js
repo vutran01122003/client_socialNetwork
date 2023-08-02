@@ -2,14 +2,15 @@ import { Box } from '@mui/material';
 import { useState } from 'react';
 import Edit from './EditProfile';
 import Follow from './FollowBtn';
-import FollowInfo from './FollowInfo';
 import Avatar from '../Avatar';
+import Content from '../Content';
+import UserModal from '../UserModal';
 
 function Info({ userInfo, id, auth }) {
     const { avatar, username, fullname, followers, following, story, website } =
         userInfo || {};
     const [onEdit, setOnEdit] = useState(false);
-    const [audience, setAudience] = useState(null);
+    const [audience, setAudience] = useState(false);
 
     const handleEdit = () => {
         setOnEdit((prev) => !prev);
@@ -39,7 +40,7 @@ function Info({ userInfo, id, auth }) {
                             </h5>
                         </div>
                         {auth.user?._id === id ? (
-                            <div className='edit_btn whitespace-nowrap ml-40'>
+                            <div className='edit_btn whitespace-nowrap'>
                                 <button
                                     onClick={handleEdit}
                                     className='rounded-md text-teal-400 text-semibold border-2 border-teal-400 py-2 px-14 hover:bg-teal-300 hover:text-white'
@@ -76,12 +77,14 @@ function Info({ userInfo, id, auth }) {
                     >
                         {website}
                     </a>
-                    <h5 className='story'>{story}</h5>
+                    <h5 className='story'>
+                        <Content content={story} limit={100} />
+                    </h5>
                 </div>
             </div>
             {onEdit && <Edit setOnEdit={setOnEdit} />}
             {audience && (
-                <FollowInfo audience={audience} setAudience={setAudience} />
+                <UserModal modalInfo={audience} setPopup={setAudience} />
             )}
         </Box>
     );

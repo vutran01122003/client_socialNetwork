@@ -68,7 +68,7 @@ export const createPost =
     };
 
 export const getPosts =
-    ({ id }) =>
+    ({ nextPage, currentPostCount }) =>
     async (dispatch) => {
         try {
             dispatch({
@@ -78,10 +78,17 @@ export const getPosts =
                 }
             });
 
-            const res = await getDataApi(`/post/posts/${id}`);
+            const res = await getDataApi(
+                `/posts?page=${nextPage}&currentPostCount=${currentPostCount}`
+            );
+
             dispatch({
-                type: GLOBALTYPES.POST.GET_POST,
-                payload: res.data
+                type: GLOBALTYPES.POST.GET_POSTS,
+                payload: {
+                    posts: res.data.posts,
+                    page: nextPage,
+                    maxPage: res.data.result === 0 ? true : false
+                }
             });
 
             dispatch({
@@ -91,6 +98,12 @@ export const getPosts =
                 }
             });
         } catch (error) {
+            dispatch({
+                type: GLOBALTYPES.POST.LOADING_POST,
+                payload: {
+                    loading: false
+                }
+            });
             dispatch({
                 type: GLOBALTYPES.ALERT,
                 payload: {
@@ -294,11 +307,10 @@ export const getPost =
                     type: GLOBALTYPES.DETAILPOST.GET_DETAILPOST,
                     payload: res.data.post
                 });
-
                 dispatch({
                     type: GLOBALTYPES.ALERT,
                     payload: {
-                        success: res.data.status
+                        loading: false
                     }
                 });
             })

@@ -46,6 +46,7 @@ function Edit({ setOnEdit }) {
 
         e.preventDefault();
         dispatch(updateUser({ auth, fileInput, formData, userData }));
+        setOnEdit(false);
     };
 
     const handleFile = (e) => {
@@ -183,11 +184,11 @@ function Edit({ setOnEdit }) {
                             />
                             <span
                                 className={`${
-                                    userData.story.length > 200
+                                    userData.story.length > 150
                                         ? 'text-red-500'
                                         : 'text-green-500'
                                 } absolute count_letter block right-2 bottom-0 -translate-y-1/2`}
-                            >{`${userData.story.length}/200`}</span>
+                            >{`${userData.story.length}/150`}</span>
                         </div>
                     </div>
                     <div className='mb-4'>

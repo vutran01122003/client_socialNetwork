@@ -17,7 +17,7 @@ export const GLOBALTYPES = {
     POST: {
         CREATE_POST: 'CREATE_POST',
         LOADING_POST: 'LOADING_POST',
-        GET_POST: 'GET_POST',
+        GET_POSTS: 'GET_POSTS',
         UPDATE_POST: 'UPDATE_POST',
         DELETE_POST: 'DELETE_POST'
     },
@@ -30,5 +30,8 @@ export const GLOBALTYPES = {
     },
     DETAILPOST: {
         GET_DETAILPOST: 'GET_ DETAILPOST'
+    },
+    DISCOVER: {
+        GET_POSTS_DISCOVER: ' GET_POSTS_DISCOVER'
     }
 };

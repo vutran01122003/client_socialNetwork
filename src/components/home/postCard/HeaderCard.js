@@ -2,7 +2,6 @@ import Avatar from '../../Avatar';
 import moment from 'moment';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import Tippy from '@tippyjs/react/headless';
-import { Navigate } from 'react-router-dom';
 import { useState } from 'react';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';

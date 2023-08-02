@@ -42,7 +42,7 @@ export const getUserPost =
                 payload: true
             });
 
-            const res = await getDataApi(`/post/user/${id}`);
+            const res = await getDataApi(`/posts/${id}`);
 
             dispatch({
                 type: GLOBALTYPES.PROFILE.GET_USER_POST,

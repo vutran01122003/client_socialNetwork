@@ -55,6 +55,10 @@ function Header() {
         dispatch(activePageAction(pageName));
     };
 
+    const handleActiveHome = () => {
+        dispatch(activePageAction('Home'));
+    };
+
     const handleTheme = () => {
         dispatch({
             type: GLOBALTYPES.THEME,
@@ -93,7 +97,8 @@ function Header() {
                             to='/'
                             className='flex items-center gap-2 font-semibold'
                             onClick={() => {
-                                window.scrollTo({ top: 0 });
+                                handleActiveHome();
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
                             }}
                         >
                             <img

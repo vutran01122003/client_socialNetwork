@@ -6,13 +6,17 @@ import { Toolbar } from '@mui/material';
 
 function Layout() {
     const auth = useSelector(authSelector) || {};
+
     return (
         <>
             {auth?.token && <Header />}
             {auth?.token && <Toolbar />}
-            <main>
-                <Outlet />
-            </main>
+            <div className='app_container'>
+                <div className='app_sidebar'></div>
+                <main>
+                    <Outlet />
+                </main>
+            </div>
         </>
     );
 }
