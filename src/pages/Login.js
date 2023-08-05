@@ -30,7 +30,7 @@ function Copyright(props) {
             {'Copyright © '}
             <Link color='inherit' href='/'>
                 Smedia
-            </Link>{' '}
+            </Link>
             {new Date().getFullYear()}
             {'.'}
         </Typography>

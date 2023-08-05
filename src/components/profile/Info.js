@@ -30,7 +30,7 @@ function Info({ userInfo, id, auth }) {
                     <Avatar avatar={avatar} size='big' />
                 </div>
                 <div className='user_wrapper flex-1'>
-                    <div className='user_avatar_edit_wrapper flex pt-2'>
+                    <div className='user_avatar_edit_wrapper'>
                         <div className='name_wrapper'>
                             <h3 className='username font-semibold text-3xl'>
                                 {username}
@@ -84,7 +84,11 @@ function Info({ userInfo, id, auth }) {
             </div>
             {onEdit && <Edit setOnEdit={setOnEdit} />}
             {audience && (
-                <UserModal modalInfo={audience} setPopup={setAudience} />
+                <UserModal
+                    modalInfo={audience}
+                    setPopup={setAudience}
+                    auth={auth}
+                />
             )}
         </Box>
     );

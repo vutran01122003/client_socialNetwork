@@ -113,6 +113,25 @@ export const getPosts =
         }
     };
 
+export const getNewPosts =
+    ({ userId }) =>
+    async (dispatch) => {
+        try {
+            const res = await getDataApi(`/posts/${userId}`);
+            dispatch({
+                type: GLOBALTYPES.POST.GET_NEW_POSTS,
+                payload: res.data
+            });
+        } catch (error) {
+            dispatch({
+                type: GLOBALTYPES.ALERT,
+                payload: {
+                    error: error.response?.data.msg
+                }
+            });
+        }
+    };
+
 export const updatePost =
     ({ postId, content, images, currentPost }) =>
     async (dispatch) => {

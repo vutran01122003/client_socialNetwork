@@ -100,6 +100,8 @@ export const logout = () => async (dispatch) => {
             type: GLOBALTYPES.ALERT,
             payload: { success: res.data }
         });
+
+        window.location.reload();
     } catch (err) {
         dispatch({
             type: GLOBALTYPES.ALERT,

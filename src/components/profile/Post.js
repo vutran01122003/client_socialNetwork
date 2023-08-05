@@ -6,27 +6,18 @@ import { CircularProgress } from '@mui/material';
 import CameraAltOutlinedIcon from '@mui/icons-material/CameraAltOutlined';
 import PostsThumb from './PostsThumb';
 
-function Post({ userInfo, auth, id }) {
+function Post({ id }) {
     const dispatch = useDispatch();
     const profile = useSelector(profileSelector);
     const [userPosts, setUserPosts] = useState({});
 
     useEffect(() => {
-        if (
-            !profile.posts.some(
-                (post) => post.userId === id && JSON.stringify(userPosts)
-            )
-        ) {
+        if (!profile.posts.some((post) => post.userId === id)) {
             dispatch(getUserPost({ id }));
         }
 
-        if (profile.posts.length > 0) {
-            const postsData = profile.posts.find(
-                (posts) => posts.userId === id
-            );
-
-            if (postsData) setUserPosts(postsData);
-        }
+        const postsData = profile.posts.find((posts) => posts.userId === id);
+        if (postsData) setUserPosts(postsData);
     }, [id, profile.posts, userPosts, dispatch]);
 
     if (profile.loading && !userPosts)

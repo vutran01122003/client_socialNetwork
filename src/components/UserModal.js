@@ -1,10 +1,9 @@
 import { themSelector } from '../redux/selector';
 import { useSelector } from 'react-redux';
-import Account from './Account';
+import UserCard from './UserCard';
 
-function UserModal({ modalInfo, setPopup }) {
+function UserModal({ modalInfo, setPopup, auth }) {
     const theme = useSelector(themSelector);
-
     return (
         <div
             className={`${theme === true ? 'bg-white/75' : ''} modal_wrapper`}
@@ -36,13 +35,11 @@ function UserModal({ modalInfo, setPopup }) {
                         </div>
                     )}
                     {modalInfo.users.map((user) => (
-                        <Account
+                        <UserCard
                             className='follow_user'
+                            user={user}
+                            auth={auth}
                             key={user._id}
-                            username={user.username}
-                            fullname={user.fullname}
-                            avatar={user.avatar}
-                            id={user._id}
                             onClick={() => {
                                 setPopup(false);
                             }}

@@ -6,7 +6,7 @@ function Content({ content, limit }) {
         <span className='see_more'>
             {content?.length > limit && !readMore ? (
                 <span>
-                    {content.slice(0, limit)}...{' '}
+                    {content.slice(0, limit)}...
                     <span
                         onClick={() => {
                             setReadMore(true);

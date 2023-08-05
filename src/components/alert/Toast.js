@@ -30,7 +30,7 @@ function Toast({ status, msg }) {
                     sx={{ width: '100%' }}
                     className='text-base font-bold'
                 >
-                    {msg}{' '}
+                    {msg}
                     <CloseIcon
                         fontSize='small'
                         onClick={(e) => {

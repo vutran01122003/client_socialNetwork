@@ -44,9 +44,7 @@ function Post({ auth }) {
 
     return (
         <div className='post_wrapper wrapper'>
-            {homePosts.loading === 0 ? (
-                <CircularProgress />
-            ) : homePosts.result === 0 ? (
+            {homePosts.result === 0 ? (
                 <h3 className='font-semibold mt-2'>NO POSTS</h3>
             ) : (
                 homePosts.posts.map((post, index) => {
@@ -64,16 +62,14 @@ function Post({ auth }) {
                     return (
                         <div key={post._id} className='post_item'>
                             <PostCard auth={auth} post={post} />
-                            {openModalHomePost && (
-                                <ModalPost
-                                    auth={auth}
-                                    currentPost={currentPost}
-                                />
-                            )}
                         </div>
                     );
                 })
             )}
+            {openModalHomePost && (
+                <ModalPost auth={auth} currentPost={currentPost} />
+            )}
+            {homePosts.loading && <CircularProgress />}
         </div>
     );
 }

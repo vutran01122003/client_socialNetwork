@@ -277,7 +277,7 @@ function Header() {
                                             </>
                                         ) : (
                                             <>
-                                                <LightModeIcon />{' '}
+                                                <LightModeIcon />
                                                 <span>Light Mode</span>
                                             </>
                                         )}

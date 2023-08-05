@@ -1,0 +1,49 @@
+.app_sidebar_left, .app_sidebar_right{
+    width: 380px;
+    min-width: 350px;
+}
+
+.sidebar_left {
+    background: var(--white-color);
+    padding: 8px;
+    position: fixed;
+    left: 0;
+    top: calc(var(--header-height));
+    bottom: 0;
+    width: 380px;
+    height: 100vh;
+    overflow-y: scroll;
+}
+
+.sidebar_right {
+    background: var(--white-color);
+    position: fixed;
+    right: 0;
+    top: calc(var(--header-height));
+    bottom: 0;
+    width: 380px;
+    height: 100vh;
+    overflow-y: scroll;
+    transition: background-color 0.3s linear;
+    box-shadow: var(--box-shadow-gray);
+
+}
+
+.suggestion_wrapper {
+    background: var(--white-color);
+    padding: 8px;
+    min-height: 100vh;
+}
+
+.suggestion_title {
+    font-weight: 500;
+    font-size: larger;
+    margin: 0 0 15px 7px;
+}
+
+.suggestion_users_wrapper {
+    position: relative;
+    width: 100%;
+    align-items: center;
+    min-height: inherit;
+}

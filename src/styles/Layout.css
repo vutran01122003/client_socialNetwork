@@ -1,18 +1,15 @@
 .app_container {
     display: flex;
     min-height: calc(100vh - 64px);
-    padding: 8px 0px ;
-    gap: 0.5%
-}
-
-.app_sidebar {
-    width: 350px;
-    min-height: inherit;
-    background: pink;
+    padding: 8px 0px;
+    gap: 8px;
+    overflow: hidden;
 }
 
 main {
     width: 800px;
     max-width: 100%;
     min-height: inherit;
+    margin: 0 auto;
 }
+

@@ -32,4 +32,7 @@
 
 .user_avatar_edit_wrapper {
     justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
 }

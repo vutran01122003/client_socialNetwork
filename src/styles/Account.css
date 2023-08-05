@@ -1,0 +1,26 @@
+.account_wrapper {
+    padding: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--white-color);
+}
+
+.account {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: 0.1s linear;
+}
+
+.account_wrapper:hover {
+    background: var(--hover-background-color);
+}
+
+.user_description :is(.user_description_username, .user_description_fullname) {
+    overflow: hidden;
+    max-width: 150px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

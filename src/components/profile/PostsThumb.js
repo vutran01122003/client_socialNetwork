@@ -22,13 +22,13 @@ function PostsThumb({ posts }) {
                         />
                         <div className='post_thumb_item_info flex'>
                             <div className='post_thumb_item_info_icon'>
-                                <FavoriteIcon />{' '}
+                                <FavoriteIcon />
                                 <span className='post_thumb_item_info_num'>
                                     {post.likes?.length}
                                 </span>
                             </div>
                             <div className='post_thumb_item_info_icon'>
-                                <ModeCommentIcon />{' '}
+                                <ModeCommentIcon />
                                 <span className='post_thumb_item_info_num'>
                                     {post.comments?.length}
                                 </span>

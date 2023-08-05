@@ -30,6 +30,11 @@ function postReducer(state = initialState, action) {
                 page: action.payload.page,
                 maxPage: action.payload.maxPage
             };
+        case GLOBALTYPES.POST.GET_NEW_POSTS:
+            return {
+                ...state,
+                posts: [...action.payload.posts, ...state.posts]
+            };
         case GLOBALTYPES.POST.UPDATE_POST:
             const newUpdatedPosts = replaceOldElem(state.posts, action.payload);
             return {

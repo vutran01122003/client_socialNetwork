@@ -9,6 +9,7 @@ import postReducer from './postReducer';
 import statusReducer from './statusReducer';
 import detailPostReducer from './detailPostListReducer';
 import discoverReducer from './discoverReducer';
+import suggestedUsersReducer from './suggestedUsersReducer';
 
 const rootReducer = combineReducers({
     auth: authReducer,
@@ -20,7 +21,8 @@ const rootReducer = combineReducers({
     status: statusReducer,
     homePost: postReducer,
     detailPostList: detailPostReducer,
-    postsDiscover: discoverReducer
+    postsDiscover: discoverReducer,
+    suggestedUsers: suggestedUsersReducer
 });
 
 export default rootReducer;

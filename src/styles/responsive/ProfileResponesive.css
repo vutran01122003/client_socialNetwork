@@ -77,10 +77,6 @@
         gap: 25px !important;
     }
 
-    .follow_btn, .edit_btn {
-        margin-left: 35px !important;
-    }
-
     .website_link {
         display: inline-block;
         white-space: wrap;

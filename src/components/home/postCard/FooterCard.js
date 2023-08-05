@@ -68,7 +68,9 @@ function FooterCard({ post, auth }) {
                             onClick={handleScrollToInputComment}
                             className='cursor-pointer hover:underline decoration-1'
                         >
-                            {millify(post.comments?.length)} comments
+                            {post.comments?.length > 1
+                                ? `${millify(post.comments?.length)} comments`
+                                : `${post.comments?.length} comment`}
                         </div>
                         <div className='cursor-pointer hover:underline decoration-1'>
                             {millify(post.comments?.length)} save

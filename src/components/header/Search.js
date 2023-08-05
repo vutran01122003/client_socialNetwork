@@ -2,11 +2,11 @@ import SearchIcon from '@mui/icons-material/Search';
 import Tippy from '@tippyjs/react/headless';
 import { useCallback, useEffect, useState } from 'react';
 import 'tippy.js/dist/tippy.css';
-import Account from '../Account';
 import { CircularProgress } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSearchUser } from '../../redux/actions/usersAction';
 import { alertSelector, userSelector } from '../../redux/selector';
+import UserCard from '../UserCard';
 
 function Search() {
     const userData = useSelector(userSelector);
@@ -78,13 +78,10 @@ function Search() {
                     )}
 
                     {users.map((user) => (
-                        <Account
+                        <UserCard
                             key={user._id}
-                            id={user._id}
+                            user={user}
                             onClick={hideResult}
-                            avatar={user.avatar}
-                            fullname={user.fullname}
-                            username={user.username}
                         />
                     ))}
                 </div>
