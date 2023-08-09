@@ -3,6 +3,7 @@ export const GLOBALTYPES = {
     ALERT: 'ALERT',
     THEME: 'THEME',
     ACTIVE_PAGE: 'ACTIVE_PAGE',
+    SOCKET: 'SOCKET',
     USERS: {
         SEARCH_USERS: 'SEARCH_USERS',
         GET_USER: 'GET_USER'

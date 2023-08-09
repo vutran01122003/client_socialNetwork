@@ -31,6 +31,12 @@ function postReducer(state = initialState, action) {
                 maxPage: action.payload.maxPage
             };
         case GLOBALTYPES.POST.GET_NEW_POSTS:
+            if (
+                state.posts.find(
+                    (post) => post.user._id === action.payload.userId
+                )
+            )
+                return state;
             return {
                 ...state,
                 posts: [...action.payload.posts, ...state.posts]

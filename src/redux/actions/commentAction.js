@@ -6,7 +6,7 @@ import {
 } from '../../utils/fetchData';
 
 export const createComment =
-    ({ postId, user, content, commentId }) =>
+    ({ postId, user, content, commentId, socket }) =>
     async (dispatch) => {
         dispatch({
             type: GLOBALTYPES.ALERT,
@@ -23,6 +23,7 @@ export const createComment =
             }
         })
             .then((res) => {
+                socket.emit('comment', res.data.newPost);
                 dispatch({
                     type: GLOBALTYPES.POST.UPDATE_POST,
                     payload: res.data.newPost
@@ -35,6 +36,7 @@ export const createComment =
                 });
             })
             .catch((error) => {
+                console.log(error);
                 dispatch({
                     type: GLOBALTYPES.ALERT,
                     payload: {
@@ -45,7 +47,7 @@ export const createComment =
     };
 
 export const deleteComment =
-    ({ postId, commentId }) =>
+    ({ postId, commentId, socket }) =>
     async (dispatch) => {
         dispatch({
             type: GLOBALTYPES.ALERT,
@@ -58,6 +60,7 @@ export const deleteComment =
             data: { postId, commentId }
         })
             .then((res) => {
+                socket.emit('delete_comment', res.data.newPost);
                 dispatch({
                     type: GLOBALTYPES.POST.UPDATE_POST,
                     payload: res.data.newPost
@@ -70,6 +73,7 @@ export const deleteComment =
                 });
             })
             .catch((error) => {
+                console.log(error);
                 dispatch({
                     type: GLOBALTYPES.ALERT,
                     payload: {

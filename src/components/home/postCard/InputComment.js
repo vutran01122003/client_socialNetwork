@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { createComment } from '../../../redux/actions/commentAction';
 import SendIcon from '@mui/icons-material/Send';
 
-function InputComment({ inputCommentRef, post, auth, comment }) {
+function InputComment({ inputCommentRef, post, auth, comment, socket }) {
     const [commentValue, setCommentValue] = useState('');
     const dispatch = useDispatch();
 
@@ -19,7 +19,8 @@ function InputComment({ inputCommentRef, post, auth, comment }) {
                     postId: post?._id,
                     commentId: comment?._id,
                     user: auth?.user,
-                    content: commentValue
+                    content: commentValue,
+                    socket
                 })
             );
             setCommentValue('');

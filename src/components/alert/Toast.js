@@ -19,7 +19,7 @@ function Toast({ status, msg }) {
             <Snackbar
                 className='toast'
                 open={open}
-                autoHideDuration={2000}
+                autoHideDuration={1000}
                 onClose={() => {
                     setOpen(false);
                 }}

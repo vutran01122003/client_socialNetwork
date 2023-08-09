@@ -131,7 +131,7 @@ export const updateUser =
     };
 
 export const follow =
-    ({ userInfo, auth }) =>
+    ({ userInfo, auth, socket }) =>
     async (dispatch) => {
         dispatch({
             type: GLOBALTYPES.ALERT,
@@ -151,6 +151,7 @@ export const follow =
                 authId: auth.user?._id
             })
                 .then((res) => {
+                    socket.emit('follow_user', res.data.user);
                     dispatch({
                         type: GLOBALTYPES.PROFILE.SET_USER,
                         payload: res.data.user
@@ -180,7 +181,7 @@ export const follow =
     };
 
 export const unFollow =
-    ({ userInfo, auth }) =>
+    ({ userInfo, auth, socket }) =>
     async (dispatch) => {
         const followingList = auth.user?.following;
         if (
@@ -192,6 +193,7 @@ export const unFollow =
                 authId: auth.user?._id
             })
                 .then((res) => {
+                    socket.emit('unfollow_user', res.data.user);
                     dispatch({
                         type: GLOBALTYPES.PROFILE.SET_USER,
                         payload: res.data.user

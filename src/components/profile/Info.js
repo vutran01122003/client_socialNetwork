@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import { useState } from 'react';
 import Edit from './EditProfile';
-import Follow from './FollowBtn';
+import Follow from '../FollowBtn';
 import Avatar from '../Avatar';
 import Content from '../Content';
 import UserModal from '../UserModal';

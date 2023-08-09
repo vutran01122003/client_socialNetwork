@@ -19,7 +19,7 @@ import {
 } from '../../redux/actions/commentAction';
 import ShowMoreComment from './ShowMoreComment';
 
-function CommentItem({ reply, comment, auth, post }) {
+function CommentItem({ reply, comment, auth, post, socket }) {
     const dispatch = useDispatch();
     const [commentData, setCommentData] = useState([]);
     const [openMorePopup, setOpenMorePopup] = useState(false);
@@ -63,7 +63,8 @@ function CommentItem({ reply, comment, auth, post }) {
         dispatch(
             deleteComment({
                 postId: post._id,
-                commentId
+                commentId,
+                socket
             })
         );
     };
@@ -320,6 +321,7 @@ function CommentItem({ reply, comment, auth, post }) {
                                         auth={auth}
                                         comment={replyComment}
                                         reply={true}
+                                        socket={socket}
                                     />
                                 </div>
                             ))}
@@ -333,6 +335,7 @@ function CommentItem({ reply, comment, auth, post }) {
                     {replyComment && commentId === comment._id ? (
                         <div ref={inputCommentRef}>
                             <InputComment
+                                socket={socket}
                                 comment={comment}
                                 post={post}
                                 auth={auth}

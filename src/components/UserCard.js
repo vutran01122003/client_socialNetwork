@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import Avatar from './Avatar';
-import Follow from './profile/FollowBtn';
+import Follow from './FollowBtn';
 
 function UserCard({ user, onClick, auth }) {
     return (

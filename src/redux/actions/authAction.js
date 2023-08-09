@@ -1,6 +1,34 @@
 import { getDataApi, postDataApi } from '../../utils/fetchData';
 import { GLOBALTYPES } from './globalTypes';
 
+export const getAuthInfo = () => async (dispatch) => {
+    getDataApi('/access_token')
+        .then((res) => {
+            localStorage.setItem('logged', true);
+            dispatch({
+                type: GLOBALTYPES.AUTH,
+                payload: res.data
+            });
+        })
+        .catch((e) => {
+            if (e.response?.data.status === 403) {
+                localStorage.removeItem('logged');
+                dispatch({
+                    type: GLOBALTYPES.ALERT,
+                    payload: {
+                        error: e.response?.data.msg || 'Error'
+                    }
+                });
+            } else
+                dispatch({
+                    type: GLOBALTYPES.ALERT,
+                    payload: {
+                        error: e.response?.data.msg || 'Error'
+                    }
+                });
+        });
+};
+
 export const loginAction = (payload) => async (dispatch) => {
     try {
         dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } });
@@ -18,7 +46,6 @@ export const loginAction = (payload) => async (dispatch) => {
             payload: { success: res.data.status }
         });
     } catch (err) {
-        console.log(err);
         dispatch({
             type: GLOBALTYPES.ALERT,
             payload: { error: err.response?.data.msg }

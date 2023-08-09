@@ -6,7 +6,7 @@
 }
 
 .comment_body_wrapper {
-    flex: 1
+ width: 94%;
 }
 
 .comment_item:hover .comment_more_btn {

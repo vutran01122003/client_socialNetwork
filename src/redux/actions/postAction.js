@@ -120,7 +120,10 @@ export const getNewPosts =
             const res = await getDataApi(`/posts/${userId}`);
             dispatch({
                 type: GLOBALTYPES.POST.GET_NEW_POSTS,
-                payload: res.data
+                payload: {
+                    posts: res.data.posts,
+                    userId
+                }
             });
         } catch (error) {
             dispatch({
@@ -243,7 +246,7 @@ export const deletePost =
             });
     };
 
-export const likePost = (postId, user) => async (dispatch) => {
+export const likePost = (postId, user, socket) => async (dispatch) => {
     dispatch({
         type: GLOBALTYPES.ALERT,
         payload: {
@@ -255,6 +258,8 @@ export const likePost = (postId, user) => async (dispatch) => {
         userData: user
     })
         .then((res) => {
+            socket.emit('like_post', res.data.newPost);
+
             dispatch({
                 type: GLOBALTYPES.POST.UPDATE_POST,
                 payload: res.data.newPost
@@ -268,6 +273,8 @@ export const likePost = (postId, user) => async (dispatch) => {
             });
         })
         .catch((e) => {
+            console.log(e);
+
             dispatch({
                 type: GLOBALTYPES.ALERT,
                 payload: {
@@ -277,7 +284,7 @@ export const likePost = (postId, user) => async (dispatch) => {
         });
 };
 
-export const unlikePost = (postId, user) => async (dispatch) => {
+export const unlikePost = (postId, user, socket) => async (dispatch) => {
     dispatch({
         type: GLOBALTYPES.ALERT,
         payload: {
@@ -289,6 +296,7 @@ export const unlikePost = (postId, user) => async (dispatch) => {
         userData: user
     })
         .then((res) => {
+            socket.emit('unlike_post', res.data.newPost);
             dispatch({
                 type: GLOBALTYPES.POST.UPDATE_POST,
                 payload: res.data.newPost
@@ -302,6 +310,7 @@ export const unlikePost = (postId, user) => async (dispatch) => {
             });
         })
         .catch((e) => {
+            console.log(e);
             dispatch({
                 type: GLOBALTYPES.ALERT,
                 payload: {
@@ -341,4 +350,64 @@ export const getPost =
                     }
                 });
             });
+    };
+
+export const savedPost =
+    ({ auth, postId }) =>
+    async (dispatch) => {
+        try {
+            const res = await patchDataApi(`/saved_post/${postId}`);
+
+            dispatch({
+                type: GLOBALTYPES.AUTH,
+                payload: {
+                    ...auth,
+                    user: res.data.user
+                }
+            });
+
+            dispatch({
+                type: GLOBALTYPES.ALERT,
+                payload: {
+                    success: res.data.status
+                }
+            });
+        } catch (e) {
+            dispatch({
+                type: GLOBALTYPES.ALERT,
+                payload: {
+                    error: e.response?.data.msg || 'Error'
+                }
+            });
+        }
+    };
+
+export const unSavedPost =
+    ({ auth, postId }) =>
+    async (dispatch) => {
+        try {
+            const res = await patchDataApi(`/unsaved_post/${postId}`);
+
+            dispatch({
+                type: GLOBALTYPES.AUTH,
+                payload: {
+                    ...auth,
+                    user: res.data.user
+                }
+            });
+
+            dispatch({
+                type: GLOBALTYPES.ALERT,
+                payload: {
+                    success: res.data.status
+                }
+            });
+        } catch (e) {
+            dispatch({
+                type: GLOBALTYPES.ALERT,
+                payload: {
+                    error: e.response?.data.msg || 'Error'
+                }
+            });
+        }
     };

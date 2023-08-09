@@ -4,8 +4,34 @@
     background-color: var(--white-color);
     box-shadow: 0 0 2px gray;
     min-height: calc(100vh - 8px - 8px - 8px - 64px - 240px);
-    border-radius: 10px;
     overflow: hidden;
+}
+
+.user_posts_type {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    gap: 10%;
+}
+
+.user_posts_type .user_posts_type_item {
+    display: flex;
+    align-items: center;
+    gap: 10%;
+    cursor: pointer;
+    color: var(--sencondary-text-color);
+    transition: 0.05s linear;
+    font-weight: 500;
+    user-select: none;
+}
+
+.user_posts_type .user_posts_type_item.active {
+    color: var(--black-color);
+}
+
+.user_posts_type .user_posts_type_item:hover {
+    color: var(--black-color)
 }
 
 .user_posts_status {

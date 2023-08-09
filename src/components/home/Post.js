@@ -44,7 +44,7 @@ function Post({ auth }) {
 
     return (
         <div className='post_wrapper wrapper'>
-            {homePosts.result === 0 ? (
+            {homePosts.posts.length === 0 ? (
                 <h3 className='font-semibold mt-2'>NO POSTS</h3>
             ) : (
                 homePosts.posts.map((post, index) => {

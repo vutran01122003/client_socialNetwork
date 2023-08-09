@@ -2,15 +2,21 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import millify from 'millify';
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlined';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { likePost, unlikePost } from '../../../redux/actions/postAction';
+import {
+    likePost,
+    savedPost,
+    unSavedPost,
+    unlikePost
+} from '../../../redux/actions/postAction';
 import InputComment from '../postCard/InputComment';
 import CommentCard from '../postCard/CommentCard';
 import UserModal from '../../UserModal';
 
-function FooterCard({ post, auth }) {
+function FooterCard({ post, auth, socket }) {
     const [like, setLike] = useState(false);
     const [likesPopup, setLikesPopup] = useState(false);
 
@@ -18,11 +24,19 @@ function FooterCard({ post, auth }) {
     const inputCommentRef = useRef();
 
     const handleLike = () => {
-        dispatch(likePost(post._id, auth.user));
+        dispatch(likePost(post._id, auth.user, socket));
     };
 
     const handleUnlike = () => {
-        dispatch(unlikePost(post._id, auth.user));
+        dispatch(unlikePost(post._id, auth.user, socket));
+    };
+
+    const handleSavedPost = () => {
+        dispatch(savedPost({ postId: post._id, auth }));
+    };
+
+    const handleUnSavedPost = () => {
+        dispatch(unSavedPost({ postId: post._id, auth }));
     };
 
     const handleScrollToInputComment = () => {
@@ -72,9 +86,6 @@ function FooterCard({ post, auth }) {
                                 ? `${millify(post.comments?.length)} comments`
                                 : `${post.comments?.length} comment`}
                         </div>
-                        <div className='cursor-pointer hover:underline decoration-1'>
-                            {millify(post.comments?.length)} save
-                        </div>
                     </div>
                 </div>
                 <div className='interactive_icons_wrapper flex items-center text-gray-600 font-medium'>
@@ -110,17 +121,37 @@ function FooterCard({ post, auth }) {
                         </span>
                     </div>
 
-                    <div className='flex-1 text-center hover:bg-gray-100 rounded-md p-1 cursor-pointer'>
-                        <BookmarkBorderOutlinedIcon />
-                        <span className='interactive_icon_name ml-2'>Save</span>
-                    </div>
+                    {auth.user.saved.find(
+                        (savedPost) => savedPost._id === post._id
+                    ) ? (
+                        <div
+                            onClick={handleUnSavedPost}
+                            className='flex-1 text-center hover:bg-gray-100 rounded-md p-1 cursor-pointer'
+                        >
+                            <BookmarkIcon />
+                            <span className='interactive_icon_name ml-2'>
+                                UnSave
+                            </span>
+                        </div>
+                    ) : (
+                        <div
+                            onClick={handleSavedPost}
+                            className='flex-1 text-center hover:bg-gray-100 rounded-md p-1 cursor-pointer'
+                        >
+                            <BookmarkBorderOutlinedIcon />
+                            <span className='interactive_icon_name ml-2'>
+                                Save
+                            </span>
+                        </div>
+                    )}
                 </div>
             </div>
-            <CommentCard post={post} auth={auth} />
+            <CommentCard post={post} auth={auth} socket={socket} />
             <InputComment
                 inputCommentRef={inputCommentRef}
                 post={post}
                 auth={auth}
+                socket={socket}
             />
         </>
     );
