@@ -21,3 +21,5 @@ export const postsDiscoverSelector = (state) => state.postsDiscover;
 export const suggestedUsersSelector = (state) => state.suggestedUsers;
 
 export const socketSelector = (state) => state.socket.socket;
+
+export const notificationSelector = (state) => state.notify;

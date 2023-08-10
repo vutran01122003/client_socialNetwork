@@ -10,6 +10,7 @@
     --hover-background-color: #F2F3F5;
     --sencondary-text-color: #65676B;    
     --box-shadow-gray: 0 0 3px gray;
+    --box-shadow-black: 0 0 3px #000;
     --border-post-pagination: 1px solid #d5d6d7;
 }
 

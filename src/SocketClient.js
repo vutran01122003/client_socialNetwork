@@ -65,6 +65,8 @@ function SocketClient({ auth }) {
         return () => {
             socket.disconnect();
         };
+
+        // eslint-disable-next-line
     }, []);
 
     return <></>;

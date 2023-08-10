@@ -32,11 +32,11 @@ function FooterCard({ post, auth, socket }) {
     };
 
     const handleSavedPost = () => {
-        dispatch(savedPost({ postId: post._id, auth }));
+        dispatch(savedPost({ post: post, auth, user: post.user }));
     };
 
     const handleUnSavedPost = () => {
-        dispatch(unSavedPost({ postId: post._id, auth }));
+        dispatch(unSavedPost({ post: post, auth }));
     };
 
     const handleScrollToInputComment = () => {

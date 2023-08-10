@@ -36,7 +36,6 @@ export const createComment =
                 });
             })
             .catch((error) => {
-                console.log(error);
                 dispatch({
                     type: GLOBALTYPES.ALERT,
                     payload: {
@@ -73,7 +72,6 @@ export const deleteComment =
                 });
             })
             .catch((error) => {
-                console.log(error);
                 dispatch({
                     type: GLOBALTYPES.ALERT,
                     payload: {

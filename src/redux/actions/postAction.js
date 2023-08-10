@@ -6,6 +6,7 @@ import {
     patchDataApi,
     postDataApi
 } from '../../utils/fetchData';
+import { createNotification, deleteNotification } from './notifyAction';
 
 export const createPost =
     ({ user, content, images }) =>
@@ -55,8 +56,25 @@ export const createPost =
                             success: res.data.status
                         }
                     });
+
+                    dispatch(
+                        createNotification({
+                            authId: user._id,
+                            notifyData: {
+                                id: res.data.postData._id,
+                                user: res.data.postData.user._id,
+                                avatar: res.data.postData.user.avatar,
+                                url: `/post/${res.data.postData._id}`,
+                                receiver: res.data.postData.user.followers,
+                                content: res.data.postData.content,
+                                image: res.data.postData.images[0]?.url,
+                                title: `${res.data.postData.user.username} posted:`
+                            }
+                        })
+                    );
                 })
                 .catch((err) => {
+                    console.log(err);
                     dispatch({
                         type: GLOBALTYPES.ALERT,
                         payload: {
@@ -235,6 +253,12 @@ export const deletePost =
                         success: res.data.status
                     }
                 });
+
+                dispatch(
+                    deleteNotification({
+                        id: res.data.postData._id
+                    })
+                );
             })
             .catch((e) => {
                 dispatch({
@@ -271,6 +295,25 @@ export const likePost = (postId, user, socket) => async (dispatch) => {
                     success: res.data.status
                 }
             });
+
+            dispatch(
+                createNotification({
+                    authId: user._id,
+                    notifyData: {
+                        id: res.data.newPost._id,
+                        user: res.data.newPost.user._id,
+                        avatar: user.avatar,
+                        url: `/post/${res.data.newPost._id}`,
+                        receiver: [res.data.newPost.user._id],
+                        image: res.data.newPost.images[0]?.url,
+                        title: `${
+                            user._id === res.data.newPost.user._id
+                                ? 'You'
+                                : user.username
+                        } liked your post`
+                    }
+                })
+            );
         })
         .catch((e) => {
             console.log(e);
@@ -353,10 +396,10 @@ export const getPost =
     };
 
 export const savedPost =
-    ({ auth, postId }) =>
+    ({ auth, post, user }) =>
     async (dispatch) => {
         try {
-            const res = await patchDataApi(`/saved_post/${postId}`);
+            const res = await patchDataApi(`/saved_post/${post._id}`);
 
             dispatch({
                 type: GLOBALTYPES.AUTH,
@@ -372,7 +415,27 @@ export const savedPost =
                     success: res.data.status
                 }
             });
+
+            dispatch(
+                createNotification({
+                    authId: user._id,
+                    notifyData: {
+                        id: post._id,
+                        user: user._id,
+                        avatar: auth?.user.avatar,
+                        url: `/post/${post._id}`,
+                        receiver: [user._id],
+                        image: post.images[0]?.url || '',
+                        title: `${
+                            auth?.user._id === user._id
+                                ? 'You'
+                                : auth?.user.username
+                        } saved your post`
+                    }
+                })
+            );
         } catch (e) {
+            console.log(e);
             dispatch({
                 type: GLOBALTYPES.ALERT,
                 payload: {
@@ -383,10 +446,10 @@ export const savedPost =
     };
 
 export const unSavedPost =
-    ({ auth, postId }) =>
+    ({ auth, post }) =>
     async (dispatch) => {
         try {
-            const res = await patchDataApi(`/unsaved_post/${postId}`);
+            const res = await patchDataApi(`/unsaved_post/${post._id}`);
 
             dispatch({
                 type: GLOBALTYPES.AUTH,

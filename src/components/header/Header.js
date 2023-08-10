@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Tippy from '@tippyjs/react/headless';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -23,32 +24,33 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../redux/actions/authAction';
 import { activePageAction } from '../../redux/actions/activePageAction';
-import {
-    activePageSelector,
-    authSelector,
-    themSelector
-} from '../../redux/selector';
+import { activePageSelector, notificationSelector } from '../../redux/selector';
 import { GLOBALTYPES } from '../../redux/actions/globalTypes';
 import Search from './Search';
+import { getNotifications } from '../../redux/actions/notifyAction';
+import Notification from './Notification';
 
 const pages = [
     { icon: HomeIcon, name: 'Home', path: '/' },
     { icon: MessageIcon, name: 'Message', path: '/message' },
-    { icon: ExploreIcon, name: 'Discover', path: 'discover' },
-    { icon: NotificationsIcon, name: 'Notify', path: 'notify' }
+    { icon: ExploreIcon, name: 'Discover', path: 'discover' }
 ];
 
-function Header() {
+function Header({ auth, theme }) {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
+    const [showNotify, setShowNotify] = React.useState(false);
     const activePage = useSelector(activePageSelector).name;
-    const theme = useSelector(themSelector);
-    const auth = useSelector(authSelector);
+    const notify = useSelector(notificationSelector);
 
     const dispatch = useDispatch();
 
     const handleLogout = () => {
         dispatch(logout());
+    };
+
+    const handleToggleNotify = () => {
+        setShowNotify((prev) => !prev);
     };
 
     const handleActivePage = (pageName) => {
@@ -65,6 +67,7 @@ function Header() {
             payload: !theme
         });
     };
+
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
@@ -79,6 +82,11 @@ function Header() {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
+
+    React.useEffect(() => {
+        dispatch(getNotifications({ userId: auth.user._id }));
+        // eslint-disable-next-line
+    }, [dispatch]);
 
     return (
         <AppBar color='inherit' elevation={1}>
@@ -146,6 +154,47 @@ function Header() {
                                     <page.icon fontSize='large' />
                                 </Link>
                             ))}
+
+                            {/* Notification */}
+                            <Tippy
+                                interactive
+                                visible={showNotify}
+                                placement='bottom-start'
+                                onClickOutside={handleToggleNotify}
+                                render={(attrs) => (
+                                    <div className='' tabIndex='-1' {...attrs}>
+                                        <Notification
+                                            auth={auth}
+                                            notifications={notify.notifications}
+                                            handleActivePage={handleActivePage}
+                                            handleToggleNotify={
+                                                handleToggleNotify
+                                            }
+                                        />
+                                    </div>
+                                )}
+                            >
+                                <Link
+                                    onClick={() => {
+                                        handleCloseNavMenu();
+                                        handleToggleNotify();
+                                    }}
+                                    className={`notify_icon ${
+                                        showNotify
+                                            ? 'text-gray-700'
+                                            : 'text-gray-400'
+                                    } hover:text-gray-700 px-4 transition linear`}
+                                >
+                                    <NotificationsIcon fontSize='large' />
+                                    {notify.unread !== 0 && (
+                                        <div className='notifications_num_wrapper'>
+                                            <span className='notifications_num'>
+                                                {notify.unread}
+                                            </span>
+                                        </div>
+                                    )}
+                                </Link>
+                            </Tippy>
                         </Box>
 
                         <Box

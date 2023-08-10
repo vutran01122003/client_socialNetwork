@@ -42,7 +42,10 @@ function App() {
                     <Routes>
                         <Route path='/register' element={<Register />} />
                         <Route path='/login' element={<Login />} />
-                        <Route path='/' element={<Layout />}>
+                        <Route
+                            path='/'
+                            element={<Layout theme={theme} auth={auth} />}
+                        >
                             <Route
                                 index
                                 element={auth.token ? <Home /> : <Login />}
