@@ -1,6 +1,14 @@
 import { GLOBALTYPES } from '../actions/globalTypes';
 import replaceOldElem from '../../utils/replaceOldElem';
-const initialState = { unread: 0, notifications: [] };
+import removeElem from '../../utils/removeElem';
+
+const initialState = {
+    unread: 0,
+    notifications: [],
+    currentNotifications: 0,
+    page: 0,
+    maxPage: false
+};
 
 function notifyReducer(state = initialState, action) {
     switch (action.type) {
@@ -13,11 +21,13 @@ function notifyReducer(state = initialState, action) {
                 )
             )
                 return {
+                    ...state,
                     unread: ++state.unread,
                     notifications: [
                         action.payload.createdNotification,
                         ...state.notifications
-                    ]
+                    ],
+                    currentNotifications: ++state.currentNotifications
                 };
 
             return state;
@@ -29,8 +39,17 @@ function notifyReducer(state = initialState, action) {
             });
 
             return {
-                unread,
-                notifications: [...action.payload.notifications]
+                ...state,
+                page: action.payload.page,
+                unread: state.unread + unread,
+                maxPage: action.payload.maxPage,
+                notifications: [
+                    ...state.notifications,
+                    ...action.payload.notifications
+                ],
+                currentNotifications:
+                    state.notifications.length +
+                    action.payload.notifications.length
             };
         case GLOBALTYPES.NOTIFICATION.UPDATE_NOTIFICATION:
             const updatedNotifications = replaceOldElem(
@@ -38,11 +57,28 @@ function notifyReducer(state = initialState, action) {
                 action.payload.newNotification
             );
             return {
+                ...state,
                 unread:
                     action.payload.type === 'read'
                         ? --state.unread
                         : ++state.unread,
                 notifications: updatedNotifications
+            };
+        case GLOBALTYPES.NOTIFICATION.DELETE_NOTIFICATION:
+            const newNotifications = removeElem(
+                state.notifications,
+                action.payload.notification._id
+            );
+
+            return {
+                ...state,
+                unread: !action.payload.notification.readedUser.includes(
+                    action.payload.userId
+                )
+                    ? --state.unread
+                    : state.unread,
+                currentNotifications: --state.currentNotifications,
+                notifications: [...newNotifications]
             };
         default:
             return state;

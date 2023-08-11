@@ -6,7 +6,7 @@ import {
     patchDataApi,
     postDataApi
 } from '../../utils/fetchData';
-import { createNotification, deleteNotification } from './notifyAction';
+import { createNotification } from './notifyAction';
 
 export const createPost =
     ({ user, content, images }) =>
@@ -97,7 +97,7 @@ export const getPosts =
             });
 
             const res = await getDataApi(
-                `/posts?page=${nextPage}&currentPostCount=${currentPostCount}`
+                `/posts?page=${nextPage}&currentQuantity=${currentPostCount}`
             );
 
             dispatch({
@@ -253,12 +253,6 @@ export const deletePost =
                         success: res.data.status
                     }
                 });
-
-                dispatch(
-                    deleteNotification({
-                        id: res.data.postData._id
-                    })
-                );
             })
             .catch((e) => {
                 dispatch({

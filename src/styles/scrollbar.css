@@ -1,3 +1,4 @@
+/* Search */
 .box_search::-webkit-scrollbar {
     width: 8px;
 }
@@ -7,6 +8,7 @@
     border-radius: 50px;
 }
 
+/* Story */
 .story_textarea::-webkit-scrollbar {
     width: 5px;
 }
@@ -16,10 +18,12 @@
     border-radius: 50px;
 }
 
+/* Edit  */
 .edit_wrapper::-webkit-scrollbar {
     width: 0px;
 }
 
+/* User Modal */
 .modal_container::-webkit-scrollbar-thumb{
     background-color: rgba(22, 24, 35, 0.06);
     border-radius: 50px;
@@ -29,6 +33,7 @@
     width: 5px;
 }
 
+/* Modal Post */
 .post_textarea::-webkit-scrollbar-thumb{
     background-color: rgba(22, 24, 35, 0.06);
     border-radius: 50px;
@@ -46,8 +51,20 @@
     width: 0px;
 }
 
+/* Right sidebar */
 .sidebar_right::-webkit-scrollbar {
     width: 8px;
+}
+
+/* Notify */
+
+.notify_wrapper::-webkit-scrollbar {
+    width: 8px;
+}
+
+.notify_wrapper::-webkit-scrollbar-thumb{
+    background-color: rgba(22, 24, 35, 0.1);
+    border-radius: 50px;
 }
 
 @media screen and (-webkit-min-device-pixel-ratio:0) { 

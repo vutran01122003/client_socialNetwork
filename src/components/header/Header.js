@@ -40,6 +40,7 @@ function Header({ auth, theme }) {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const [showNotify, setShowNotify] = React.useState(false);
+    const [nextPageNotification, setNextPageNotification] = React.useState(1);
     const activePage = useSelector(activePageSelector).name;
     const notify = useSelector(notificationSelector);
 
@@ -84,9 +85,18 @@ function Header({ auth, theme }) {
     };
 
     React.useEffect(() => {
-        dispatch(getNotifications({ userId: auth.user._id }));
+        if (notify.page < nextPageNotification && !notify.maxPage) {
+            dispatch(
+                getNotifications({
+                    userId: auth.user._id,
+                    nextPageNotification,
+                    currentNotifications: notify.currentNotifications
+                })
+            );
+        }
+
         // eslint-disable-next-line
-    }, [dispatch]);
+    }, [dispatch, nextPageNotification]);
 
     return (
         <AppBar color='inherit' elevation={1}>
@@ -156,45 +166,60 @@ function Header({ auth, theme }) {
                             ))}
 
                             {/* Notification */}
-                            <Tippy
-                                interactive
-                                visible={showNotify}
-                                placement='bottom-start'
-                                onClickOutside={handleToggleNotify}
-                                render={(attrs) => (
-                                    <div className='' tabIndex='-1' {...attrs}>
-                                        <Notification
-                                            auth={auth}
-                                            notifications={notify.notifications}
-                                            handleActivePage={handleActivePage}
-                                            handleToggleNotify={
-                                                handleToggleNotify
-                                            }
-                                        />
-                                    </div>
-                                )}
-                            >
-                                <Link
-                                    onClick={() => {
-                                        handleCloseNavMenu();
-                                        handleToggleNotify();
-                                    }}
-                                    className={`notify_icon ${
-                                        showNotify
-                                            ? 'text-gray-700'
-                                            : 'text-gray-400'
-                                    } hover:text-gray-700 px-4 transition linear`}
-                                >
-                                    <NotificationsIcon fontSize='large' />
-                                    {notify.unread !== 0 && (
-                                        <div className='notifications_num_wrapper'>
-                                            <span className='notifications_num'>
-                                                {notify.unread}
-                                            </span>
+                            <div>
+                                <Tippy
+                                    interactive
+                                    visible={showNotify}
+                                    placement='bottom-start'
+                                    onClickOutside={handleToggleNotify}
+                                    render={(attrs) => (
+                                        <div
+                                            className=''
+                                            tabIndex='-1'
+                                            {...attrs}
+                                        >
+                                            <Notification
+                                                auth={auth}
+                                                notifications={
+                                                    notify.notifications
+                                                }
+                                                handleActivePage={
+                                                    handleActivePage
+                                                }
+                                                handleToggleNotify={
+                                                    handleToggleNotify
+                                                }
+                                                setNextPageNotification={
+                                                    setNextPageNotification
+                                                }
+                                            />
                                         </div>
                                     )}
-                                </Link>
-                            </Tippy>
+                                >
+                                    <Link
+                                        onClick={() => {
+                                            handleCloseNavMenu();
+                                            handleToggleNotify();
+                                        }}
+                                        className={`notify_icon ${
+                                            showNotify
+                                                ? 'text-gray-700'
+                                                : 'text-gray-400'
+                                        } hover:text-gray-700 px-4 transition linear`}
+                                    >
+                                        <NotificationsIcon fontSize='large' />
+                                        {notify.unread !== 0 && (
+                                            <div className='notifications_num_wrapper'>
+                                                <span className='notifications_num'>
+                                                    {notify.unread >= 10
+                                                        ? '9+'
+                                                        : notify.unread}
+                                                </span>
+                                            </div>
+                                        )}
+                                    </Link>
+                                </Tippy>
+                            </div>
                         </Box>
 
                         <Box
@@ -215,6 +240,7 @@ function Header({ auth, theme }) {
                             </IconButton>
                             <Menu
                                 id='menu-appbar'
+                                disableScrollLock={true}
                                 anchorEl={anchorElNav}
                                 anchorOrigin={{
                                     vertical: 'bottom',
@@ -228,7 +254,10 @@ function Header({ auth, theme }) {
                                 open={Boolean(anchorElNav)}
                                 onClose={handleCloseNavMenu}
                                 sx={{
-                                    display: { xs: 'block', md: 'none' }
+                                    display: {
+                                        xs: 'block',
+                                        md: 'none'
+                                    }
                                 }}
                             >
                                 {pages.map((page, index) => (
@@ -237,7 +266,12 @@ function Header({ auth, theme }) {
                                         onClick={handleCloseNavMenu}
                                         className='my-2'
                                     >
-                                        <Typography textAlign='center'>
+                                        <Typography
+                                            sx={{
+                                                width: '120px'
+                                            }}
+                                            textAlign='center'
+                                        >
                                             <Link
                                                 to={page.path}
                                                 className='flex gap-2 text-gray-700 hover:text-gray-800'

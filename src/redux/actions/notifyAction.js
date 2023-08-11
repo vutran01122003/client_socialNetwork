@@ -29,15 +29,19 @@ export const createNotification =
     };
 
 export const getNotifications =
-    ({ userId }) =>
+    ({ userId, nextPageNotification, currentNotifications }) =>
     async (dispatch) => {
         try {
-            const res = await getDataApi('/notification');
+            const res = await getDataApi(
+                `/notification?page=${nextPageNotification}&currentQuantity=${currentNotifications}`
+            );
             dispatch({
                 type: GLOBALTYPES.NOTIFICATION.GET_NOTIFICATIONS,
                 payload: {
                     notifications: res.data.notifications,
-                    userId
+                    userId,
+                    page: nextPageNotification,
+                    maxPage: res.data.notifications.length === 0 ? true : false
                 }
             });
         } catch (error) {
@@ -108,15 +112,12 @@ export const deleteNotification =
                 userId
             });
 
-            dispatch(getNotifications());
-
             dispatch({
-                type: GLOBALTYPES.ALERT,
-                payload: {
-                    success: res.data.status
-                }
+                type: GLOBALTYPES.NOTIFICATION.DELETE_NOTIFICATION,
+                payload: { notification: res.data.deletedNotification, userId }
             });
         } catch (error) {
+            console.log(error);
             dispatch({
                 type: GLOBALTYPES.ALERT,
                 error: {
