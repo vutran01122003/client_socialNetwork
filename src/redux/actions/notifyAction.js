@@ -7,10 +7,13 @@ import {
 import { GLOBALTYPES } from './globalTypes';
 
 export const createNotification =
-    ({ authId, notifyData }) =>
+    ({ authId, notifyData, socket }) =>
     async (dispatch) => {
         try {
             const res = await postDataApi('/notification', notifyData);
+
+            socket.emit(notifyData.type, res.data.createdNotification);
+
             dispatch({
                 type: GLOBALTYPES.NOTIFICATION.CREATE_NOTIFICATION,
                 payload: {

@@ -51,9 +51,12 @@ function DetailPost() {
         return (
             <div
                 key={post._id}
-                className='w-full mt-20 flex justify-center items-center font-semibold'
+                className='w-full h-full flex flex-col justify-center items-center font-bold'
             >
                 NOT FOUND
+                <span className='text-gray-400 uppercase text-xs'>
+                    (maybe the post has been deleted)
+                </span>
             </div>
         );
     }

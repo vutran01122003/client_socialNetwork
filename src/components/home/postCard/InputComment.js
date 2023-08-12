@@ -16,7 +16,7 @@ function InputComment({ inputCommentRef, post, auth, comment, socket }) {
         if (commentValue) {
             await dispatch(
                 createComment({
-                    postId: post?._id,
+                    post,
                     commentId: comment?._id,
                     user: auth?.user,
                     content: commentValue,

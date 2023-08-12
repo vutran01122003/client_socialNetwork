@@ -16,6 +16,17 @@ function SocketClient({ auth }) {
             socket.emit('connected_user', auth?.user._id);
         });
 
+        // create post
+        socket.on('notification_createdPost', (createdNotification) => {
+            dispatch({
+                type: GLOBALTYPES.NOTIFICATION.CREATE_NOTIFICATION,
+                payload: {
+                    createdNotification,
+                    authId: auth?.user._id
+                }
+            });
+        });
+
         // like post
         socket.on('liked_post', (data) => {
             dispatch({
@@ -28,6 +39,16 @@ function SocketClient({ auth }) {
             dispatch({
                 type: GLOBALTYPES.POST.UPDATE_POST,
                 payload: data
+            });
+        });
+
+        socket.on('notification_liked', (createdNotification) => {
+            dispatch({
+                type: GLOBALTYPES.NOTIFICATION.CREATE_NOTIFICATION,
+                payload: {
+                    createdNotification,
+                    authId: auth?.user._id
+                }
             });
         });
 
@@ -46,6 +67,16 @@ function SocketClient({ auth }) {
             });
         });
 
+        socket.on('notification_commentedPost', (createdNotification) => {
+            dispatch({
+                type: GLOBALTYPES.NOTIFICATION.CREATE_NOTIFICATION,
+                payload: {
+                    createdNotification,
+                    authId: auth?.user._id
+                }
+            });
+        });
+
         // Follow
         socket.on('followed_user', (newUser) => {
             dispatch({
@@ -58,6 +89,14 @@ function SocketClient({ auth }) {
             dispatch({
                 type: GLOBALTYPES.AUTH,
                 payload: { ...auth, user: newUser }
+            });
+        });
+
+        // Save
+        socket.on('notification_saved', (createdNotification) => {
+            dispatch({
+                type: GLOBALTYPES.NOTIFICATION.CREATE_NOTIFICATION,
+                payload: { createdNotification, authId: auth?.user._id }
             });
         });
 

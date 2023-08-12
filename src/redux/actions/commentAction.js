@@ -4,9 +4,10 @@ import {
     patchDataApi,
     postDataApi
 } from '../../utils/fetchData';
+import { createNotification } from './notifyAction';
 
 export const createComment =
-    ({ postId, user, content, commentId, socket }) =>
+    ({ post, user, content, commentId, socket }) =>
     async (dispatch) => {
         dispatch({
             type: GLOBALTYPES.ALERT,
@@ -16,7 +17,7 @@ export const createComment =
         });
         postDataApi('/comment', {
             commentData: {
-                postId,
+                postId: post._id,
                 commentId,
                 user,
                 content
@@ -34,6 +35,27 @@ export const createComment =
                         success: res.data.status
                     }
                 });
+                dispatch(
+                    createNotification({
+                        authId: user._id,
+                        socket,
+                        notifyData: {
+                            id: post._id,
+                            user: post.user._id,
+                            avatar: user.avatar,
+                            url: `/post/${post._id}`,
+                            receiver: [post.user._id],
+                            type: 'notification_commentedPost',
+                            content,
+                            image: post.images[0]?.url,
+                            title: `${
+                                user._id === post.user._id
+                                    ? 'You'
+                                    : user.username
+                            } commented on your post:`
+                        }
+                    })
+                );
             })
             .catch((error) => {
                 dispatch({
@@ -56,7 +78,7 @@ export const deleteComment =
         });
 
         deleteDataApi('/comment', {
-            data: { postId, commentId }
+            commentData: { postId, commentId }
         })
             .then((res) => {
                 socket.emit('delete_comment', res.data.newPost);

@@ -32,7 +32,7 @@ function FooterCard({ post, auth, socket }) {
     };
 
     const handleSavedPost = () => {
-        dispatch(savedPost({ post: post, auth, user: post.user }));
+        dispatch(savedPost({ post: post, auth, user: post.user, socket }));
     };
 
     const handleUnSavedPost = () => {

@@ -4,7 +4,7 @@ import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 import CloseIcon from '@mui/icons-material/Close';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useDispatch, useSelector } from 'react-redux';
-import { themSelector } from '../../redux/selector';
+import { socketSelector, themSelector } from '../../redux/selector';
 import { checkImageUpload, uploadImage } from '../../utils/uploadImage';
 import { GLOBALTYPES } from '../../redux/actions/globalTypes';
 import { useEffect, useRef, useState } from 'react';
@@ -12,6 +12,8 @@ import { createPost, updatePost } from '../../redux/actions/postAction';
 
 function ModalPost({ auth, currentPost, detailPost }) {
     const theme = useSelector(themSelector);
+    const socket = useSelector(socketSelector);
+
     const inputRef = useRef();
     const videoRef = useRef();
     const canvasRef = useRef();
@@ -128,6 +130,7 @@ function ModalPost({ auth, currentPost, detailPost }) {
         } else {
             await dispatch(
                 createPost({
+                    socket,
                     user: auth.user,
                     content,
                     images

@@ -15,7 +15,7 @@ function Layout({ auth, theme }) {
                 <main>
                     <Outlet />
                 </main>
-                {auth?.token && !page && <SidebarRight auth={auth} />}
+                {/* {auth?.token && !page && <SidebarRight auth={auth} />} */}
             </div>
         </>
     );

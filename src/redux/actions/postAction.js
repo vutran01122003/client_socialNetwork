@@ -9,7 +9,7 @@ import {
 import { createNotification } from './notifyAction';
 
 export const createPost =
-    ({ user, content, images }) =>
+    ({ user, content, images, socket }) =>
     async (dispatch) => {
         if (!content) {
             dispatch({
@@ -60,12 +60,14 @@ export const createPost =
                     dispatch(
                         createNotification({
                             authId: user._id,
+                            socket,
                             notifyData: {
                                 id: res.data.postData._id,
                                 user: res.data.postData.user._id,
                                 avatar: res.data.postData.user.avatar,
                                 url: `/post/${res.data.postData._id}`,
                                 receiver: res.data.postData.user.followers,
+                                type: 'notification_createdPost',
                                 content: res.data.postData.content,
                                 image: res.data.postData.images[0]?.url,
                                 title: `${res.data.postData.user.username} posted:`
@@ -277,7 +279,6 @@ export const likePost = (postId, user, socket) => async (dispatch) => {
     })
         .then((res) => {
             socket.emit('like_post', res.data.newPost);
-
             dispatch({
                 type: GLOBALTYPES.POST.UPDATE_POST,
                 payload: res.data.newPost
@@ -293,11 +294,13 @@ export const likePost = (postId, user, socket) => async (dispatch) => {
             dispatch(
                 createNotification({
                     authId: user._id,
+                    socket,
                     notifyData: {
                         id: res.data.newPost._id,
                         user: res.data.newPost.user._id,
                         avatar: user.avatar,
                         url: `/post/${res.data.newPost._id}`,
+                        type: 'notification_liked',
                         receiver: [res.data.newPost.user._id],
                         image: res.data.newPost.images[0]?.url,
                         title: `${
@@ -390,7 +393,7 @@ export const getPost =
     };
 
 export const savedPost =
-    ({ auth, post, user }) =>
+    ({ auth, post, user, socket }) =>
     async (dispatch) => {
         try {
             const res = await patchDataApi(`/saved_post/${post._id}`);
@@ -413,12 +416,14 @@ export const savedPost =
             dispatch(
                 createNotification({
                     authId: user._id,
+                    socket,
                     notifyData: {
                         id: post._id,
                         user: user._id,
                         avatar: auth?.user.avatar,
                         url: `/post/${post._id}`,
                         receiver: [user._id],
+                        type: 'notification_saved',
                         image: post.images[0]?.url || '',
                         title: `${
                             auth?.user._id === user._id
