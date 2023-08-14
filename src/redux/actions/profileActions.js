@@ -1,6 +1,7 @@
 import { getDataApi, patchDataApi } from '../../utils/fetchData';
 import { GLOBALTYPES } from './globalTypes';
-import { uploadImage } from '../../utils/uploadImage';
+import { uploadFile } from '../../utils/uploadFile';
+import { createNotification } from './notifyAction';
 export const getUser =
     ({ id }) =>
     async (dispatch) => {
@@ -83,7 +84,7 @@ export const updateUser =
         });
 
         if (fileInput) {
-            const imgAvatar = await uploadImage([fileInput]);
+            const imgAvatar = await uploadFile([fileInput]);
             userData.avatar = imgAvatar[0]?.url;
         }
         patchDataApi(`/user/${auth.user?._id}`, {
@@ -168,8 +169,23 @@ export const follow =
                             success: 'success followed'
                         }
                     });
+
+                    dispatch(
+                        createNotification({
+                            authId: auth?.user._id,
+                            socket,
+                            notifyData: {
+                                avatar: auth?.user.avatar,
+                                url: `/profile/${auth?.user._id}`,
+                                receiver: [userInfo._id],
+                                type: 'notification_followedUser',
+                                title: `${auth?.user.username} followed you`
+                            }
+                        })
+                    );
                 })
                 .catch((e) => {
+                    console.log(e);
                     dispatch({
                         type: GLOBALTYPES.ALERT,
                         payload: {

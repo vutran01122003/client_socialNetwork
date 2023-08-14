@@ -67,6 +67,18 @@
     border-radius: 50px;
 }
 
+/* Emotion */
+.emotion_wrapper::-webkit-scrollbar {
+    width: 8px;
+
+}
+
+.emotion_wrapper::-webkit-scrollbar-thumb{
+    background-color: rgba(22, 24, 35, 0.06);
+    border-radius: 50px;
+}
+
+
 @media screen and (-webkit-min-device-pixel-ratio:0) { 
     .sidebar_right:hover {
       background-color: rgba(0,0,0,0.15);  
@@ -79,11 +91,11 @@
 
     .sidebar_right::-webkit-scrollbar-track{
         background-color: var(--white-color) !important;
-      }
+    }
 
     .sidebar_right::-webkit-scrollbar-corner {
-	background-color: transparent;
+        background-color: transparent;
+    }
 }
-  }
 
  

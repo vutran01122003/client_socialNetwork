@@ -17,16 +17,8 @@ function Post({ auth }) {
 
     useEffect(() => {
         if (homePosts.page < nextPage && !homePosts.maxPage)
-            dispatch(
-                getPosts({ nextPage, currentPostCount: homePosts.result })
-            );
-    }, [
-        dispatch,
-        nextPage,
-        homePosts.maxPage,
-        homePosts.page,
-        homePosts.result
-    ]);
+            dispatch(getPosts({ nextPage, currentPostCount: homePosts.result }));
+    }, [dispatch, nextPage, homePosts.maxPage, homePosts.page, homePosts.result]);
 
     const lastPostElementRef = useCallback(
         (elem) => {
@@ -50,11 +42,7 @@ function Post({ auth }) {
                 homePosts.posts.map((post, index) => {
                     if (homePosts.posts.length === index + 1) {
                         return (
-                            <div
-                                ref={lastPostElementRef}
-                                key={post._id}
-                                className='post_item'
-                            >
+                            <div ref={lastPostElementRef} key={post._id} className='post_item'>
                                 <PostCard auth={auth} post={post} />
                             </div>
                         );
@@ -66,9 +54,7 @@ function Post({ auth }) {
                     );
                 })
             )}
-            {openModalHomePost && (
-                <ModalPost auth={auth} currentPost={currentPost} />
-            )}
+            {openModalHomePost && <ModalPost auth={auth} currentPost={currentPost} />}
             {homePosts.loading && <CircularProgress />}
         </div>
     );

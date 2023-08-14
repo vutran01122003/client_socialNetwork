@@ -11,9 +11,7 @@ function Avatar({ avatar, size }) {
     };
 
     return (
-        <div
-            className={`${size} border border-slate-500 rounded-full select-none`}
-        >
+        <div className={`${size} border border-slate-500 rounded-full select-none`}>
             <img
                 ref={imgRef}
                 src={avatar}

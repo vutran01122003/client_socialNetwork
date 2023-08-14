@@ -1,9 +1,4 @@
-import {
-    deleteDataApi,
-    getDataApi,
-    patchDataApi,
-    postDataApi
-} from '../../utils/fetchData';
+import { deleteDataApi, getDataApi, patchDataApi, postDataApi } from '../../utils/fetchData';
 import { GLOBALTYPES } from './globalTypes';
 
 export const createNotification =
@@ -82,6 +77,33 @@ export const readedNotification =
         }
     };
 
+export const readedNotifications =
+    ({ userId, notifications }) =>
+    async (dispatch) => {
+        try {
+            if (notifications.find((notification) => !notification.readedUser.includes(userId))) {
+                patchDataApi('/readed_notifications', {
+                    userId
+                }).then(() => {
+                    dispatch(
+                        getNotifications({
+                            userId,
+                            nextPageNotification: 1,
+                            currentNotifications: 0
+                        })
+                    );
+                });
+            }
+        } catch (error) {
+            dispatch({
+                type: GLOBALTYPES.ALERT,
+                error: {
+                    error: error.response?.data.msg || 'Error'
+                }
+            });
+        }
+    };
+
 export const unreadedNotification =
     ({ notificationId, userId }) =>
     async (dispatch) => {
@@ -120,7 +142,32 @@ export const deleteNotification =
                 payload: { notification: res.data.deletedNotification, userId }
             });
         } catch (error) {
-            console.log(error);
+            dispatch({
+                type: GLOBALTYPES.ALERT,
+                error: {
+                    error: error.response?.data.msg || 'Error'
+                }
+            });
+        }
+    };
+
+export const deleteNotifications =
+    ({ userId, notifications }) =>
+    async (dispatch) => {
+        try {
+            if (notifications.length !== 0) {
+                await deleteDataApi(`/notification`, {
+                    userId
+                });
+
+                dispatch({
+                    type: GLOBALTYPES.NOTIFICATION.GET_NOTIFICATIONS,
+                    payload: {
+                        resetNotifications: true
+                    }
+                });
+            }
+        } catch (error) {
             dispatch({
                 type: GLOBALTYPES.ALERT,
                 error: {

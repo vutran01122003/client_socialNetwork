@@ -10,10 +10,7 @@ function detailPostReducer(state = [], action) {
             const newUpdateDetailPosts = replaceOldElem(state, action.payload);
             return newUpdateDetailPosts;
         case GLOBALTYPES.POST.DELETE_POST:
-            const newDeleteDetailPosts = removeElem(
-                state,
-                action.payload.postId
-            );
+            const newDeleteDetailPosts = removeElem(state, action.payload.postId);
             return newDeleteDetailPosts;
         default:
             return state;

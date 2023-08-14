@@ -5,11 +5,7 @@ import Follow from './FollowBtn';
 function UserCard({ user, onClick, auth }) {
     return (
         <div className='account_wrapper'>
-            <Link
-                to={`/profile/${user?._id}`}
-                className='account'
-                onClick={onClick}
-            >
+            <Link to={`/profile/${user?._id}`} className='account' onClick={onClick}>
                 <div className='w-10 h-10'>
                     <Avatar avatar={user?.avatar} size='small' />
                 </div>

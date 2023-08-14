@@ -31,12 +31,7 @@ function postReducer(state = initialState, action) {
                 maxPage: action.payload.maxPage
             };
         case GLOBALTYPES.POST.GET_NEW_POSTS:
-            if (
-                state.posts.find(
-                    (post) => post.user._id === action.payload.userId
-                )
-            )
-                return state;
+            if (state.posts.find((post) => post.user._id === action.payload.userId)) return state;
             return {
                 ...state,
                 posts: [...action.payload.posts, ...state.posts]
@@ -48,10 +43,7 @@ function postReducer(state = initialState, action) {
                 posts: [...newUpdatedPosts]
             };
         case GLOBALTYPES.POST.DELETE_POST:
-            const newDeletedPosts = removeElem(
-                state.posts,
-                action.payload.postId
-            );
+            const newDeletedPosts = removeElem(state.posts, action.payload.postId);
             return {
                 ...state,
                 posts: [...newDeletedPosts],

@@ -13,25 +13,14 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import {
-    FormControl,
-    FormControlLabel,
-    FormLabel,
-    Radio,
-    RadioGroup
-} from '@mui/material';
+import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { register } from '../redux/actions/authAction';
 import { useNavigate } from 'react-router-dom';
 
 function Copyright(props) {
     return (
-        <Typography
-            variant='body2'
-            color='text.secondary'
-            align='center'
-            {...props}
-        >
+        <Typography variant='body2' color='text.secondary' align='center' {...props}>
             {'Copyright © '}
             <Link color='inherit' href='/'>
                 Smedia
@@ -60,8 +49,7 @@ export default function Register() {
         cf_password: '',
         gender: 'male'
     });
-    const { email, fullname, username, password, cf_password, gender } =
-        userData;
+    const { email, fullname, username, password, cf_password, gender } = userData;
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -110,12 +98,7 @@ export default function Register() {
                     <Typography component='h1' variant='h5'>
                         Sign up
                     </Typography>
-                    <Box
-                        component='form'
-                        noValidate
-                        onSubmit={handleSubmit}
-                        sx={{ mt: 3 }}
-                    >
+                    <Box component='form' noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <TextField
@@ -135,9 +118,7 @@ export default function Register() {
                                     id='username'
                                     label='Username'
                                     name='username'
-                                    value={username
-                                        .toLowerCase()
-                                        .replace(/ /g, '')}
+                                    value={username.toLowerCase().replace(/ /g, '')}
                                     onChange={handleUserData}
                                 />
                             </Grid>
@@ -172,11 +153,7 @@ export default function Register() {
                                     }}
                                     className='text-blue-500 text-sm select-none absolute right-2 top-1/2 transform  -translate-y-1/4'
                                 >
-                                    {showPassword ? (
-                                        <Visibility />
-                                    ) : (
-                                        <VisibilityOff />
-                                    )}
+                                    {showPassword ? <Visibility /> : <VisibilityOff />}
                                 </span>
                             </Grid>
 
@@ -198,11 +175,7 @@ export default function Register() {
                                     }}
                                     className='text-blue-500 text-sm select-none absolute right-2 top-1/2 transform  -translate-y-1/4'
                                 >
-                                    {showCfPassword ? (
-                                        <Visibility />
-                                    ) : (
-                                        <VisibilityOff />
-                                    )}
+                                    {showCfPassword ? <Visibility /> : <VisibilityOff />}
                                 </span>
                             </Grid>
                             <Grid item xs={12}>
@@ -237,12 +210,7 @@ export default function Register() {
                                 </FormControl>
                             </Grid>
                         </Grid>
-                        <Button
-                            type='submit'
-                            fullWidth
-                            variant='contained'
-                            sx={{ mt: 3, mb: 2 }}
-                        >
+                        <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
                             Sign Up
                         </Button>
                         <Grid container justifyContent='flex-end'>

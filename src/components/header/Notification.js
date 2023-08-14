@@ -4,13 +4,16 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
 import DoneIcon from '@mui/icons-material/Done';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import moment from 'moment';
 import Avatar from '../Avatar';
 import { useCallback, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {
     deleteNotification,
+    deleteNotifications,
     readedNotification,
+    readedNotifications,
     unreadedNotification
 } from '../../redux/actions/notifyAction';
 
@@ -23,6 +26,7 @@ function Notification({
 }) {
     const dispatch = useDispatch();
     const [showMoreBtn, setShowMoreBtn] = useState(false);
+    const [showMoreNotificationsBtn, setShowMoreNotificationsBtn] = useState(false);
     const [noticationId, setNotificationId] = useState(null);
     const observer = useRef();
 
@@ -65,28 +69,70 @@ function Notification({
         setShowMoreBtn((prev) => !prev);
     };
 
+    const handleToggleShowMoreNotificationsBtn = () => {
+        setShowMoreNotificationsBtn((prev) => !prev);
+    };
+
     const handleDeleteNotification = (notificationId) => {
-        dispatch(
-            deleteNotification({ userId: auth.user._id, id: notificationId })
-        );
+        dispatch(deleteNotification({ userId: auth.user._id, id: notificationId }));
+    };
+
+    const handleDeleteAllNotifications = () => {
+        dispatch(deleteNotifications({ userId: auth.user._id, notifications }));
+    };
+
+    const handleReadedAllNotifications = () => {
+        dispatch(readedNotifications({ userId: auth.user._id, notifications }));
     };
 
     return (
         <div className='notify_wrapper'>
-            <h1 className='notify_title'>Notifications</h1>
+            <div className='notify_title_wrapper'>
+                <h1 className='notify_title'>Notifications</h1>
+                <Tippy
+                    interactive
+                    visible={showMoreNotificationsBtn}
+                    placement='bottom-start'
+                    onClickOutside={handleToggleShowMoreNotificationsBtn}
+                    render={(attrs) => (
+                        <div className='more_wrapper' tabIndex='-1' {...attrs}>
+                            <div
+                                onClick={() => {
+                                    handleToggleShowMoreNotificationsBtn();
+                                    handleReadedAllNotifications();
+                                }}
+                                className='more_item'
+                            >
+                                <DoneIcon />
+                                <span>Mark all as read</span>
+                            </div>
+                            <div
+                                onClick={() => {
+                                    handleToggleShowMoreNotificationsBtn();
+                                    handleDeleteAllNotifications();
+                                }}
+                                className='more_item'
+                            >
+                                <CancelPresentationIcon /> <span>Remove all notifications</span>
+                            </div>
+                        </div>
+                    )}
+                >
+                    <div
+                        onClick={handleToggleShowMoreNotificationsBtn}
+                        className='more_icon_notications_wrapper'
+                    >
+                        <MoreHorizIcon />
+                    </div>
+                </Tippy>
+            </div>
             {notifications.length === 0 ? (
-                <div className='w-full p-5 flex justify-center font-semibold'>
-                    No Notification
-                </div>
+                <div className='w-full p-5 flex justify-center font-semibold'>No Notification</div>
             ) : (
                 <>
                     {notifications.map((notifyItem, index) => (
                         <div
-                            ref={
-                                notifications.length === index + 1
-                                    ? lastPostElementRef
-                                    : null
-                            }
+                            ref={notifications.length === index + 1 ? lastPostElementRef : null}
                             key={notifyItem._id}
                             className={` notify_item_wrapper`}
                         >
@@ -96,17 +142,11 @@ function Notification({
                                 onClick={() => {
                                     handleActivePage('');
                                     handleToggleNotify();
-                                    handleReadNotification(
-                                        notifyItem._id,
-                                        notifyItem.readedUser
-                                    );
+                                    handleReadNotification(notifyItem._id, notifyItem.readedUser);
                                 }}
                             >
                                 <span>
-                                    <Avatar
-                                        avatar={notifyItem.avatar}
-                                        size='notify_size'
-                                    />
+                                    <Avatar avatar={notifyItem.avatar} size='notify_size' />
                                 </span>
                                 <div className='notify_content_wrapper'>
                                     <div className='notify_content'>
@@ -133,19 +173,12 @@ function Notification({
                                 <div>
                                     <Tippy
                                         interactive
-                                        visible={
-                                            showMoreBtn &&
-                                            noticationId === notifyItem._id
-                                        }
+                                        visible={showMoreBtn && noticationId === notifyItem._id}
                                         onClickOutside={handleToggleShowMoreBtn}
                                         placement='bottom-start'
                                         render={(attrs) => (
-                                            <div
-                                                className='box'
-                                                tabIndex='-1'
-                                                {...attrs}
-                                            >
-                                                <div className='more_wrapper opacity-unset'>
+                                            <div className='box' tabIndex='-1' {...attrs}>
+                                                <div className='more_wrapper'>
                                                     {!notifyItem.readedUser.includes(
                                                         auth.user._id
                                                     ) ? (
@@ -159,10 +192,7 @@ function Notification({
                                                             }}
                                                             className='more_item'
                                                         >
-                                                            <DoneIcon />{' '}
-                                                            <span>
-                                                                Mark as read
-                                                            </span>
+                                                            <DoneIcon /> <span>Mark as read</span>
                                                         </div>
                                                     ) : (
                                                         <div
@@ -175,10 +205,7 @@ function Notification({
                                                             }}
                                                             className='more_item'
                                                         >
-                                                            <DoneIcon />{' '}
-                                                            <span>
-                                                                Mark as unread
-                                                            </span>
+                                                            <DoneIcon /> <span>Mark as unread</span>
                                                         </div>
                                                     )}
 
@@ -192,10 +219,7 @@ function Notification({
                                                         className='more_item'
                                                     >
                                                         <CancelPresentationIcon />{' '}
-                                                        <span>
-                                                            Remove this
-                                                            notification
-                                                        </span>
+                                                        <span>Remove this notification</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -204,9 +228,7 @@ function Notification({
                                         <div
                                             onClick={() => {
                                                 handleToggleShowMoreBtn();
-                                                setNotificationId(
-                                                    notifyItem._id
-                                                );
+                                                setNotificationId(notifyItem._id);
                                             }}
                                             className='notify_more_btn'
                                         >
@@ -214,9 +236,7 @@ function Notification({
                                         </div>
                                     </Tippy>
                                 </div>
-                                {!notifyItem.readedUser.includes(
-                                    auth.user._id
-                                ) && (
+                                {!notifyItem.readedUser.includes(auth.user._id) && (
                                     <div className='unread_symbol'>
                                         <FiberManualRecordIcon fontSize='inherit' />
                                     </div>

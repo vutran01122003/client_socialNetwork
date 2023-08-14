@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { authSelector, themSelector } from '../../redux/selector';
 import EditIcon from '@mui/icons-material/Edit';
-import { checkImageUpload, loadURLToInputFiled } from '../../utils/uploadImage';
+import { checkImageUpload, loadURLToInputFiled } from '../../utils/uploadFile';
 import { GLOBALTYPES } from '../../redux/actions/globalTypes';
 import { updateUser } from '../../redux/actions/profileActions';
 
@@ -36,10 +36,7 @@ function Edit({ setOnEdit }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (
-            JSON.stringify(originUserData) === JSON.stringify(userData) &&
-            !fileInput
-        ) {
+        if (JSON.stringify(originUserData) === JSON.stringify(userData) && !fileInput) {
             setOnEdit(false);
             return;
         }
@@ -108,10 +105,7 @@ function Edit({ setOnEdit }) {
                                 htmlFor='avatar'
                                 className='block absolute bottom-0 right-0 bg-black/60 hover:bg-black/70 transition linear rounded-full w-8 h-8 flex items-center justify-center cursor-pointer'
                             >
-                                <EditIcon
-                                    fontSize='small'
-                                    className='text-white'
-                                />
+                                <EditIcon fontSize='small' className='text-white' />
                             </label>
                         </div>
                         <input
@@ -184,9 +178,7 @@ function Edit({ setOnEdit }) {
                             />
                             <span
                                 className={`${
-                                    userData.story.length > 150
-                                        ? 'text-red-500'
-                                        : 'text-green-500'
+                                    userData.story.length > 150 ? 'text-red-500' : 'text-green-500'
                                 } absolute count_letter block right-2 bottom-0 -translate-y-1/2`}
                             >{`${userData.story.length}/150`}</span>
                         </div>

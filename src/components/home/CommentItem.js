@@ -44,9 +44,7 @@ function CommentItem({ reply, comment, auth, post, socket }) {
     };
 
     const handleLikeComment = (commentId) => {
-        dispatch(
-            likeComment({ postId: post._id, commentId, userId: auth.user?._id })
-        );
+        dispatch(likeComment({ postId: post._id, commentId, userId: auth.user?._id }));
     };
 
     const handleUnlikeComment = (commentId) => {
@@ -157,9 +155,7 @@ function CommentItem({ reply, comment, auth, post, socket }) {
                             handleEditComment(comment._id, comment.content);
                         }}
                         className={`update_comment_btn cursor-pointer ${
-                            editCommentValue
-                                ? 'text-gray-700'
-                                : 'text-gray-300 cursor-not-allowed'
+                            editCommentValue ? 'text-gray-700' : 'text-gray-300 cursor-not-allowed'
                         }`}
                     >
                         <SendIcon />
@@ -176,10 +172,7 @@ function CommentItem({ reply, comment, auth, post, socket }) {
                                 {comment.user?.username}
                             </Link>
                             <div className='comment_content'>
-                                <Content
-                                    content={comment.content}
-                                    limit={200}
-                                />
+                                <Content content={comment.content} limit={200} />
                             </div>
                             {comment.likes?.length !== 0 && (
                                 <div
@@ -189,10 +182,7 @@ function CommentItem({ reply, comment, auth, post, socket }) {
                                             : 'count_like_wrapper'
                                     }`}
                                 >
-                                    <FavoriteIcon
-                                        fontSize='small'
-                                        className='like_comment_icon'
-                                    />
+                                    <FavoriteIcon fontSize='small' className='like_comment_icon' />
                                     {comment.likes?.length > 1 ? (
                                         <span className='count_like'>
                                             {millify(comment.likes?.length)}
@@ -209,27 +199,16 @@ function CommentItem({ reply, comment, auth, post, socket }) {
                                 placement='bottom-end'
                                 interactive
                                 onClickOutside={handleToggleMorePopup}
-                                visible={
-                                    commentId === comment._id && openMorePopup
-                                }
+                                visible={commentId === comment._id && openMorePopup}
                                 render={(attrs) => (
-                                    <div
-                                        className='comment_more_popup'
-                                        tabIndex='-1'
-                                        {...attrs}
-                                    >
-                                        {comment.user?._id ===
-                                        auth.user?._id ? (
+                                    <div className='comment_more_popup' tabIndex='-1' {...attrs}>
+                                        {comment.user?._id === auth.user?._id ? (
                                             <>
                                                 <div
                                                     onClick={() => {
-                                                        setEditCommentValue(
-                                                            comment.content
-                                                        );
+                                                        setEditCommentValue(comment.content);
                                                         handleOpenEditComment();
-                                                        setCommentId(
-                                                            comment._id
-                                                        );
+                                                        setCommentId(comment._id);
                                                         handleToggleMorePopup();
                                                     }}
                                                     className='comment_more_popup_item'
@@ -238,9 +217,7 @@ function CommentItem({ reply, comment, auth, post, socket }) {
                                                 </div>
                                                 <div
                                                     onClick={() => {
-                                                        handleDeleteComment(
-                                                            comment._id
-                                                        );
+                                                        handleDeleteComment(comment._id);
                                                         handleToggleMorePopup();
                                                     }}
                                                     className='comment_more_popup_item'
@@ -276,9 +253,7 @@ function CommentItem({ reply, comment, auth, post, socket }) {
                     </div>
 
                     <div className='comment_btn_wrapper'>
-                        {comment.likes.find(
-                            (user) => user._id === auth.user?._id
-                        ) ? (
+                        {comment.likes.find((user) => user._id === auth.user?._id) ? (
                             <button
                                 onClick={() => {
                                     handleUnlikeComment(comment._id);

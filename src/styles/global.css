@@ -5,9 +5,10 @@
     --comment-background-color: #F0F2F5;
     --app-background-color: #F0F2F5;
     --white-color: #fff;
-    --black-color: #333;
+    --black-color: #000;
     --favourite-active-color: rgb(255, 48, 64);
     --hover-background-color: #F2F3F5;
+    --active-background-color: #cdcdd0;
     --sencondary-text-color: #65676B;    
     --box-shadow-gray: 0 0 3px gray;
     --box-shadow-black: 0 0 3px #000;

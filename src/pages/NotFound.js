@@ -23,10 +23,7 @@ export default function NotFound() {
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
                         <Typography variant='h1'>404</Typography>
-                        <Typography
-                            variant='h6'
-                            style={{ marginBottom: '10px' }}
-                        >
+                        <Typography variant='h6' style={{ marginBottom: '10px' }}>
                             The page you’re looking for doesn’t exist.
                         </Typography>
                         <Button variant='contained'>

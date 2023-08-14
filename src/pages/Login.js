@@ -21,12 +21,7 @@ import { blue } from '@mui/material/colors';
 
 function Copyright(props) {
     return (
-        <Typography
-            variant='body2'
-            color='text.secondary'
-            align='center'
-            {...props}
-        >
+        <Typography variant='body2' color='text.secondary' align='center' {...props}>
             {'Copyright © '}
             <Link color='inherit' href='/'>
                 Smedia

@@ -43,18 +43,14 @@ function Post({ id, auth }) {
                 <div className='user_posts_type'>
                     <div
                         onClick={handleHiddenSaved}
-                        className={`${
-                            saved ? '' : 'active'
-                        } user_posts_type_item`}
+                        className={`${saved ? '' : 'active'} user_posts_type_item`}
                     >
                         <AppsOutlinedIcon /> <h3>POSTS</h3>
                     </div>
                     {id === auth?.user._id && (
                         <div
                             onClick={handleOpenSaved}
-                            className={`${
-                                saved ? 'active' : ''
-                            } user_posts_type_item`}
+                            className={`${saved ? 'active' : ''} user_posts_type_item`}
                         >
                             <BookmarkBorderIcon /> <h3>SAVED</h3>
                         </div>
@@ -69,9 +65,7 @@ function Post({ id, auth }) {
                                 <div className='user_posts_status_icon_wrapper'>
                                     <CameraAltOutlinedIcon />
                                 </div>
-                                <h3 className='user_posts_status_title'>
-                                    No posts available
-                                </h3>
+                                <h3 className='user_posts_status_title'>No posts available</h3>
                             </div>
                         )}
                     </>
@@ -84,9 +78,7 @@ function Post({ id, auth }) {
                                 <div className='user_posts_status_icon_wrapper'>
                                     <CameraAltOutlinedIcon />
                                 </div>
-                                <h3 className='user_posts_status_title'>
-                                    No posts available
-                                </h3>
+                                <h3 className='user_posts_status_title'>No posts available</h3>
                             </div>
                         )}
                     </>

@@ -23,9 +23,7 @@ function Profile() {
                     dispatch(getUser({ users: profile.users, id }));
                 }
 
-                const currentUser = profile.users.find(
-                    (user) => user._id === id
-                );
+                const currentUser = profile.users.find((user) => user._id === id);
 
                 if (currentUser) setUserInfo(currentUser);
             }
@@ -33,11 +31,7 @@ function Profile() {
     }, [profile.users, auth.user, id, dispatch]);
 
     if (!userInfo && !profile.loading)
-        return (
-            <div className='font-semibold w-full h-full text-center mt-10'>
-                User Not Found
-            </div>
-        );
+        return <div className='font-semibold w-full h-full text-center mt-10'>User Not Found</div>;
 
     return (
         <div className='profile_container flex flex-col'>

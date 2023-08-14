@@ -18,10 +18,7 @@ function Status({ auth }) {
                 <Link to={`/profile/${auth.user?._id}`}>
                     <Avatar avatar={auth.user?.avatar} size='small' />
                 </Link>
-                <button
-                    onClick={handleOpenModalPost}
-                    className='btn_status_popup'
-                >
+                <button onClick={handleOpenModalPost} className='btn_status_popup'>
                     What's on your mind, {auth.user?.username}?
                 </button>
             </div>

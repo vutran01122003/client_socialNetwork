@@ -9,9 +9,10 @@ function Carousel({ post }) {
         <Swiper
             style={{
                 userSelect: 'none',
-                '--swiper-navigation-size': '25px'
+                '--swiper-navigation-size': '25px',
+                position: 'relative',
+                zIndex: 0
             }}
-            pagination={{ clickable: true }}
             navigation={true}
             modules={[Pagination, Navigation]}
             loop={true}
@@ -19,7 +20,13 @@ function Carousel({ post }) {
         >
             {post.images.map((image, index) => (
                 <SwiperSlide key={index}>
-                    <img src={image.url} alt='' />
+                    {image.url.includes('/video/upload/') ? (
+                        <video controls>
+                            <source src={image.url} />
+                        </video>
+                    ) : (
+                        <img src={image.url} alt='' />
+                    )}
                 </SwiperSlide>
             ))}
         </Swiper>

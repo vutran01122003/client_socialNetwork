@@ -156,9 +156,7 @@ function Header({ auth, theme }) {
                                     }}
                                     to={page.path}
                                     className={`${
-                                        activePage === page.name
-                                            ? 'text-gray-700'
-                                            : 'text-gray-400'
+                                        activePage === page.name ? 'text-gray-700' : 'text-gray-400'
                                     } hover:text-gray-700 px-4 transition linear`}
                                 >
                                     <page.icon fontSize='large' />
@@ -173,25 +171,13 @@ function Header({ auth, theme }) {
                                     placement='bottom-start'
                                     onClickOutside={handleToggleNotify}
                                     render={(attrs) => (
-                                        <div
-                                            className=''
-                                            tabIndex='-1'
-                                            {...attrs}
-                                        >
+                                        <div className='' tabIndex='-1' {...attrs}>
                                             <Notification
                                                 auth={auth}
-                                                notifications={
-                                                    notify.notifications
-                                                }
-                                                handleActivePage={
-                                                    handleActivePage
-                                                }
-                                                handleToggleNotify={
-                                                    handleToggleNotify
-                                                }
-                                                setNextPageNotification={
-                                                    setNextPageNotification
-                                                }
+                                                notifications={notify.notifications}
+                                                handleActivePage={handleActivePage}
+                                                handleToggleNotify={handleToggleNotify}
+                                                setNextPageNotification={setNextPageNotification}
                                             />
                                         </div>
                                     )}
@@ -202,18 +188,14 @@ function Header({ auth, theme }) {
                                             handleToggleNotify();
                                         }}
                                         className={`notify_icon ${
-                                            showNotify
-                                                ? 'text-gray-700'
-                                                : 'text-gray-400'
+                                            showNotify ? 'text-gray-700' : 'text-gray-400'
                                         } hover:text-gray-700 px-4 transition linear`}
                                     >
                                         <NotificationsIcon fontSize='large' />
                                         {notify.unread !== 0 && (
                                             <div className='notifications_num_wrapper'>
                                                 <span className='notifications_num'>
-                                                    {notify.unread >= 10
-                                                        ? '9+'
-                                                        : notify.unread}
+                                                    {notify.unread >= 10 ? '9+' : notify.unread}
                                                 </span>
                                             </div>
                                         )}
@@ -284,18 +266,9 @@ function Header({ auth, theme }) {
                                 ))}
                             </Menu>
                         </Box>
-                        <Tooltip
-                            title='Open settings'
-                            sx={{ padding: 0, overflow: 'visible' }}
-                        >
-                            <IconButton
-                                onClick={handleOpenUserMenu}
-                                sx={{ p: 0 }}
-                            >
-                                <Avatar
-                                    avatar={auth.user?.avatar}
-                                    size='small'
-                                />
+                        <Tooltip title='Open settings' sx={{ padding: 0, overflow: 'visible' }}>
+                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                                <Avatar avatar={auth.user?.avatar} size='small' />
                             </IconButton>
                         </Tooltip>
                         <Menu
@@ -328,12 +301,8 @@ function Header({ auth, theme }) {
                                     className='flex gap-2 items-center w-full h-full ml-2'
                                 >
                                     {(auth.user?.gender === 'male' ||
-                                        auth.user?.gender === 'other') && (
-                                        <Person4Icon />
-                                    )}
-                                    {auth.user?.gender === 'female' && (
-                                        <Person3Icon />
-                                    )}
+                                        auth.user?.gender === 'other') && <Person4Icon />}
+                                    {auth.user?.gender === 'female' && <Person3Icon />}
 
                                     <span className='flex-1'>Profile</span>
                                 </Link>
@@ -349,10 +318,7 @@ function Header({ auth, theme }) {
                                 }}
                             >
                                 <div>
-                                    <label
-                                        htmlFor='theme'
-                                        className='flex items-center gap-2 ml-2'
-                                    >
+                                    <label htmlFor='theme' className='flex items-center gap-2 ml-2'>
                                         {theme ? (
                                             <>
                                                 <DarkModeIcon />

@@ -2,11 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getPost } from '../../redux/actions/postAction';
-import {
-    authSelector,
-    detailPostListSelector,
-    statusSelector
-} from '../../redux/selector';
+import { authSelector, detailPostListSelector, statusSelector } from '../../redux/selector';
 import PostCard from '../../components/home/postCard/PostCard';
 import ModalPost from '../../components/home/ModalPost';
 
@@ -39,11 +35,7 @@ function DetailPost() {
             <div key={post._id} className='post_item detail_post_item'>
                 <PostCard post={post} auth={auth} detailPost={true} />
                 {openModalDetailPost && (
-                    <ModalPost
-                        currentPost={post}
-                        auth={auth}
-                        detailPost={true}
-                    />
+                    <ModalPost currentPost={post} auth={auth} detailPost={true} />
                 )}
             </div>
         );

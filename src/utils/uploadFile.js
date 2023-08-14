@@ -1,19 +1,15 @@
 export function checkImageUpload(file) {
-    if (
-        file?.type !== 'image/jpeg' &&
-        file?.type !== 'image/png' &&
-        file?.type !== 'image/gif'
-    ) {
+    if (file?.type !== 'image/jpeg' && file?.type !== 'image/png' && file?.type !== 'image/gif') {
         return {
             inValid: true,
             msg: 'Image format is incorrect'
         };
     }
 
-    if (file.size > 1024 * 1024) {
+    if (file.size > 5 * 1024 * 1024) {
         return {
             inValid: true,
-            msg: 'The largest image size is 1MB'
+            msg: 'The largest image size is 5MB'
         };
     }
 
@@ -23,11 +19,25 @@ export function checkImageUpload(file) {
     };
 }
 
-export const uploadImage = async (files = []) => {
-    const newImages = [];
+export function checkVideoUpload(file) {
+    if (file.size > 50 * 1024 * 1024) {
+        return {
+            inValid: true,
+            msg: 'The largest video size is 50MB'
+        };
+    }
+
+    return {
+        inValid: false,
+        msg: 'video format is correct'
+    };
+}
+
+export const uploadFile = async (files = []) => {
+    const newVideos = [];
     const userfiles = [];
     files.forEach((file) => {
-        if (file.url) newImages.push(file);
+        if (file.url) newVideos.push(file);
         else {
             userfiles.push(file);
         }
@@ -39,27 +49,26 @@ export const uploadImage = async (files = []) => {
         formData.append('cloud_name', 'dzm0nupxy');
         if (file.imgCamera) {
             formData.append('file', file.imgCamera);
+        } else if (file.video) {
+            formData.append('file', file.video);
         } else {
             formData.append('file', file);
         }
 
-        const res = await fetch(
-            'https://api.cloudinary.com/v1_1/dzm0nupxy/upload',
-            {
-                method: 'POST',
-                body: formData
-            }
-        );
+        const res = await fetch('https://api.cloudinary.com/v1_1/dzm0nupxy/upload', {
+            method: 'POST',
+            body: formData
+        });
 
         const imgData = await res.json();
 
-        newImages.push({
+        newVideos.push({
             id: imgData.public_id,
             url: imgData.secure_url
         });
     }
 
-    return newImages;
+    return newVideos;
 };
 
 export function loadURLToInputFiled(url, element) {

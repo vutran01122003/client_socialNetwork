@@ -25,11 +25,7 @@ function Toast({ status, msg }) {
                 }}
                 anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
             >
-                <Alert
-                    severity={status}
-                    sx={{ width: '100%' }}
-                    className='text-base font-bold'
-                >
+                <Alert severity={status} sx={{ width: '100%' }} className='text-base font-bold'>
                     {msg}
                     <CloseIcon
                         fontSize='small'

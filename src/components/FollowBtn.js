@@ -23,30 +23,20 @@ function Follow({ userInfo, auth, size }) {
                 auth.user?.following.find((user) => {
                     return user._id === userInfo?._id;
                 }) ? (
-                    <div
-                        onClick={handleUnFollow}
-                        className='unfollow_btn whitespace-nowrap'
-                    >
+                    <div onClick={handleUnFollow} className='unfollow_btn whitespace-nowrap'>
                         <button
                             className={`${
-                                size === 'small'
-                                    ? 'py-1 px-4  w-28'
-                                    : 'py-2 px-16'
+                                size === 'small' ? 'py-1 px-4  w-28' : 'py-2 px-16'
                             } rounded-md text-red-400 text-semibold border-2 border-red-400 hover:bg-red-300 hover:text-white`}
                         >
                             Unfollow
                         </button>
                     </div>
                 ) : (
-                    <div
-                        onClick={handleFollow}
-                        className='follow_btn whitespace-nowrap'
-                    >
+                    <div onClick={handleFollow} className='follow_btn whitespace-nowrap'>
                         <button
                             className={`${
-                                size === 'small'
-                                    ? 'py-1 px-2  w-28'
-                                    : 'py-2 px-16'
+                                size === 'small' ? 'py-1 px-2  w-28' : 'py-2 px-16'
                             } rounded-md text-teal-400 text-semibold border-2 border-teal-400 hover:bg-teal-300 hover:text-white`}
                         >
                             Follow

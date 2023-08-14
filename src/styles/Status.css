@@ -110,6 +110,9 @@
     overflow-x: hidden;
 }
 
+.show_images video {
+    width: 100%;
+}
 .show_images img {
     display: block;
     width: 33%;

@@ -1,9 +1,5 @@
 import { GLOBALTYPES } from './globalTypes';
-import {
-    deleteDataApi,
-    patchDataApi,
-    postDataApi
-} from '../../utils/fetchData';
+import { deleteDataApi, patchDataApi, postDataApi } from '../../utils/fetchData';
 import { createNotification } from './notifyAction';
 
 export const createComment =
@@ -35,27 +31,25 @@ export const createComment =
                         success: res.data.status
                     }
                 });
-                dispatch(
-                    createNotification({
-                        authId: user._id,
-                        socket,
-                        notifyData: {
-                            id: post._id,
-                            user: post.user._id,
-                            avatar: user.avatar,
-                            url: `/post/${post._id}`,
-                            receiver: [post.user._id],
-                            type: 'notification_commentedPost',
-                            content,
-                            image: post.images[0]?.url,
-                            title: `${
-                                user._id === post.user._id
-                                    ? 'You'
-                                    : user.username
-                            } commented on your post:`
-                        }
-                    })
-                );
+                if (post.user._id !== user._id) {
+                    dispatch(
+                        createNotification({
+                            authId: user._id,
+                            socket,
+                            notifyData: {
+                                postId: post._id,
+                                postOwnerId: post.user._id,
+                                avatar: user.avatar,
+                                url: `/post/${post._id}`,
+                                receiver: [post.user._id],
+                                type: 'notification_commentedPost',
+                                content,
+                                image: post.images[0]?.url,
+                                title: `${user.username} commented on your post:`
+                            }
+                        })
+                    );
+                }
             })
             .catch((error) => {
                 dispatch({

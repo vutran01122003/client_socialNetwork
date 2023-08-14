@@ -1,14 +1,15 @@
 import ImageIcon from '@mui/icons-material/Image';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
-import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 import CloseIcon from '@mui/icons-material/Close';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useDispatch, useSelector } from 'react-redux';
 import { socketSelector, themSelector } from '../../redux/selector';
-import { checkImageUpload, uploadImage } from '../../utils/uploadImage';
+import { checkImageUpload, checkVideoUpload } from '../../utils/uploadFile';
 import { GLOBALTYPES } from '../../redux/actions/globalTypes';
 import { useEffect, useRef, useState } from 'react';
 import { createPost, updatePost } from '../../redux/actions/postAction';
+import EmotionBtn from '../EmotionBtn';
+import readFile from '../../utils/readFile';
 
 function ModalPost({ auth, currentPost, detailPost }) {
     const theme = useSelector(themSelector);
@@ -18,7 +19,7 @@ function ModalPost({ auth, currentPost, detailPost }) {
     const videoRef = useRef();
     const canvasRef = useRef();
     const dispatch = useDispatch();
-    const [images, setImages] = useState([]);
+    const [files, setFiles] = useState([]);
     const [openVideo, setOpenVideo] = useState(false);
     const [stream, setStream] = useState(null);
     const [content, setContent] = useState('');
@@ -36,7 +37,7 @@ function ModalPost({ auth, currentPost, detailPost }) {
             });
         }
 
-        setImages([]);
+        setFiles([]);
         setContent('');
 
         if (Object.keys(currentPost).length > 0)
@@ -47,7 +48,7 @@ function ModalPost({ auth, currentPost, detailPost }) {
     };
 
     const handleClearImages = () => {
-        setImages([]);
+        setFiles([]);
         if (inputRef.current !== null) inputRef.current.value = '';
     };
 
@@ -77,24 +78,49 @@ function ModalPost({ auth, currentPost, detailPost }) {
         }
     };
 
-    const handleInsertImages = (e) => {
-        const files = [...e.target.files];
-        const newImages = [];
-        files.forEach((file) => {
-            const { inValid, msg } = checkImageUpload(file);
-            if (inValid) {
-                dispatch({
-                    type: GLOBALTYPES.ALERT,
-                    payload: {
-                        error: msg
-                    }
-                });
+    const handleInsertFiles = async (e) => {
+        let localFiles = [...e.target.files];
+
+        const newFiles = [];
+        for (let file of localFiles) {
+            if (file.type.includes('video')) {
+                const { inValid, msg } = checkVideoUpload(file);
+                if (inValid) {
+                    dispatch({
+                        type: GLOBALTYPES.ALERT,
+                        payload: {
+                            error: msg
+                        }
+                    });
+                } else {
+                    dispatch({
+                        type: GLOBALTYPES.ALERT,
+                        payload: {
+                            loading: true
+                        }
+                    });
+                    const videoBase64 = await readFile(file);
+                    newFiles.push({ video: videoBase64 });
+                    dispatch({
+                        type: GLOBALTYPES.ALERT,
+                        payload: {}
+                    });
+                }
             } else {
-                uploadImage();
-                newImages.push(file);
+                const { inValid, msg } = checkImageUpload(file);
+                if (inValid) {
+                    dispatch({
+                        type: GLOBALTYPES.ALERT,
+                        payload: {
+                            error: msg
+                        }
+                    });
+                } else {
+                    newFiles.push(file);
+                }
             }
-        });
-        setImages((prev) => [...prev, ...newImages]);
+        }
+        setFiles((prev) => [...prev, ...newFiles]);
     };
 
     const handleCaptureCamera = () => {
@@ -109,7 +135,7 @@ function ModalPost({ auth, currentPost, detailPost }) {
         canvas.getContext('2d').drawImage(video, 0, 0, width, height);
         let image_data_url = canvas.toDataURL('image/jpeg');
 
-        setImages((prev) => [...prev, { imgCamera: image_data_url }]);
+        setFiles((prev) => [...prev, { imgCamera: image_data_url }]);
     };
 
     const handleChangeValueTextarea = (e) => {
@@ -118,22 +144,34 @@ function ModalPost({ auth, currentPost, detailPost }) {
 
     const handleSumbitPost = async (e) => {
         e.preventDefault();
+
+        if (files.length >= 5) {
+            dispatch({
+                type: GLOBALTYPES.ALERT,
+                payload: {
+                    error: 'posts only allow a maximum of 5 files'
+                }
+            });
+            e.target.value = '';
+            return;
+        }
+
         if (Object.keys(currentPost).length > 0) {
-            await dispatch(
+            dispatch(
                 updatePost({
                     postId: currentPost._id,
                     content,
-                    images,
+                    files,
                     currentPost: currentPost
                 })
             );
         } else {
-            await dispatch(
+            dispatch(
                 createPost({
                     socket,
                     user: auth.user,
                     content,
-                    images
+                    files
                 })
             );
         }
@@ -144,8 +182,8 @@ function ModalPost({ auth, currentPost, detailPost }) {
     useEffect(() => {
         const post = currentPost;
         if (post) {
-            setContent(post.content);
-            setImages(post.images || []);
+            setContent(post.content || '');
+            setFiles(post.images || []);
         }
     }, [currentPost]);
 
@@ -161,9 +199,7 @@ function ModalPost({ auth, currentPost, detailPost }) {
             <form className='post_form overflow-auto'>
                 <div className='post_title relative'>
                     <h1 className='text-center font-bold text-xl'>
-                        {Object.keys(currentPost).length > 0
-                            ? 'Edit Post'
-                            : 'Create Post'}
+                        {Object.keys(currentPost).length > 0 ? 'Edit Post' : 'Create Post'}
                     </h1>
                     <div
                         onClick={() => {
@@ -188,26 +224,32 @@ function ModalPost({ auth, currentPost, detailPost }) {
                     </div>
                 )}
 
-                {images?.length > 0 && (
+                {files?.length > 0 && (
                     <div className='show_images'>
                         <div className='images_wrapper relative'>
                             <div className='remove_img_btn hover:text-red-500'>
-                                <CloseIcon
-                                    onClick={handleClearImages}
-                                    fontSize='small'
-                                />
+                                <CloseIcon onClick={handleClearImages} fontSize='small' />
                             </div>
-                            {images.map((image, index) => (
-                                <img
-                                    src={
-                                        image?.imgCamera ||
-                                        (image.url ??
-                                            URL.createObjectURL(image))
-                                    }
-                                    key={index}
-                                    alt='pre_image'
-                                />
-                            ))}
+                            {files.map((file, index) => {
+                                if (file.video || file?.url.includes('/video/upload/')) {
+                                    return (
+                                        <video key={index} controls>
+                                            <source src={file.video || file.url} />
+                                        </video>
+                                    );
+                                }
+
+                                return (
+                                    <img
+                                        src={
+                                            file?.imgCamera ||
+                                            (file.url ?? URL.createObjectURL(file))
+                                        }
+                                        key={index}
+                                        alt='previewed_image'
+                                    />
+                                );
+                            })}
                         </div>
                     </div>
                 )}
@@ -235,10 +277,7 @@ function ModalPost({ auth, currentPost, detailPost }) {
                                     Add to your post
                                 </span>
                                 <div className='icons_wrapper flex gap-3 items-center'>
-                                    <label
-                                        htmlFor='insert_image'
-                                        className='icon-item'
-                                    >
+                                    <label htmlFor='insert_image' className='icon-item'>
                                         <ImageIcon sx={{ color: '#50C878' }} />
                                     </label>
 
@@ -250,17 +289,15 @@ function ModalPost({ auth, currentPost, detailPost }) {
                                     </label>
 
                                     <label className='icon-item'>
-                                        <InsertEmoticonIcon
-                                            sx={{ color: '#FFC000' }}
-                                        />
+                                        <EmotionBtn setContent={setContent} />
                                     </label>
                                     <input
                                         id='insert_image'
                                         type='file'
                                         ref={inputRef}
                                         multiple
-                                        accept='image/*'
-                                        onChange={handleInsertImages}
+                                        accept='image/*,video/*'
+                                        onChange={handleInsertFiles}
                                         hidden
                                     />
                                 </div>

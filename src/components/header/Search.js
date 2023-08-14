@@ -25,9 +25,7 @@ function Search() {
     const handleGetUser = useCallback(
         async (searchValue) => {
             if (searchValue !== '') {
-                const formatSearchValue = searchValue
-                    .toLowerCase()
-                    .replace(/ /g, '');
+                const formatSearchValue = searchValue.toLowerCase().replace(/ /g, '');
                 dispatch(getSearchUser(formatSearchValue));
             }
             return;
@@ -61,9 +59,7 @@ function Search() {
             onClickOutside={hideResult}
             render={(attrs) => (
                 <div className='box_search' tabIndex='-1' {...attrs}>
-                    <div className='label text-gray-600 font-semibold px-2 py-1'>
-                        Account
-                    </div>
+                    <div className='label text-gray-600 font-semibold px-2 py-1'>Account</div>
 
                     {alert.pedding && (
                         <div className='text-center p-2'>
@@ -78,11 +74,7 @@ function Search() {
                     )}
 
                     {users.map((user) => (
-                        <UserCard
-                            key={user._id}
-                            user={user}
-                            onClick={hideResult}
-                        />
+                        <UserCard key={user._id} user={user} onClick={hideResult} />
                     ))}
                 </div>
             )}

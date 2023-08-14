@@ -22,18 +22,12 @@ function ShowMoreComment({ comments, setCommentData }) {
                 <div className='show_more_btn'>
                     {comments?.length - showMore > 0 ? (
                         <span onClick={handleShowMoreComments}>{`View ${
-                            comments.length - showMore > limit
-                                ? limit
-                                : comments?.length - showMore
+                            comments.length - showMore > limit ? limit : comments?.length - showMore
                         } more ${
-                            comments?.length - showMore === 1
-                                ? 'comment'
-                                : 'comments'
+                            comments?.length - showMore === 1 ? 'comment' : 'comments'
                         }`}</span>
                     ) : (
-                        <span
-                            onClick={handleHideComments}
-                        >{`Hide comments`}</span>
+                        <span onClick={handleHideComments}>{`Hide comments`}</span>
                     )}
                 </div>
             )}

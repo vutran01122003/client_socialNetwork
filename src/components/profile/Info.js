@@ -7,8 +7,7 @@ import Content from '../Content';
 import UserModal from '../UserModal';
 
 function Info({ userInfo, id, auth }) {
-    const { avatar, username, fullname, followers, following, story, website } =
-        userInfo || {};
+    const { avatar, username, fullname, followers, following, story, website } = userInfo || {};
     const [onEdit, setOnEdit] = useState(false);
     const [audience, setAudience] = useState(false);
 
@@ -32,9 +31,7 @@ function Info({ userInfo, id, auth }) {
                 <div className='user_wrapper flex-1'>
                     <div className='user_avatar_edit_wrapper'>
                         <div className='name_wrapper'>
-                            <h3 className='username font-semibold text-3xl'>
-                                {username}
-                            </h3>
+                            <h3 className='username font-semibold text-3xl'>{username}</h3>
                             <h5 className='sub_fullname text-center text-gray-500 font-bold text-sm my-2'>
                                 {fullname}
                             </h5>
@@ -66,9 +63,7 @@ function Info({ userInfo, id, auth }) {
                             className='hover:text-teal-300 cursor-pointer'
                         >{`${following?.length} Following`}</span>
                     </div>
-                    <h4 className='fullname text-gray-500 font-bold'>
-                        {fullname}
-                    </h4>
+                    <h4 className='fullname text-gray-500 font-bold'>{fullname}</h4>
                     <a
                         href={website}
                         className='website_link text-blue-600 text-semibold hover:text-blue-700'
@@ -83,13 +78,7 @@ function Info({ userInfo, id, auth }) {
                 </div>
             </div>
             {onEdit && <Edit setOnEdit={setOnEdit} />}
-            {audience && (
-                <UserModal
-                    modalInfo={audience}
-                    setPopup={setAudience}
-                    auth={auth}
-                />
-            )}
+            {audience && <UserModal modalInfo={audience} setPopup={setAudience} auth={auth} />}
         </Box>
     );
 }

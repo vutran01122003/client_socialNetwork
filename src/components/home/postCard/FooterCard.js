@@ -6,12 +6,7 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import {
-    likePost,
-    savedPost,
-    unSavedPost,
-    unlikePost
-} from '../../../redux/actions/postAction';
+import { likePost, savedPost, unSavedPost, unlikePost } from '../../../redux/actions/postAction';
 import InputComment from '../postCard/InputComment';
 import CommentCard from '../postCard/CommentCard';
 import UserModal from '../../UserModal';
@@ -32,7 +27,7 @@ function FooterCard({ post, auth, socket }) {
     };
 
     const handleSavedPost = () => {
-        dispatch(savedPost({ post: post, auth, user: post.user, socket }));
+        dispatch(savedPost({ post: post, auth, socket }));
     };
 
     const handleUnSavedPost = () => {
@@ -95,9 +90,7 @@ function FooterCard({ post, auth, socket }) {
                             className='active flex-1 text-center hover:bg-gray-100 rounded-md cursor-pointer transform active:scale-75 transition-transform'
                         >
                             <FavoriteIcon />
-                            <span className='interactive_icon_name ml-2'>
-                                Like
-                            </span>
+                            <span className='interactive_icon_name ml-2'>Like</span>
                         </div>
                     ) : (
                         <div
@@ -105,9 +98,7 @@ function FooterCard({ post, auth, socket }) {
                             className=' flex-1 text-center hover:bg-gray-100 rounded-md cursor-pointer transform active:scale-75 transition-transform'
                         >
                             <FavoriteBorderIcon />
-                            <span className='interactive_icon_name ml-2'>
-                                Like
-                            </span>
+                            <span className='interactive_icon_name ml-2'>Like</span>
                         </div>
                     )}
 
@@ -116,22 +107,16 @@ function FooterCard({ post, auth, socket }) {
                         className='flex-1 text-center hover:bg-gray-100 rounded-md cursor-pointer'
                     >
                         <ChatBubbleOutlineOutlinedIcon />
-                        <span className='interactive_icon_name ml-2'>
-                            Comments
-                        </span>
+                        <span className='interactive_icon_name ml-2'>Comments</span>
                     </div>
 
-                    {auth.user.saved.find(
-                        (savedPost) => savedPost._id === post._id
-                    ) ? (
+                    {auth.user.saved.find((savedPost) => savedPost._id === post._id) ? (
                         <div
                             onClick={handleUnSavedPost}
                             className='flex-1 text-center hover:bg-gray-100 rounded-md p-1 cursor-pointer'
                         >
                             <BookmarkIcon />
-                            <span className='interactive_icon_name ml-2'>
-                                UnSave
-                            </span>
+                            <span className='interactive_icon_name ml-2'>UnSave</span>
                         </div>
                     ) : (
                         <div
@@ -139,9 +124,7 @@ function FooterCard({ post, auth, socket }) {
                             className='flex-1 text-center hover:bg-gray-100 rounded-md p-1 cursor-pointer'
                         >
                             <BookmarkBorderOutlinedIcon />
-                            <span className='interactive_icon_name ml-2'>
-                                Save
-                            </span>
+                            <span className='interactive_icon_name ml-2'>Save</span>
                         </div>
                     )}
                 </div>

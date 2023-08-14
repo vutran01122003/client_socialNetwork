@@ -100,6 +100,17 @@ function SocketClient({ auth }) {
             });
         });
 
+        // Follow
+        socket.on('notification_followedUser', (createdNotification) => {
+            dispatch({
+                type: GLOBALTYPES.NOTIFICATION.CREATE_NOTIFICATION,
+                payload: {
+                    createdNotification,
+                    authId: auth?.user._id
+                }
+            });
+        });
+
         // Remember to disconnect the socket when the app unmounts
         return () => {
             socket.disconnect();

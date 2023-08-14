@@ -1,15 +1,10 @@
-import { uploadImage } from '../../utils/uploadImage';
+import { uploadFile } from '../../utils/uploadFile';
 import { GLOBALTYPES } from './globalTypes';
-import {
-    deleteDataApi,
-    getDataApi,
-    patchDataApi,
-    postDataApi
-} from '../../utils/fetchData';
+import { deleteDataApi, getDataApi, patchDataApi, postDataApi } from '../../utils/fetchData';
 import { createNotification } from './notifyAction';
 
 export const createPost =
-    ({ user, content, images, socket }) =>
+    ({ user, content, files, socket }) =>
     async (dispatch) => {
         if (!content) {
             dispatch({
@@ -26,15 +21,15 @@ export const createPost =
                 }
             });
 
-            let imgUrlArr = [];
-            if (images.length > 0) {
-                imgUrlArr = await uploadImage(images);
+            let fileUrlArr = [];
+            if (files.length > 0) {
+                fileUrlArr = await uploadFile(files);
             }
             postDataApi(`/post`, {
                 postData: {
                     user,
                     content,
-                    images: imgUrlArr
+                    images: fileUrlArr
                 }
             })
                 .then((res) => {
@@ -62,8 +57,8 @@ export const createPost =
                             authId: user._id,
                             socket,
                             notifyData: {
-                                id: res.data.postData._id,
-                                user: res.data.postData.user._id,
+                                postId: res.data.postData._id,
+                                postOwnerId: res.data.postData.user._id,
                                 avatar: res.data.postData.user.avatar,
                                 url: `/post/${res.data.postData._id}`,
                                 receiver: res.data.postData.user.followers,
@@ -156,7 +151,7 @@ export const getNewPosts =
     };
 
 export const updatePost =
-    ({ postId, content, images, currentPost }) =>
+    ({ postId, content, files, currentPost }) =>
     async (dispatch) => {
         if (!content) {
             dispatch({
@@ -168,7 +163,7 @@ export const updatePost =
         } else {
             if (
                 currentPost.content === content &&
-                JSON.stringify(currentPost.images) === JSON.stringify(images)
+                JSON.stringify(currentPost.images) === JSON.stringify(files)
             ) {
                 dispatch({
                     type: GLOBALTYPES.ALERT,
@@ -186,9 +181,9 @@ export const updatePost =
                 }
             });
 
-            let imgUrlArr = [];
-            if (images.length > 0) {
-                imgUrlArr = await uploadImage(images);
+            let fileUrlArr = [];
+            if (files.length > 0) {
+                fileUrlArr = await uploadFile(files);
             }
 
             patchDataApi(`/post`, {
@@ -196,7 +191,7 @@ export const updatePost =
                     postId,
                     updatedData: {
                         content,
-                        images: imgUrlArr
+                        images: fileUrlArr
                     }
                 }
             })
@@ -296,17 +291,15 @@ export const likePost = (postId, user, socket) => async (dispatch) => {
                     authId: user._id,
                     socket,
                     notifyData: {
-                        id: res.data.newPost._id,
-                        user: res.data.newPost.user._id,
+                        postId: res.data.newPost._id,
+                        postOwnerId: res.data.newPost.user._id,
                         avatar: user.avatar,
                         url: `/post/${res.data.newPost._id}`,
                         type: 'notification_liked',
                         receiver: [res.data.newPost.user._id],
                         image: res.data.newPost.images[0]?.url,
                         title: `${
-                            user._id === res.data.newPost.user._id
-                                ? 'You'
-                                : user.username
+                            user._id === res.data.newPost.user._id ? 'You' : user.username
                         } liked your post`
                     }
                 })
@@ -393,7 +386,7 @@ export const getPost =
     };
 
 export const savedPost =
-    ({ auth, post, user, socket }) =>
+    ({ auth, post, socket }) =>
     async (dispatch) => {
         try {
             const res = await patchDataApi(`/saved_post/${post._id}`);
@@ -413,26 +406,24 @@ export const savedPost =
                 }
             });
 
-            dispatch(
-                createNotification({
-                    authId: user._id,
-                    socket,
-                    notifyData: {
-                        id: post._id,
-                        user: user._id,
-                        avatar: auth?.user.avatar,
-                        url: `/post/${post._id}`,
-                        receiver: [user._id],
-                        type: 'notification_saved',
-                        image: post.images[0]?.url || '',
-                        title: `${
-                            auth?.user._id === user._id
-                                ? 'You'
-                                : auth?.user.username
-                        } saved your post`
-                    }
-                })
-            );
+            if (post.user._id !== auth.user._id) {
+                dispatch(
+                    createNotification({
+                        authId: auth?.user._id,
+                        socket,
+                        notifyData: {
+                            postId: post._id,
+                            postOwnerId: post.user._id,
+                            avatar: auth?.user.avatar,
+                            url: `/post/${post._id}`,
+                            receiver: [post.user._id],
+                            type: 'notification_saved',
+                            image: post.images[0]?.url || '',
+                            title: `${auth?.user.username} saved your post`
+                        }
+                    })
+                );
+            }
         } catch (e) {
             console.log(e);
             dispatch({

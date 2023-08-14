@@ -70,11 +70,7 @@ function HeaderCard({ post, auth, detailPost }) {
                 interactive
                 zIndex={999}
                 render={(attrs) => (
-                    <div
-                        className='more_wrapper select-none'
-                        tabIndex='-1'
-                        {...attrs}
-                    >
+                    <div className='more_wrapper select-none' tabIndex='-1' {...attrs}>
                         {auth.user?._id === user._id ? (
                             <>
                                 <div
@@ -109,10 +105,7 @@ function HeaderCard({ post, auth, detailPost }) {
                     </div>
                 )}
             >
-                <div
-                    onClick={handleToggleMoreBtn}
-                    className='more_horz_wrapper cursor-pointer'
-                >
+                <div onClick={handleToggleMoreBtn} className='more_horz_wrapper cursor-pointer'>
                     <MoreHorizIcon />
                 </div>
             </Tippy>

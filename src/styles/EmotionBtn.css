@@ -1,0 +1,43 @@
+.emotion_wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 310px;
+    height: 300px;
+    padding: 8px;
+    border-radius: 8px;
+    background: var(--white-color);
+    box-shadow: var( --box-shadow-gray);
+    overflow: auto;
+}
+
+.emotion_title {
+    padding-bottom: 8px;
+    color: var(--sencondary-text-color);
+    font-weight: 200;
+    font-size: small;
+    user-select: none;
+}
+
+.emotion__icons_wrapper  {
+    position: relative;
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.emotion__icon_wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: calc(100%/7);
+    font-size: 24px;
+    transition: 0.1s linear;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.emotion__icon_wrapper:hover {
+    background-color: var(--hover-background-color);
+}
