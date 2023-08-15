@@ -39,8 +39,7 @@
 .body_content {
     font-weight: 500;
     width: 100%;
-    padding: 0 15px 15px;
-    border-bottom: var( --border-post-pagination);
+    padding: 0 15px;
 }
 
 /* Footer card */

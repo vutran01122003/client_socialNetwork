@@ -16,6 +16,13 @@ function SocketClient({ auth }) {
             socket.emit('connected_user', auth?.user._id);
         });
 
+        // user online
+        socket.on('user_online_list', (data) => {
+            dispatch({
+                type: GLOBALTYPES.MESSAGE.GET_USER_ONLINE_LIST,
+                payload: data
+            });
+        });
         // create post
         socket.on('notification_createdPost', (createdNotification) => {
             dispatch({

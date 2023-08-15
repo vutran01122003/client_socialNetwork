@@ -1,12 +1,11 @@
-.app_sidebar_right{
+.app_right_message_sidebar {
     width: 380px;
-    min-width: 350px;
 }
 
-.sidebar_right {
+.right_message_sidebar {
     background: var(--white-color);
     position: fixed;
-    right: 0;
+    left: 0;
     top: calc(var(--header-height));
     bottom: 0;
     width: 380px;
@@ -14,24 +13,18 @@
     overflow-y: scroll;
     transition: background-color 0.3s linear;
     box-shadow: var(--box-shadow-gray);
-
+    user-select: none;
 }
 
-.suggestion_wrapper {
-    background: var(--white-color);
+.right_message_sidebar_contacts {
     padding: 8px;
+    font-weight: 500;
+    font-size: larger;
+    color: var(--sencondary-text-color);
+}
+
+.right_message_sidebar_user_list {
+    background: var(--white-color);
     min-height: 100vh;
 }
 
-.suggestion_title {
-    font-weight: 500;
-    font-size: larger;
-    margin: 0 0 15px 7px;
-}
-
-.suggestion_users_wrapper {
-    position: relative;
-    width: 100%;
-    align-items: center;
-    min-height: inherit;
-}

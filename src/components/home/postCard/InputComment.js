@@ -16,10 +16,10 @@ function InputComment({ inputCommentRef, post, auth, comment, socket }) {
     const handleSubmitComment = async (e) => {
         e.preventDefault();
         if (commentValue) {
-            await dispatch(
+            dispatch(
                 createComment({
                     post,
-                    commentId: comment?._id,
+                    originCommentId: comment?._id,
                     user: auth?.user,
                     content: commentValue,
                     socket
@@ -29,12 +29,6 @@ function InputComment({ inputCommentRef, post, auth, comment, socket }) {
         }
         return;
     };
-
-    // const handleKeyDown = (e) => {
-    //     if (e.key === 'Enter') {
-    //         handleSubmitComment(e);
-    //     }
-    // };
 
     return (
         <div className='input_comment_wrapper p-2'>
@@ -46,7 +40,6 @@ function InputComment({ inputCommentRef, post, auth, comment, socket }) {
                     placeholder={comment ? 'write your reply...' : 'write your comment...'}
                     value={commentValue}
                     onChange={handlecommentValue}
-                    // onKeyDown={handleKeyDown}
                 />
                 <div
                     className={`flex gap-2 absolute right-2 top-1/2 -translate-y-1/2 ${
@@ -54,7 +47,7 @@ function InputComment({ inputCommentRef, post, auth, comment, socket }) {
                     }`}
                 >
                     <div>
-                        <EmotionBtn setContent={setCommentValue}/>
+                        <EmotionBtn setContent={setCommentValue} />
                     </div>
                     <button>
                         <SendIcon />

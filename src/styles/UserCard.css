@@ -15,8 +15,21 @@
     transition: 0.1s linear;
 }
 
-.account_wrapper:hover {
-    background: var(--hover-background-color);
+.avatar_wrapper {
+    position: relative;
+}
+
+.user_active_status {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 13px;
+    height: 13px;
+    position: absolute;
+    right: 0px;
+    bottom: -1px;
+    border: 3px solid var(--white-color);
+    border-radius: 50%;
 }
 
 .user_description :is(.user_description_username, .user_description_fullname) {

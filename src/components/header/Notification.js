@@ -159,14 +159,22 @@ function Notification({
                                         {moment(notifyItem.createdAt).fromNow()}
                                     </div>
                                 </div>
-                                {notifyItem.image && (
-                                    <div className='notify_image_wrapper'>
-                                        <img
-                                            className='h-full'
-                                            src={notifyItem.image}
-                                            alt='image_post'
-                                        />
-                                    </div>
+                                {notifyItem.file && (
+                                    <>
+                                        {notifyItem.file?.includes('/video/upload/') ? (
+                                            <video preload='metadata'>
+                                                <source src={notifyItem.file + '#t=0.1'} />
+                                            </video>
+                                        ) : (
+                                            <div className='notify_image_wrapper'>
+                                                <img
+                                                    className='h-full'
+                                                    src={notifyItem.file}
+                                                    alt='image_post'
+                                                />
+                                            </div>
+                                        )}
+                                    </>
                                 )}
                             </Link>
                             <div className='notify_control_wrapper'>

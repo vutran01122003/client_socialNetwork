@@ -10,14 +10,14 @@ function PostsThumb({ posts }) {
                 <div key={post._id} className='post_thumb_item'>
                     <div className='post_thumb_item_height'></div>
                     <Link to={`/post/${post._id}`} className='post_thumb_item_img'>
-                        {post.images[0]?.url.includes('/video/upload/') ? (
+                        {post.files[0]?.url.includes('/video/upload/') ? (
                             <video preload='metadata'>
-                                <source src={post.images[0]?.url + '#t=0.1'} />
+                                <source src={post.files[0]?.url + '#t=0.1'} />
                             </video>
                         ) : (
                             <img
                                 src={
-                                    post.images[0]?.url ??
+                                    post.files[0]?.url ??
                                     'https://t4.ftcdn.net/jpg/04/99/93/31/360_F_499933117_ZAUBfv3P1HEOsZDrnkbNCt4jc3AodArl.jpg'
                                 }
                                 alt='image_thumb'
@@ -37,7 +37,7 @@ function PostsThumb({ posts }) {
                                     {post.comments?.length}
                                 </span>
                             </div>
-                            {post.images.length > 1 && (
+                            {post.files.length > 1 && (
                                 <div className='mul_img_wrapper'>
                                     <MultipleImageIcon />
                                 </div>

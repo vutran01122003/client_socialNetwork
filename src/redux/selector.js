@@ -23,3 +23,5 @@ export const suggestedUsersSelector = (state) => state.suggestedUsers;
 export const socketSelector = (state) => state.socket.socket;
 
 export const notificationSelector = (state) => state.notify;
+
+export const messageSelector = (state) => state.message;

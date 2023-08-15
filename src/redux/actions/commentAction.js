@@ -3,7 +3,7 @@ import { deleteDataApi, patchDataApi, postDataApi } from '../../utils/fetchData'
 import { createNotification } from './notifyAction';
 
 export const createComment =
-    ({ post, user, content, commentId, socket }) =>
+    ({ post, user, content, originCommentId, socket }) =>
     async (dispatch) => {
         dispatch({
             type: GLOBALTYPES.ALERT,
@@ -14,7 +14,7 @@ export const createComment =
         postDataApi('/comment', {
             commentData: {
                 postId: post._id,
-                commentId,
+                originCommentId,
                 user,
                 content
             }
@@ -44,7 +44,7 @@ export const createComment =
                                 receiver: [post.user._id],
                                 type: 'notification_commentedPost',
                                 content,
-                                image: post.images[0]?.url,
+                                file: post.files[0]?.url,
                                 title: `${user.username} commented on your post:`
                             }
                         })

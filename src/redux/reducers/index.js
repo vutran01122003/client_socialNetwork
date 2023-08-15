@@ -12,6 +12,7 @@ import discoverReducer from './discoverReducer';
 import suggestedUsersReducer from './suggestedUsersReducer';
 import socketReducer from './socketReducer';
 import notifyReducer from './notifyReducer';
+import messageReducer from './messageReducer';
 
 const rootReducer = combineReducers({
     auth: authReducer,
@@ -26,7 +27,8 @@ const rootReducer = combineReducers({
     postsDiscover: discoverReducer,
     suggestedUsers: suggestedUsersReducer,
     socket: socketReducer,
-    notify: notifyReducer
+    notify: notifyReducer,
+    message: messageReducer
 });
 
 export default rootReducer;

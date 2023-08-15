@@ -29,7 +29,7 @@ export const createPost =
                 postData: {
                     user,
                     content,
-                    images: fileUrlArr
+                    files: fileUrlArr
                 }
             })
                 .then((res) => {
@@ -64,7 +64,7 @@ export const createPost =
                                 receiver: res.data.postData.user.followers,
                                 type: 'notification_createdPost',
                                 content: res.data.postData.content,
-                                image: res.data.postData.images[0]?.url,
+                                file: res.data.postData.files[0]?.url,
                                 title: `${res.data.postData.user.username} posted:`
                             }
                         })
@@ -163,7 +163,7 @@ export const updatePost =
         } else {
             if (
                 currentPost.content === content &&
-                JSON.stringify(currentPost.images) === JSON.stringify(files)
+                JSON.stringify(currentPost.files) === JSON.stringify(files)
             ) {
                 dispatch({
                     type: GLOBALTYPES.ALERT,
@@ -191,7 +191,7 @@ export const updatePost =
                     postId,
                     updatedData: {
                         content,
-                        images: fileUrlArr
+                        files: fileUrlArr
                     }
                 }
             })
@@ -261,7 +261,7 @@ export const deletePost =
             });
     };
 
-export const likePost = (postId, user, socket) => async (dispatch) => {
+export const likePost = (post, user, socket) => async (dispatch) => {
     dispatch({
         type: GLOBALTYPES.ALERT,
         payload: {
@@ -269,7 +269,7 @@ export const likePost = (postId, user, socket) => async (dispatch) => {
         }
     });
 
-    patchDataApi(`/post/${postId}/like`, {
+    patchDataApi(`/post/${post._id}/like`, {
         userData: user
     })
         .then((res) => {
@@ -285,25 +285,24 @@ export const likePost = (postId, user, socket) => async (dispatch) => {
                     success: res.data.status
                 }
             });
-
-            dispatch(
-                createNotification({
-                    authId: user._id,
-                    socket,
-                    notifyData: {
-                        postId: res.data.newPost._id,
-                        postOwnerId: res.data.newPost.user._id,
-                        avatar: user.avatar,
-                        url: `/post/${res.data.newPost._id}`,
-                        type: 'notification_liked',
-                        receiver: [res.data.newPost.user._id],
-                        image: res.data.newPost.images[0]?.url,
-                        title: `${
-                            user._id === res.data.newPost.user._id ? 'You' : user.username
-                        } liked your post`
-                    }
-                })
-            );
+            if (post.user._id !== user._id) {
+                dispatch(
+                    createNotification({
+                        authId: user._id,
+                        socket,
+                        notifyData: {
+                            postId: res.data.newPost._id,
+                            postOwnerId: res.data.newPost.user._id,
+                            avatar: user.avatar,
+                            url: `/post/${res.data.newPost._id}`,
+                            type: 'notification_liked',
+                            receiver: [res.data.newPost.user._id],
+                            file: res.data.newPost.files[0]?.url,
+                            title: `${user.username} liked your post`
+                        }
+                    })
+                );
+            }
         })
         .catch((e) => {
             console.log(e);
@@ -418,7 +417,7 @@ export const savedPost =
                             url: `/post/${post._id}`,
                             receiver: [post.user._id],
                             type: 'notification_saved',
-                            image: post.images[0]?.url || '',
+                            file: post.files[0]?.url || '',
                             title: `${auth?.user.username} saved your post`
                         }
                     })

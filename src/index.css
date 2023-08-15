@@ -23,11 +23,13 @@
 @import url(./styles/UserPost.css);
 @import url(./styles/DetailPost.css);
 @import url(./styles/Discover.css);
-@import url(./styles/Account.css);
+@import url(./styles/UserCard.css);
 @import url(./styles/Sidebar.css);
 @import url(./styles/FollowBtn.css);
 @import url(./styles/Content.css);
 @import url(./styles/Notification.css);
 @import url(./styles/EmotionBtn.css);
+@import url(./styles/Message.css);
+@import url(./styles/RightMessageSidebar.css);
 
 

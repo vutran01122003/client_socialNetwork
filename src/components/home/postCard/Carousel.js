@@ -18,14 +18,17 @@ function Carousel({ post }) {
             loop={true}
             className='mySwiper'
         >
-            {post.images.map((image, index) => (
+            {post.files.map((file, index) => (
                 <SwiperSlide key={index}>
-                    {image.url.includes('/video/upload/') ? (
+                    {(file.url && file.url.includes('/video/upload/')) || file.video ? (
                         <video controls>
-                            <source src={image.url} />
+                            <source src={file.url || file.video} />
                         </video>
                     ) : (
-                        <img src={image.url} alt='' />
+                        <img
+                            src={file.url || file.imgCamera || URL.createObjectURL(file)}
+                            alt='post_image'
+                        />
                     )}
                 </SwiperSlide>
             ))}

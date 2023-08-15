@@ -1,6 +1,7 @@
 import ImageIcon from '@mui/icons-material/Image';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import CloseIcon from '@mui/icons-material/Close';
+import SendIcon from '@mui/icons-material/Send';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useDispatch, useSelector } from 'react-redux';
 import { socketSelector, themSelector } from '../../redux/selector';
@@ -10,8 +11,9 @@ import { useEffect, useRef, useState } from 'react';
 import { createPost, updatePost } from '../../redux/actions/postAction';
 import EmotionBtn from '../EmotionBtn';
 import readFile from '../../utils/readFile';
+import { createMessage } from '../../redux/actions/messageAction';
 
-function ModalPost({ auth, currentPost, detailPost }) {
+function ModalPost({ auth, currentPost, detailPost, messageInput, currentReceiver }) {
     const theme = useSelector(themSelector);
     const socket = useSelector(socketSelector);
 
@@ -40,7 +42,7 @@ function ModalPost({ auth, currentPost, detailPost }) {
         setFiles([]);
         setContent('');
 
-        if (Object.keys(currentPost).length > 0)
+        if (currentPost && Object.keys(currentPost).length > 0)
             dispatch({
                 type: GLOBALTYPES.STATUS.CURRENT_EDIT_STATUS,
                 payload: {}
@@ -142,6 +144,34 @@ function ModalPost({ auth, currentPost, detailPost }) {
         setContent(e.target.value);
     };
 
+    const handleSendMessage = async (e) => {
+        e.preventDefault();
+
+        if (!content) return;
+        if (files.length >= 5) {
+            dispatch({
+                type: GLOBALTYPES.ALERT,
+                payload: {
+                    error: 'posts only allow a maximum of 5 files'
+                }
+            });
+            e.target.value = '';
+            return;
+        }
+
+        dispatch(
+            createMessage({
+                sender: auth.user._id,
+                content,
+                sender: auth.user._id,
+                receiver: currentReceiver._id,
+                files
+            })
+        );
+
+        handleCloseModalPost(stream);
+    };
+
     const handleSumbitPost = async (e) => {
         e.preventDefault();
 
@@ -183,7 +213,7 @@ function ModalPost({ auth, currentPost, detailPost }) {
         const post = currentPost;
         if (post) {
             setContent(post.content || '');
-            setFiles(post.images || []);
+            setFiles(post.files || []);
         }
     }, [currentPost]);
 
@@ -194,120 +224,148 @@ function ModalPost({ auth, currentPost, detailPost }) {
                     handleCloseModalPost(stream);
                 }
             }}
-            className={`${theme === true ? 'bg-white/75' : ''} post_modal`}
+            className={`${theme === true ? 'bg-white/75' : ''} ${
+                messageInput ? 'message_modal' : 'post_modal'
+            }`}
         >
-            <form className='post_form overflow-auto'>
-                <div className='post_title relative'>
-                    <h1 className='text-center font-bold text-xl'>
-                        {Object.keys(currentPost).length > 0 ? 'Edit Post' : 'Create Post'}
-                    </h1>
-                    <div
-                        onClick={() => {
-                            handleCloseModalPost(stream);
-                        }}
-                        className='post_close_btn hover:text-red-500'
-                    >
-                        <CloseIcon fontSize='small' />
-                    </div>
-                </div>
+            <form className='post_form'>
+                {!messageInput && (
+                    <div className='post_title relative'>
+                        <h1 className='text-center font-bold text-xl'>
+                            {Object.keys(currentPost).length > 0 ? 'Edit Post' : 'Create Post'}
+                        </h1>
 
-                <textarea
-                    className='post_textarea w-full outline-none overflow-auto'
-                    placeholder={`What's on your mind, ${auth.user?.username}?`}
-                    value={content}
-                    onChange={handleChangeValueTextarea}
-                ></textarea>
-                {openVideo && (
-                    <div className='camera_wrapper'>
-                        <video autoPlay muted ref={videoRef} />
-                        <canvas ref={canvasRef} hidden />
-                    </div>
-                )}
-
-                {files?.length > 0 && (
-                    <div className='show_images'>
-                        <div className='images_wrapper relative'>
-                            <div className='remove_img_btn hover:text-red-500'>
-                                <CloseIcon onClick={handleClearImages} fontSize='small' />
-                            </div>
-                            {files.map((file, index) => {
-                                if (file.video || file?.url.includes('/video/upload/')) {
-                                    return (
-                                        <video key={index} controls>
-                                            <source src={file.video || file.url} />
-                                        </video>
-                                    );
-                                }
-
-                                return (
-                                    <img
-                                        src={
-                                            file?.imgCamera ||
-                                            (file.url ?? URL.createObjectURL(file))
-                                        }
-                                        key={index}
-                                        alt='previewed_image'
-                                    />
-                                );
-                            })}
+                        <div
+                            onClick={() => {
+                                handleCloseModalPost(stream);
+                            }}
+                            className='post_close_btn hover:text-red-500'
+                        >
+                            <CloseIcon fontSize='small' />
                         </div>
                     </div>
                 )}
-                <div className='more_btn_wrapper'>
-                    <div className='icons_btn_wrapper relative'>
-                        {openVideo ? (
-                            <>
-                                <ArrowBackIcon
-                                    onClick={() => {
-                                        handleStopCamera(stream);
-                                    }}
-                                    className='text-gray-500 hover:text-black close_camera_btn'
-                                    fontSize='large'
-                                />
-                                <label className='absolute left-1/2 -translate-x-1/2 block p-1 rounded-full hover:bg-gray-200 transition linear'>
-                                    <PhotoCameraIcon
-                                        onClick={handleCaptureCamera}
+
+                <div>
+                    <textarea
+                        className='post_textarea w-full outline-none overflow-auto'
+                        placeholder={
+                            messageInput
+                                ? `${'Enter your message...'}`
+                                : `What's on your mind, ${auth.user?.username}?`
+                        }
+                        value={content}
+                        onChange={handleChangeValueTextarea}
+                    ></textarea>
+                    {openVideo && (
+                        <div className='camera_wrapper'>
+                            <video autoPlay muted ref={videoRef} />
+                            <canvas ref={canvasRef} hidden />
+                        </div>
+                    )}
+
+                    {files?.length > 0 && (
+                        <div className='show_images'>
+                            <div className='images_wrapper relative'>
+                                <div className='remove_img_btn hover:text-red-500'>
+                                    <CloseIcon onClick={handleClearImages} fontSize='small' />
+                                </div>
+                                {files.map((file, index) => {
+                                    if (
+                                        file.video ||
+                                        (file?.url && file?.url.includes('/video/upload/'))
+                                    ) {
+                                        return (
+                                            <video key={index} controls>
+                                                <source src={file.video || file.url} />
+                                            </video>
+                                        );
+                                    }
+
+                                    return (
+                                        <img
+                                            src={
+                                                file?.imgCamera ||
+                                                (file.url ?? URL.createObjectURL(file))
+                                            }
+                                            key={index}
+                                            alt='previewed_image'
+                                        />
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    )}
+                    <div className='more_btn_wrapper'>
+                        <div className='icons_btn_wrapper relative'>
+                            {openVideo ? (
+                                <>
+                                    <ArrowBackIcon
+                                        onClick={() => {
+                                            handleStopCamera(stream);
+                                        }}
+                                        className='text-gray-500 hover:text-black close_camera_btn'
                                         fontSize='large'
                                     />
-                                </label>
-                            </>
-                        ) : (
-                            <>
-                                <span className='font-semibold text-base whitespace-nowrap'>
-                                    Add to your post
-                                </span>
-                                <div className='icons_wrapper flex gap-3 items-center'>
-                                    <label htmlFor='insert_image' className='icon-item'>
-                                        <ImageIcon sx={{ color: '#50C878' }} />
-                                    </label>
-
-                                    <label className='icon-item'>
+                                    <label className='absolute left-1/2 -translate-x-1/2 block p-1 rounded-full hover:bg-gray-200 transition linear'>
                                         <PhotoCameraIcon
-                                            sx={{ color: '#F02849' }}
-                                            onClick={handleOpenCamera}
+                                            onClick={handleCaptureCamera}
+                                            fontSize='large'
                                         />
                                     </label>
+                                </>
+                            ) : (
+                                <>
+                                    {!messageInput && (
+                                        <span className='font-semibold text-base whitespace-nowrap'>
+                                            Add to your post
+                                        </span>
+                                    )}
+                                    <div className='icons_wrapper flex gap-3 items-center'>
+                                        <label htmlFor='insert_image' className='icon-item'>
+                                            <ImageIcon sx={{ color: '#50C878' }} />
+                                        </label>
 
-                                    <label className='icon-item'>
-                                        <EmotionBtn setContent={setContent} />
-                                    </label>
-                                    <input
-                                        id='insert_image'
-                                        type='file'
-                                        ref={inputRef}
-                                        multiple
-                                        accept='image/*,video/*'
-                                        onChange={handleInsertFiles}
-                                        hidden
-                                    />
-                                </div>
-                            </>
+                                        <label className='icon-item'>
+                                            <PhotoCameraIcon
+                                                sx={{ color: '#F02849' }}
+                                                onClick={handleOpenCamera}
+                                            />
+                                        </label>
+
+                                        <label className='icon-item'>
+                                            <EmotionBtn setContent={setContent} />
+                                        </label>
+                                        <input
+                                            id='insert_image'
+                                            type='file'
+                                            ref={inputRef}
+                                            multiple
+                                            accept='image/*,video/*'
+                                            onChange={handleInsertFiles}
+                                            hidden
+                                        />
+                                    </div>
+                                    {messageInput && (
+                                        <div
+                                            onClick={handleSendMessage}
+                                            className={`send_message ${
+                                                content ? 'text-gray-700' : 'text-gray-300'
+                                            }`}
+                                        >
+                                            <SendIcon />
+                                        </div>
+                                    )}
+                                </>
+                            )}
+                        </div>
+
+                        {!messageInput && (
+                            <button onClick={handleSumbitPost} className='post_btn'>
+                                {Object.keys(currentPost).length > 0 ? 'Save' : 'Post'}
+                            </button>
                         )}
                     </div>
-
-                    <button onClick={handleSumbitPost} className='post_btn'>
-                        {Object.keys(currentPost).length > 0 ? 'Save' : 'Post'}
-                    </button>
                 </div>
             </form>
         </div>

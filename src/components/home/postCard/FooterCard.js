@@ -19,7 +19,7 @@ function FooterCard({ post, auth, socket }) {
     const inputCommentRef = useRef();
 
     const handleLike = () => {
-        dispatch(likePost(post._id, auth.user, socket));
+        dispatch(likePost(post, auth.user, socket));
     };
 
     const handleUnlike = () => {

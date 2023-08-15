@@ -1,4 +1,3 @@
-import SearchIcon from '@mui/icons-material/Search';
 import Tippy from '@tippyjs/react/headless';
 import { useCallback, useEffect, useState } from 'react';
 import 'tippy.js/dist/tippy.css';
@@ -83,14 +82,11 @@ function Search() {
                 <input
                     type='search'
                     className='search_input py-2 px-3 outline-none bg-gray-100'
-                    placeholder='Search on Smedia'
+                    placeholder='Search on smedia'
                     value={searchValue}
                     onChange={handleSearch}
                     onClick={visibleResult}
                 />
-                <div className='flex justify-center items-center icon_wrapper bg-gray-300 h-full p-2 hover:text-white hover:bg-gray-700 transition linear'>
-                    <SearchIcon />
-                </div>
             </div>
         </Tippy>
     );
