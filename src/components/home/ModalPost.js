@@ -13,7 +13,14 @@ import EmotionBtn from '../EmotionBtn';
 import readFile from '../../utils/readFile';
 import { createMessage } from '../../redux/actions/messageAction';
 
-function ModalPost({ auth, currentPost, detailPost, messageInput, currentReceiver }) {
+function ModalPost({
+    auth,
+    currentPost,
+    detailPost,
+    messageInput,
+    currentReceiver,
+    scrollToBottom
+}) {
     const theme = useSelector(themSelector);
     const socket = useSelector(socketSelector);
 
@@ -161,7 +168,7 @@ function ModalPost({ auth, currentPost, detailPost, messageInput, currentReceive
 
         dispatch(
             createMessage({
-                sender: auth.user._id,
+                scrollToBottom,
                 content,
                 sender: auth.user._id,
                 receiver: currentReceiver._id,

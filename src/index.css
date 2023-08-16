@@ -1,6 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url(./styles/responsive/SidebarResponsive.css);
+@import url(./styles/responsive/layoutResponsive.css);
 @import url(./styles/responsive/PostCardResponesive.css);
 @import url(./styles/responsive/scrollResponsive.css);
 @import url(./styles/responsive/ProfileResponesive.css);
@@ -30,6 +32,6 @@
 @import url(./styles/Notification.css);
 @import url(./styles/EmotionBtn.css);
 @import url(./styles/Message.css);
-@import url(./styles/RightMessageSidebar.css);
+@import url(./styles/LeftMessageSidebar.css);
 
 

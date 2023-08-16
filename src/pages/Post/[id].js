@@ -30,28 +30,32 @@ function DetailPost() {
         if (detailPost) setPost(detailPost);
     }, [detailPostList, dispatch, id]);
 
-    if (Object.keys(post).length > 0) {
-        return (
-            <div key={post._id} className='post_item detail_post_item'>
-                <PostCard post={post} auth={auth} detailPost={true} />
-                {openModalDetailPost && (
-                    <ModalPost currentPost={post} auth={auth} detailPost={true} />
-                )}
-            </div>
-        );
-    } else {
-        return (
-            <div
-                key={post._id}
-                className='w-full h-full flex flex-col justify-center items-center font-bold'
-            >
-                NOT FOUND
-                <span className='text-gray-400 uppercase text-xs'>
-                    (maybe the post has been deleted)
-                </span>
-            </div>
-        );
-    }
+    return (
+        <>
+            {auth.user && (
+                <>
+                    {Object.keys(post).length > 0 ? (
+                        <div key={post._id} className='post_item detail_post_item'>
+                            <PostCard post={post} auth={auth} detailPost={true} />
+                            {openModalDetailPost && (
+                                <ModalPost currentPost={post} auth={auth} detailPost={true} />
+                            )}
+                        </div>
+                    ) : (
+                        <div
+                            key={post._id}
+                            className='w-full h-full flex flex-col justify-center items-center font-bold'
+                        >
+                            NOT FOUND
+                            <span className='text-gray-400 uppercase text-xs'>
+                                (maybe the post has been deleted)
+                            </span>
+                        </div>
+                    )}
+                </>
+            )}
+        </>
+    );
 }
 
 export default DetailPost;

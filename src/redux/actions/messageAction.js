@@ -1,72 +1,90 @@
-import { postDataApi } from '../../utils/fetchData';
+import { getDataApi, postDataApi } from '../../utils/fetchData';
 import { uploadFile } from '../../utils/uploadFile';
 import { GLOBALTYPES } from './globalTypes';
 
 export const getMessages =
-    ({ user }) =>
+    ({ conversation }) =>
     async (dispatch) => {
         try {
-        } catch (error) {}
+            const res = await getDataApi(`/messages/${conversation._id}`);
+            dispatch({
+                type: GLOBALTYPES.MESSAGE.GET_MESSAGE,
+                payload: {
+                    [conversation._id]: res.data.messages
+                }
+            });
+        } catch (error) {
+            dispatch({
+                type: GLOBALTYPES.ALERT,
+                payload: {
+                    error: error.response?.data.msg || 'Error'
+                }
+            });
+        }
+    };
+
+export const getConversations =
+    ({ auth }) =>
+    async (dispatch) => {
+        try {
+            const res = await getDataApi(`/conversations/${auth?.user._id}`);
+            dispatch({
+                type: GLOBALTYPES.MESSAGE.GET_CONVERSATIONS,
+                payload: res.data.conversations
+            });
+        } catch (error) {
+            dispatch({
+                type: GLOBALTYPES.ALERT,
+                payload: {
+                    error: error.response?.data.msg || 'Error'
+                }
+            });
+        }
     };
 
 export const createMessage =
-    ({ receiver, sender, content, files }) =>
+    ({ scrollToBottom, receiver, sender, content, files }) =>
     async (dispatch) => {
-        // dispatch({
-        //     type: GLOBALTYPES.ALERT,
-        //     payload: {
-        //         loading: true
-        //     }
-        // });
-
         dispatch({
-            type: GLOBALTYPES.MESSAGE.ADD_MESSAGE,
+            type: GLOBALTYPES.ALERT,
             payload: {
-                receiver,
-                sender,
-                content,
-                files
+                loading: true
             }
         });
 
-        // let fileUrlArr = [];
-        // if (files.length > 0) {
-        //     fileUrlArr = await uploadFile(files);
-        // }
-        // postDataApi(`/message/:id`, {
-        //     postData: {
-        //         user,
-        //         content,
-        //         images: fileUrlArr
-        //     }
-        // })
-        //     .then((res) => {
-        //         dispatch({
-        //             type: GLOBALTYPES.POST.CREATE_POST,
-        //             payload: res.data.postData
-        //         });
+        let fileUrlArr = [];
+        if (files.length > 0) {
+            fileUrlArr = await uploadFile(files);
+        }
 
-        //         dispatch({
-        //             type: GLOBALTYPES.PROFILE.RESET_USER_POSTS,
-        //             payload: {
-        //                 userId: user._id
-        //             }
-        //         });
+        postDataApi(`/message`, {
+            postData: {
+                receiver,
+                sender,
+                content,
+                files: fileUrlArr
+            }
+        })
+            .then((res) => {
+                dispatch({
+                    type: GLOBALTYPES.MESSAGE.ADD_MESSAGE,
+                    payload: res.data.createdMessage
+                });
 
-        //         dispatch({
-        //             type: GLOBALTYPES.ALERT,
-        //             payload: {
-        //                 success: res.data.status
-        //             }
-        //         });
-        //     })
-        //     .catch((err) => {
-        //         console.log(err);
-        //         dispatch({
-        //             type: GLOBALTYPES.ALERT,
-        //             payload: {
-        //                 error: err.response?.data.msg || 'Error'
-        //             }
-        //         });
-        //     });
+                setTimeout(() => {
+                    scrollToBottom();
+                }, 100);
+                dispatch({
+                    type: GLOBALTYPES.ALERT,
+                    payload: {}
+                });
+            })
+            .catch((err) => {
+                dispatch({
+                    type: GLOBALTYPES.ALERT,
+                    payload: {
+                        error: err.response?.data.msg || 'Error'
+                    }
+                });
+            });
     };

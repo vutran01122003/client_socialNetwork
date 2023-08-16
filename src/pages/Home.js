@@ -7,10 +7,14 @@ function Home() {
     const auth = useSelector(authSelector);
 
     return (
-        <div className='home'>
-            <Status auth={auth} />
-            <Post auth={auth} />
-        </div>
+        <>
+            {auth.user && (
+                <div className='home'>
+                    <Status auth={auth} />
+                    <Post auth={auth} />
+                </div>
+            )}
+        </>
     );
 }
 

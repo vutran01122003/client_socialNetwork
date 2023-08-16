@@ -29,34 +29,19 @@ function App() {
     return (
         <Router>
             <Alert />
-            <input
-                type='checkbox'
-                checked={theme}
-                readOnly
-                id='theme'
-                hidden={true}
-            />
+            <input type='checkbox' checked={theme} readOnly id='theme' hidden={true} />
             <div className='App'>
                 {auth?.user && <SocketClient auth={auth} />}
                 <Fragment>
                     <Routes>
                         <Route path='/register' element={<Register />} />
                         <Route path='/login' element={<Login />} />
-                        <Route
-                            path='/'
-                            element={<Layout theme={theme} auth={auth} />}
-                        >
-                            <Route
-                                index
-                                element={auth.token ? <Home /> : <Login />}
-                            />
+                        <Route path='/' element={<Layout theme={theme} auth={auth} />}>
+                            <Route index element={auth.token ? <Home /> : <Login />} />
                             <Route path='*' element={<PageRender />} />
                             <Route path='/' element={<PrivateRoute />}>
                                 <Route path='/:page' element={<PageRender />} />
-                                <Route
-                                    path='/:page/:id'
-                                    element={<PageRender />}
-                                />
+                                <Route path='/:page/:id' element={<PageRender />} />
                             </Route>
                         </Route>
                     </Routes>

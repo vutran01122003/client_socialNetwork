@@ -2,7 +2,9 @@ import { GLOBALTYPES } from '../actions/globalTypes';
 
 const initialState = {
     currentReceiver: {},
-    messages: [],
+    currentConversation: {},
+    messages: {},
+    conversations: [],
     onlineUserList: {}
 };
 
@@ -18,10 +20,28 @@ function messageReducer(state = initialState, action) {
                 ...state,
                 currentReceiver: action.payload
             };
-        case GLOBALTYPES.MESSAGE.ADD_MESSAGE:
+        case GLOBALTYPES.MESSAGE.GET_MESSAGE:
             return {
                 ...state,
-                messages: [...state.messages, action.payload]
+                messages: { ...state.messages, ...action.payload }
+            };
+        case GLOBALTYPES.MESSAGE.ADD_MESSAGE: {
+            const messages = { ...state.messages };
+            messages[action.payload.conversationId].push(action.payload);
+            return {
+                ...state,
+                messages
+            };
+        }
+        case GLOBALTYPES.MESSAGE.GET_CONVERSATIONS:
+            return {
+                ...state,
+                conversations: [...action.payload]
+            };
+        case GLOBALTYPES.MESSAGE.SET_CURRENT_CONVERSATION:
+            return {
+                ...state,
+                currentConversation: action.payload
             };
         default:
             return state;

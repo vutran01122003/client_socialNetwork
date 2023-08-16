@@ -1,0 +1,35 @@
+@media only screen and (max-width: 599px) {
+    .app_container .left_message_sidebar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .app_container .left_message_sidebar .left_message_sidebar_contacts {
+        display: none;
+    }
+
+    .app_container .left_message_sidebar .account{
+       justify-content: center;
+    }
+
+    .app_container .left_message_sidebar .account_wrapper{
+        padding: 4px;
+     }
+
+    .app_container .left_message_sidebar .message_user_description {
+        display: none;
+    }
+}
+
+@media only screen and (min-width: 600px) and (max-width: 739px) {
+    .app_container .message_user_description 
+    :is(.message_user_description_username, .message_user_description_fullname) {
+        max-width: 40px;
+    }
+}
+
+@media only screen and (min-width: 740px) and (max-width: 1024px) {
+    .app_container .message_user_description 
+    :is(.message_user_description_username, .message_user_description_fullname) {
+        max-width: 80px;
+    }
+}

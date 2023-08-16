@@ -1,3 +1,65 @@
+.message_wrapper {
+    flex-basis: 80%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 64px - 8px - 8px);
+    background: var(--white-color);
+    box-shadow: var(--box-shadow-gray);
+}
+
+.message_notify {
+    flex-basis: 80%;
+    height: calc(100vh - 64px - 8px - 8px);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    justify-content: center;
+    align-items: center; 
+    color: var(--sencondary-text-color);
+    font-size: small;
+    font-weight: 500;
+    opacity: 0.8;
+    text-transform: uppercase;
+    user-select: none;
+    background: var(--white-color);
+    box-shadow: var(--box-shadow-gray);
+}
+
+.message_user_header {
+    border-bottom: var(--border-post-pagination);
+}
+
+.message_sender {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.message_sender .body_card_message {
+    color: var(--white-color);
+    background: var(--message-sender-color);
+}
+
+.message_receiver {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.message_receiver .body_card_message {
+    color: var(--black-color);
+    background: var(--message-receiver-color);
+}
+
+.message_screen {
+    padding: 8px 0px 8px 8px;
+    overflow: auto;
+    flex: 1;
+}
+
+.message_input {
+    padding: 0px 8px 8px;
+}
+
 .message_modal {
     border-radius: 10px;
     width: 100%;
@@ -30,43 +92,6 @@
     max-height: 150px;
 }
 
-.message_wrapper {
-    width: 100%;
-    height: 100%;
-    background: var(--white-color);
-    box-shadow: var(--box-shadow-gray);
-    border-radius: 10px;
-    padding: 8px;
-}
-
-.message {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-.message .message_screen {
-    flex: 1;
-}
-
-.message_notify {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-    gap: 8px;
-    color: var(--sencondary-text-color);
-    font-size: small;
-    font-weight: 500;
-    opacity: 0.8;
-    text-transform: uppercase;
-    user-select: none;
-}
-
-
 .body_card_message {
     border-radius: 10px;
     margin: 10px 0;
@@ -83,4 +108,13 @@
 
 .body_card_message .carousel_wrapper {
     max-height: 300px;
+    width: inherit;
+}
+
+
+.message_user_description :is(.message_user_description_username, .message_user_description_fullname) { 
+    text-overflow: ellipsis; /* enables ellipsis */
+    white-space: nowrap; /* keeps the text in a single line */
+    overflow: hidden; 
+    max-width: 140px;
 }

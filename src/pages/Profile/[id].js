@@ -34,18 +34,22 @@ function Profile() {
         return <div className='font-semibold w-full h-full text-center mt-10'>User Not Found</div>;
 
     return (
-        <div className='profile_container flex flex-col'>
-            {profile.loading ? (
-                <div className='flex justify-center w-full mt-20'>
-                    <CircularProgress size={50} />
+        <>
+            {auth.user && (
+                <div className='profile_container flex flex-col'>
+                    {profile.loading ? (
+                        <div className='flex justify-center w-full mt-20'>
+                            <CircularProgress size={50} />
+                        </div>
+                    ) : (
+                        <>
+                            <Info userInfo={userInfo} id={id} auth={auth} />
+                            <Post userInfo={userInfo} id={id} auth={auth} />
+                        </>
+                    )}
                 </div>
-            ) : (
-                <>
-                    <Info userInfo={userInfo} id={id} auth={auth} />
-                    <Post userInfo={userInfo} id={id} auth={auth} />
-                </>
             )}
-        </div>
+        </>
     );
 }
 
