@@ -38,3 +38,22 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+.conversation_icon_wrapper {
+    display: flex;
+    gap: 8px;
+}
+
+.conversation_icon {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.conversation_icon:hover {
+    background-color: var(--hover-background-color-v2);
+}

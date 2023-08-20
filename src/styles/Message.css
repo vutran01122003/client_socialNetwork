@@ -1,4 +1,5 @@
 .message_wrapper {
+    overflow: hidden;
     flex-basis: 80%;
     height: 100%;
     display: flex;
@@ -26,12 +27,26 @@
     box-shadow: var(--box-shadow-gray);
 }
 
+.message_item {
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 4px
+}
+
 .message_user_header {
     border-bottom: var(--border-post-pagination);
 }
 
+.message_user_header .account_wrapper {
+    gap: 8px;
+}
+
+.message_user_header .account_wrapper:hover {
+    background-color: var(--white-color);
+}
+
 .message_sender {
-    display: flex;
     justify-content: flex-end;
 }
 
@@ -41,8 +56,8 @@
 }
 
 .message_receiver {
-    display: flex;
     justify-content: flex-start;
+    align-items: flex-end;
 }
 
 .message_receiver .body_card_message {
@@ -51,20 +66,30 @@
 }
 
 .message_screen {
-    padding: 8px 0px 8px 8px;
+    padding: 8px;
     overflow: auto;
     flex: 1;
 }
 
 .message_input {
-    padding: 0px 8px 8px;
+    background: var(--white-color);
 }
 
 .message_modal {
     border-radius: 10px;
     width: 100%;
-    overflow: auto;
     box-shadow: 0 0 1px gray;
+}
+
+.message_modal .camera_wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.message_modal .camera_wrapper  video {
+    width: 30vw;
+
 }
 
 .message_modal .post_form {
@@ -73,6 +98,7 @@
 }
 
 .message_modal .post_textarea {
+    border-radius: 10px;
     height: 60px;
 }
 
@@ -84,19 +110,18 @@
     gap: 1.5rem;
 }
 
+.message_modal .images_wrapper {
+    max-height: 115px;
+}
+
 .send_message {
     cursor: pointer;
 }
 
-.message_modal .images_wrapper {
-    max-height: 150px;
-}
-
 .body_card_message {
     border-radius: 10px;
-    margin: 10px 0;
     font-weight: 500;
-    width: 50%;
+    width: 35vw;
     padding: 15px;
     border-bottom: var( --border-post-pagination);
     background: var(--comment-background-color);
@@ -107,10 +132,9 @@
 }
 
 .body_card_message .carousel_wrapper {
-    max-height: 300px;
-    width: inherit;
+    max-height: 50vh;
+    width: 100%;
 }
-
 
 .message_user_description :is(.message_user_description_username, .message_user_description_fullname) { 
     text-overflow: ellipsis; /* enables ellipsis */
@@ -118,3 +142,19 @@
     overflow: hidden; 
     max-width: 140px;
 }
+
+.message_item .more_wrapper {
+    max-width: 120px;
+}
+
+.message_item:hover .more_message_btn {
+    opacity: 1;
+    visibility: visible;
+}
+
+.more_message_btn {
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.1s linear;
+}
+

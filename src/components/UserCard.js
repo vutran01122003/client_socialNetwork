@@ -1,34 +1,68 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Avatar from './Avatar';
 import Follow from './FollowBtn';
-import React from 'react';
-import { useDispatch } from 'react-redux';
-import { getMessages } from '../redux/actions/messageAction';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
+import PhoneOutlinedIcon from '@mui/icons-material/PhoneOutlined';
+import VideocamOutlinedIcon from '@mui/icons-material/VideocamOutlined';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import { getMessages } from '../redux/actions/messageAction';
 import { GLOBALTYPES } from '../redux/actions/globalTypes';
 import { messageSelector } from '../redux/selector';
 
-function UserCard({ user, onClick, auth, conversation }) {
+function UserCard({ user, onClick, auth, conversation, conversationHeader, peer, socket }) {
     const dispatch = useDispatch();
     let message = useSelector(messageSelector);
     const Elem = conversation ? 'div' : Link;
 
+    const handleCallUser = async ({ video }) => {
+        const data = {
+            peerId: peer._id,
+            sender: {
+                _id: auth.user._id,
+                username: auth.user.username,
+                fullname: auth.user.fullname,
+                avatar: auth.user.avatar
+            },
+            receiver: user,
+            video
+        };
+
+        dispatch({
+            type: GLOBALTYPES.CALL.CALL_USER,
+            payload: data
+        });
+
+        socket.emit('call_user', data);
+    };
+
+    const handleCallAudioUser = async () => {
+        handleCallUser({ video: false });
+    };
+
+    const handleCallVideoUser = async () => {
+        handleCallUser({ video: true });
+    };
+
     const handleGetMessages = (e) => {
         e.preventDefault();
 
-        dispatch({
-            type: GLOBALTYPES.MESSAGE.SET_CURRENT_RECEIVER,
-            payload: user
-        });
+        if (message.currentReceiver._id !== user._id) {
+            dispatch({
+                type: GLOBALTYPES.MESSAGE.SET_CURRENT_RECEIVER,
+                payload: user
+            });
+        }
 
-        if (conversation) {
+        if (conversation && conversation._id !== message.currentConversation._id) {
             dispatch({
                 type: GLOBALTYPES.MESSAGE.SET_CURRENT_CONVERSATION,
                 payload: conversation
             });
 
-            dispatch(getMessages({ conversation }));
+            if (!message.messages[conversation._id]) dispatch(getMessages({ conversation }));
         }
     };
 
@@ -84,7 +118,26 @@ function UserCard({ user, onClick, auth, conversation }) {
                     </p>
                 </div>
             </Elem>
-            {auth && <Follow userInfo={user} auth={auth} size={'small'} />}
+            {auth && !conversationHeader && <Follow userInfo={user} auth={auth} size={'small'} />}
+            {conversationHeader && (
+                <div className='conversation_icon_wrapper text-gray-500'>
+                    <div
+                        onClick={handleCallAudioUser}
+                        className='conversation_icon conversation_call_icon'
+                    >
+                        <PhoneOutlinedIcon />
+                    </div>
+                    <div
+                        onClick={handleCallVideoUser}
+                        className='conversation_icon conversation_video_icon'
+                    >
+                        <VideocamOutlinedIcon />
+                    </div>
+                    <div className='conversation_icon conversation_more_icon'>
+                        <MoreHorizIcon />
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

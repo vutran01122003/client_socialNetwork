@@ -25,3 +25,7 @@ export const socketSelector = (state) => state.socket.socket;
 export const notificationSelector = (state) => state.notify;
 
 export const messageSelector = (state) => state.message;
+
+export const callSelector = (state) => state.call;
+
+export const peerSelector = (state) => state.peer;

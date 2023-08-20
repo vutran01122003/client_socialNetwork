@@ -1,5 +1,27 @@
-.follow_info, .fullname   {
+.follow_info  {
     margin-top: 8px;
+}
+
+.username {
+    text-align: center;
+}
+
+.fullname_message_wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+}
+
+.message_btn {
+    margin-top: 4px;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.message_btn:hover {
+    background: var(--hover-background-color);
 }
 
 .website_link {

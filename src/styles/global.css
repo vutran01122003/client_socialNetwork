@@ -3,6 +3,8 @@
     --padding-height: 8px;
     --primary-color: teal;
     --comment-background-color: #F0F2F5;
+    --modal-overlap-background-color: rgba(0, 0, 0, 0.7);
+    --modal-video-background-color: linear-gradient(160deg, rgb(61, 196, 241), rgb(47, 128, 237));
     --message-sender-color: rgb(16, 126, 229);
     --message-receiver-color: #F0F2F5;
     --app-background-color: #F0F2F5;
@@ -10,6 +12,7 @@
     --black-color: #000;
     --favourite-active-color: rgb(255, 48, 64);
     --hover-background-color: #F2F3F5;
+    --hover-background-color-v2: #e3e4e6;
     --active-background-color: #cdcdd0;
     --sencondary-text-color: #65676B;    
     --box-shadow-gray: 0 0 3px gray;

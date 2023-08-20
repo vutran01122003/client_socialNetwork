@@ -10,7 +10,9 @@ function RightMessageSidebar({ auth }) {
     const conversations = message.conversations;
 
     useEffect(() => {
-        dispatch(getConversations({ auth }));
+        if (message.conversations.length === 0) {
+            dispatch(getConversations({ auth }));
+        }
         // eslint-disable-next-line
     }, []);
 
@@ -24,7 +26,7 @@ function RightMessageSidebar({ auth }) {
                             <UserCard
                                 key={conversation._id}
                                 user={conversation.recipients.find(
-                                    (recipient) => recipient !== auth?.user._id
+                                    (recipient) => recipient._id !== auth?.user._id
                                 )}
                                 messagePage={true}
                                 conversation={conversation}

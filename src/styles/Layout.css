@@ -21,6 +21,7 @@ main {
 }
 
 .main_message {
+    position: relative;
     display: flex;
     justify-content: center;
     width: 1200px;

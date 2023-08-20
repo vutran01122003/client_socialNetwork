@@ -1,18 +1,83 @@
-import { getDataApi, postDataApi } from '../../utils/fetchData';
+import { deleteDataApi, getDataApi, postDataApi } from '../../utils/fetchData';
 import { uploadFile } from '../../utils/uploadFile';
 import { GLOBALTYPES } from './globalTypes';
 
 export const getMessages =
-    ({ conversation }) =>
+    ({ page = 1, conversation }) =>
     async (dispatch) => {
         try {
-            const res = await getDataApi(`/messages/${conversation._id}`);
             dispatch({
-                type: GLOBALTYPES.MESSAGE.GET_MESSAGE,
+                type: GLOBALTYPES.MESSAGE.MESSAGE_LOADING,
+                payload: { loading: true }
+            });
+
+            const res = await getDataApi(`/messages/${conversation._id}?page=${page}`);
+            if (res.data.messages.length === 0) {
+                dispatch({
+                    type: GLOBALTYPES.MESSAGE.UPDATE_MESSAGE,
+                    payload: {
+                        conversationId: conversation._id,
+                        updatedMessage: { maxPage: true }
+                    }
+                });
+            } else {
+                if (page === 1) {
+                    dispatch({
+                        type: GLOBALTYPES.MESSAGE.GET_MESSAGES,
+                        payload: {
+                            [conversation._id]: {
+                                data: res.data.messages,
+                                page: 1,
+                                maxPage: false,
+                                result: res.data.messages.length
+                            }
+                        }
+                    });
+                } else {
+                    dispatch({
+                        type: GLOBALTYPES.MESSAGE.GET_MESSAGES,
+                        payload: {
+                            conversationId: conversation._id,
+                            messages: res.data.messages,
+                            page
+                        }
+                    });
+                }
+            }
+        } catch (error) {
+            dispatch({
+                type: GLOBALTYPES.ALERT,
                 payload: {
-                    [conversation._id]: res.data.messages
+                    error: error.response?.data.msg || 'Error'
                 }
             });
+        } finally {
+            dispatch({
+                type: GLOBALTYPES.MESSAGE.MESSAGE_LOADING,
+                payload: { loading: false }
+            });
+        }
+    };
+
+export const getConversation =
+    ({ userData, message }) =>
+    async (dispatch) => {
+        try {
+            dispatch({
+                type: GLOBALTYPES.MESSAGE.SET_CURRENT_RECEIVER,
+                payload: userData
+            });
+
+            const res = await getDataApi(`/conversation/${userData?._id}`);
+
+            dispatch({
+                type: GLOBALTYPES.MESSAGE.SET_CURRENT_CONVERSATION,
+                payload: res.data.conversation || {}
+            });
+
+            if (res.data.conversation?._id && !message.messages[res.data.conversation._id]) {
+                dispatch(getMessages({ conversation: res.data.conversation }));
+            }
         } catch (error) {
             dispatch({
                 type: GLOBALTYPES.ALERT,
@@ -43,10 +108,10 @@ export const getConversations =
     };
 
 export const createMessage =
-    ({ scrollToBottom, receiver, sender, content, files }) =>
+    ({ auth, socket, message, scrollToBottom, receiver, sender, content, files }) =>
     async (dispatch) => {
         dispatch({
-            type: GLOBALTYPES.ALERT,
+            type: GLOBALTYPES.MESSAGE.MESSAGE_LOADING,
             payload: {
                 loading: true
             }
@@ -66,6 +131,21 @@ export const createMessage =
             }
         })
             .then((res) => {
+                socket.emit('created_message', res.data);
+
+                if (
+                    !message.conversations.find(
+                        (conversation) => conversation._id === res.data.conversation._id
+                    )
+                ) {
+                    dispatch({
+                        type: GLOBALTYPES.MESSAGE.SET_CURRENT_CONVERSATION,
+                        payload: res.data.conversation
+                    });
+
+                    dispatch(getConversations({ auth }));
+                }
+
                 dispatch({
                     type: GLOBALTYPES.MESSAGE.ADD_MESSAGE,
                     payload: res.data.createdMessage
@@ -74,10 +154,6 @@ export const createMessage =
                 setTimeout(() => {
                     scrollToBottom();
                 }, 100);
-                dispatch({
-                    type: GLOBALTYPES.ALERT,
-                    payload: {}
-                });
             })
             .catch((err) => {
                 dispatch({
@@ -86,5 +162,32 @@ export const createMessage =
                         error: err.response?.data.msg || 'Error'
                     }
                 });
+            })
+            .finally(() => {
+                dispatch({
+                    type: GLOBALTYPES.MESSAGE.MESSAGE_LOADING,
+                    payload: { loading: false }
+                });
             });
+    };
+
+export const deleteMessage =
+    ({ messageId }) =>
+    async (dispatch) => {
+        try {
+            const res = await deleteDataApi(`/message/${messageId}`);
+            dispatch({
+                type: GLOBALTYPES.MESSAGE.UPDATE_MESSAGE,
+                payload: {
+                    deletedMessage: res.data.deletedMessage
+                }
+            });
+        } catch (error) {
+            dispatch({
+                type: GLOBALTYPES.ALERT,
+                payload: {
+                    error: error.response?.data.msg || 'Error'
+                }
+            });
+        }
     };

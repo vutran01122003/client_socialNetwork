@@ -12,6 +12,7 @@ import PrivateRoute from './configRouter/PrivateRoute';
 import Layout from './components/layout/Layout';
 import { getAuthInfo } from './redux/actions/authAction';
 import SocketClient from './SocketClient';
+import PeerClient from './PeerClient';
 
 function App() {
     const dispatch = useDispatch();
@@ -31,7 +32,12 @@ function App() {
             <Alert />
             <input type='checkbox' checked={theme} readOnly id='theme' hidden={true} />
             <div className='App'>
-                {auth?.user && <SocketClient auth={auth} />}
+                {auth?.user && (
+                    <>
+                        <SocketClient auth={auth} />
+                        <PeerClient />
+                    </>
+                )}
                 <Fragment>
                     <Routes>
                         <Route path='/register' element={<Register />} />

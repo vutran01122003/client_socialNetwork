@@ -1,10 +1,10 @@
 import ModalPost from '../home/ModalPost';
-function MessageInput({ auth, currentReceiver, scrollToBottom }) {
+function MessageInput({ message, auth, scrollToBottom }) {
     return (
         <ModalPost
             auth={auth}
             messageInput={true}
-            currentReceiver={currentReceiver}
+            message={message}
             scrollToBottom={scrollToBottom}
         />
     );

@@ -31,8 +31,8 @@
         text-align: center;
     }
 
-    .fullname  {
-        margin-top: 10px;
+    .fullname_message_wrapper {
+        justify-content: center;
     }
 
     .website_link {

@@ -13,6 +13,8 @@ import suggestedUsersReducer from './suggestedUsersReducer';
 import socketReducer from './socketReducer';
 import notifyReducer from './notifyReducer';
 import messageReducer from './messageReducer';
+import callReducer from './callReducer';
+import peerReducer from './peerReducer';
 
 const rootReducer = combineReducers({
     auth: authReducer,
@@ -27,8 +29,10 @@ const rootReducer = combineReducers({
     postsDiscover: discoverReducer,
     suggestedUsers: suggestedUsersReducer,
     socket: socketReducer,
+    peer: peerReducer,
     notify: notifyReducer,
-    message: messageReducer
+    message: messageReducer,
+    call: callReducer
 });
 
 export default rootReducer;

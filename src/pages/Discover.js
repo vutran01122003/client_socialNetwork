@@ -18,7 +18,7 @@ function Discover() {
             {postsDiscover.length > 0 ? (
                 <PostsThumb posts={postsDiscover} />
             ) : (
-                <h3 className='font-semibold text-lg absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
+                <h3 className='font-semibold text-sm absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-gray-600 uppercase'>
                     There are no posts to recommend
                 </h3>
             )}
