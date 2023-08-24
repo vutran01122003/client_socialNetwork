@@ -38,7 +38,7 @@ function Message() {
                             <div className='message_user_header'>
                                 <UserCard
                                     user={message.currentReceiver}
-                                    conversationHeader={true}
+                                    conversationHeader={message.currentConversation}
                                     call={call}
                                     peer={peer}
                                     auth={auth}

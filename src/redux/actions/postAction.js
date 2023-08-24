@@ -220,7 +220,7 @@ export const updatePost =
     };
 
 export const deletePost =
-    ({ postId }) =>
+    ({ post, auth }) =>
     async (dispatch) => {
         dispatch({
             type: GLOBALTYPES.ALERT,
@@ -228,19 +228,20 @@ export const deletePost =
                 loading: true
             }
         });
-        deleteDataApi(`/post/${postId}`)
+
+        deleteDataApi(`/post/${post._id}`)
             .then((res) => {
                 dispatch({
                     type: GLOBALTYPES.POST.DELETE_POST,
                     payload: {
-                        postId: res.data.postData._id
+                        postId: post._id
                     }
                 });
 
                 dispatch({
                     type: GLOBALTYPES.PROFILE.RESET_USER_POSTS,
                     payload: {
-                        userId: res.data.postData.user
+                        userId: auth.user._id
                     }
                 });
 

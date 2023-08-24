@@ -97,6 +97,7 @@ export const register = (userData) => async (dispatch) => {
             payload: { success: res.data.status }
         });
     } catch (err) {
+        console.log(err);
         dispatch({
             type: GLOBALTYPES.ALERT,
             payload: {

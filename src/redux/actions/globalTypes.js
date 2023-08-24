@@ -6,6 +6,7 @@ export const GLOBALTYPES = {
     SOCKET: 'SOCKET',
     USERS: {
         SEARCH_USERS: 'SEARCH_USERS',
+        SEARCH_LOADING: 'SEARCH_LOADING',
         GET_USER: 'GET_USER'
     },
     PROFILE: {

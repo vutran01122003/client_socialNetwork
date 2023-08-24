@@ -19,12 +19,12 @@ function CallModal({ auth, call, socket, peer }) {
         socket.emit('end_call', { restUserId });
     };
 
-    const handleAnswerCall = ({ receiverId, senderId, peerId }) => {
+    const handleAnswerCall = ({ receiverId, senderId, peerId, isVideo }) => {
         dispatch({
             type: GLOBALTYPES.CALL.CALLING,
             payload: true
         });
-        socket.emit('answer_call', { receiverId, senderId, peerId });
+        socket.emit('answer_call', { receiverId, senderId, peerId, isVideo });
     };
 
     return (
@@ -33,7 +33,9 @@ function CallModal({ auth, call, socket, peer }) {
                 <div className='call_modal_wrapper'>
                     <div className='call_modal'>
                         <div className='call_modal_header'>
-                            <h1 className='call_modal_header_title'>Message call</h1>
+                            <h1 className='call_modal_header_title uppercase text-base'>
+                                Message call
+                            </h1>
                         </div>
                         <div className='call_modal_body'>
                             <div className='call_modal_avatar'>
@@ -43,7 +45,7 @@ function CallModal({ auth, call, socket, peer }) {
                                             ? call?.sender.avatar
                                             : call?.receiver.avatar
                                     }
-                                    size='medium'
+                                    size='big'
                                 />
                             </div>
                             <div className='call_modal_body_info'>
@@ -81,7 +83,8 @@ function CallModal({ auth, call, socket, peer }) {
                                                     handleAnswerCall({
                                                         senderId: call.sender._id,
                                                         receiverId: call?.receiver._id,
-                                                        peerId: peer._id
+                                                        peerId: peer._id,
+                                                        isVideo: call?.video
                                                     });
                                                 }}
                                                 className='call_icon-item text-green-500'

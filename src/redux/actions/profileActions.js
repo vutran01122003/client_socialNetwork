@@ -35,7 +35,7 @@ export const getUser =
     };
 
 export const getUserPost =
-    ({ id }) =>
+    ({ id, page = 1 }) =>
     async (dispatch) => {
         try {
             dispatch({
@@ -43,14 +43,15 @@ export const getUserPost =
                 payload: true
             });
 
-            const res = await getDataApi(`/posts/${id}`);
+            const res = await getDataApi(`/posts/${id}?page=${page}`);
 
             dispatch({
                 type: GLOBALTYPES.PROFILE.GET_USER_POST,
                 payload: {
                     userId: id,
                     posts: res.data.posts,
-                    result: res.data.posts.length
+                    page,
+                    maxPage: res.data.posts.length === 0 ? true : false
                 }
             });
 

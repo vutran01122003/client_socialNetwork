@@ -52,7 +52,9 @@ function notifyReducer(state = initialState, action) {
                         ? [...action.payload.notifications]
                         : [...state.notifications, ...action.payload.notifications],
                 currentNotifications:
-                    state.notifications.length + action.payload.notifications.length
+                    action.payload.currentNotifications === 0
+                        ? action.payload.notifications.length
+                        : state.notifications.length + action.payload.notifications.length
             };
         case GLOBALTYPES.NOTIFICATION.UPDATE_NOTIFICATION:
             const updatedNotifications = replaceOldElem(

@@ -46,7 +46,6 @@ export const uploadFile = async (files = []) => {
     for (let file of userfiles) {
         const formData = new FormData();
         formData.append('upload_preset', 'oyptwxxs');
-        formData.append('cloud_name', 'dzm0nupxy');
         if (file.imgCamera) {
             formData.append('file', file.imgCamera);
         } else if (file.video) {

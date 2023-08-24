@@ -1,16 +1,15 @@
 import Tippy from '@tippyjs/react/headless';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import 'tippy.js/dist/tippy.css';
 import { CircularProgress } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSearchUser } from '../../redux/actions/usersAction';
-import { alertSelector, userSelector } from '../../redux/selector';
+import { userSelector } from '../../redux/selector';
 import UserCard from '../UserCard';
 
 function Search() {
-    const userData = useSelector(userSelector);
-    const alert = useSelector(alertSelector);
-    const users = userData.userList;
+    const users = useSelector(userSelector);
+    const observer = useRef();
 
     const [searchValue, setSearchValue] = useState('');
     const [openResult, setOpenResult] = useState(false);
@@ -21,26 +20,42 @@ function Search() {
         setSearchValue(e.target.value);
     };
 
-    const handleGetUser = useCallback(
-        async (searchValue) => {
-            if (searchValue !== '') {
-                const formatSearchValue = searchValue.toLowerCase().replace(/ /g, '');
-                dispatch(getSearchUser(formatSearchValue));
-            }
-            return;
+    const handleGetUser = async ({ searchValue, page, loadMore }) => {
+        if (searchValue !== '') {
+            const formatSearchValue = searchValue.toLowerCase().replace(/ /g, '');
+            dispatch(getSearchUser({ formatSearchValue, page, loadMore }));
+        }
+        return;
+    };
+
+    const getLastUserCard = useCallback(
+        (elem) => {
+            if (users.loading) return;
+            if (observer.current) observer.current.disconnect();
+            observer.current = new IntersectionObserver(
+                (entries) => {
+                    if (entries[0].isIntersecting && !users.maxPage) {
+                        handleGetUser({ searchValue, page: users.page + 1, loadMore: true });
+                    }
+                },
+                { threshold: 1 }
+            );
+            if (elem) observer.current.observe(elem);
         },
-        [dispatch]
+        // eslint-disable-next-line
+        [users.loading, users.page]
     );
 
     useEffect(() => {
         const timeId = setTimeout(() => {
-            handleGetUser(searchValue);
+            handleGetUser({ searchValue, page: 1 });
         }, 500);
 
         return () => {
             clearTimeout(timeId);
         };
-    }, [searchValue, handleGetUser]);
+        // eslint-disable-next-line
+    }, [searchValue]);
 
     const hideResult = () => {
         setOpenResult(false);
@@ -59,22 +74,31 @@ function Search() {
             render={(attrs) => (
                 <div className='box_search' tabIndex='-1' {...attrs}>
                     <div className='label text-gray-600 font-semibold px-2 py-1'>Account</div>
+                    {users.userList.map((user, index) => {
+                        if (users?.userList.length === index + 1)
+                            return (
+                                <div className='last_item' ref={getLastUserCard} key={user._id}>
+                                    <UserCard user={user} onClick={hideResult} />
+                                </div>
+                            );
+                        return (
+                            <div key={user._id}>
+                                <UserCard user={user} onClick={hideResult} />
+                            </div>
+                        );
+                    })}
 
-                    {alert.pedding && (
+                    {users.loading && (
                         <div className='text-center p-2'>
                             <CircularProgress />
                         </div>
                     )}
 
-                    {!alert.pedding && users.length === 0 && (
+                    {!users.loading && users?.userList.length === 0 && (
                         <h3 className='text-black font-semibold text-center p-3'>
                             Username does not exist
                         </h3>
                     )}
-
-                    {users.map((user) => (
-                        <UserCard key={user._id} user={user} onClick={hideResult} />
-                    ))}
                 </div>
             )}
         >

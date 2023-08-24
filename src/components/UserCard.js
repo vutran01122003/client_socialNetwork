@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Tippy from '@tippyjs/react/headless';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
@@ -7,15 +8,25 @@ import Follow from './FollowBtn';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import PhoneOutlinedIcon from '@mui/icons-material/PhoneOutlined';
 import VideocamOutlinedIcon from '@mui/icons-material/VideocamOutlined';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import { getMessages } from '../redux/actions/messageAction';
+import { deleteConversations, getMessages } from '../redux/actions/messageAction';
 import { GLOBALTYPES } from '../redux/actions/globalTypes';
 import { messageSelector } from '../redux/selector';
 
 function UserCard({ user, onClick, auth, conversation, conversationHeader, peer, socket }) {
     const dispatch = useDispatch();
     let message = useSelector(messageSelector);
+    const [openMoreBtn, setOpenMoreBtn] = useState(false);
     const Elem = conversation ? 'div' : Link;
+
+    const handleToggleOpenMoreBtn = () => {
+        setOpenMoreBtn((prev) => !prev);
+    };
+
+    const handleDeleteConversation = () => {
+        dispatch(deleteConversations({ conversationId: conversationHeader._id, auth }));
+    };
 
     const handleCallUser = async ({ video }) => {
         const data = {
@@ -133,9 +144,33 @@ function UserCard({ user, onClick, auth, conversation, conversationHeader, peer,
                     >
                         <VideocamOutlinedIcon />
                     </div>
-                    <div className='conversation_icon conversation_more_icon'>
-                        <MoreHorizIcon />
-                    </div>
+                    <Tippy
+                        interactive
+                        placement='bottom-start'
+                        visible={openMoreBtn}
+                        onClickOutside={handleToggleOpenMoreBtn}
+                        render={(attrs) => (
+                            <div className='more_wrapper text-black' tabIndex='-1' {...attrs}>
+                                <div
+                                    onClick={() => {
+                                        handleDeleteConversation();
+                                        handleToggleOpenMoreBtn();
+                                    }}
+                                    className='more_item'
+                                >
+                                    <DeleteOutlineIcon />
+                                    <span>Remove conversation</span>
+                                </div>
+                            </div>
+                        )}
+                    >
+                        <div
+                            onClick={handleToggleOpenMoreBtn}
+                            className='conversation_icon conversation_more_icon'
+                        >
+                            <MoreHorizIcon />
+                        </div>
+                    </Tippy>
                 </div>
             )}
         </div>

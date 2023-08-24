@@ -6,7 +6,7 @@ const initialState = {
     currentReceiver: {},
     currentConversation: {},
     messages: {},
-    conversations: [],
+    conversations: {},
     onlineUserList: {}
 };
 
@@ -54,23 +54,30 @@ function messageReducer(state = initialState, action) {
             };
         }
         case GLOBALTYPES.MESSAGE.ADD_MESSAGE: {
-            const messages = { ...state.messages };
-            if (!messages[action.payload.conversationId]) {
-                messages[action.payload.conversationId] = {
-                    data: [action.payload],
-                    page: 1,
-                    maxPage: false,
-                    result: state.messages[action.payload.conversationId].result.length + 1
+            if (!state.messages[action.payload.conversationId]) {
+                return {
+                    ...state,
+                    messages: {
+                        ...state.messages,
+                        [action.payload.conversationId]: {
+                            data: [action.payload],
+                            page: 1,
+                            maxPage: true,
+                            result: 1
+                        }
+                    }
                 };
-            } else {
-                messages[action.payload.conversationId].data.push(action.payload);
             }
             return {
                 ...state,
                 messages: {
-                    ...messages,
+                    ...state.messages,
                     [action.payload.conversationId]: {
                         ...state.messages[action.payload.conversationId],
+                        data: [
+                            ...state.messages[action.payload.conversationId].data,
+                            action.payload
+                        ],
                         result: state.messages[action.payload.conversationId].result + 1
                     }
                 }
@@ -83,6 +90,7 @@ function messageReducer(state = initialState, action) {
                     messages[action.payload.deletedMessage.conversationId].data,
                     action.payload.deletedMessage._id
                 );
+                console.log(newMessages);
                 return {
                     ...state,
                     messages: {
@@ -109,7 +117,19 @@ function messageReducer(state = initialState, action) {
         case GLOBALTYPES.MESSAGE.GET_CONVERSATIONS:
             return {
                 ...state,
-                conversations: [...action.payload]
+                conversations: {
+                    data:
+                        action.payload.page === 1
+                            ? [...action.payload.conversations]
+                            : [...state.conversations.data, ...action.payload.conversations],
+                    currentConversations:
+                        action.payload.page === 1
+                            ? action.payload.conversations.length
+                            : state.conversations?.data.length +
+                              action.payload.conversations.length,
+                    page: action.payload.page,
+                    maxPage: action.payload.maxPage
+                }
             };
         case GLOBALTYPES.MESSAGE.SET_CURRENT_CONVERSATION:
             return {

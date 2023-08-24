@@ -37,16 +37,8 @@ function Profile() {
         <>
             {auth.user && (
                 <div className='profile_container flex flex-col'>
-                    {profile.loading ? (
-                        <div className='flex justify-center w-full mt-20'>
-                            <CircularProgress size={50} />
-                        </div>
-                    ) : (
-                        <>
-                            <Info userInfo={userInfo} id={id} auth={auth} />
-                            <Post userInfo={userInfo} id={id} auth={auth} />
-                        </>
-                    )}
+                    <Info userInfo={userInfo} id={id} auth={auth} />
+                    <Post userInfo={userInfo} id={id} auth={auth} profile={profile} />
                 </div>
             )}
         </>

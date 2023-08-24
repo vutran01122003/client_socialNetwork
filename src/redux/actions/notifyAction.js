@@ -39,7 +39,8 @@ export const getNotifications =
                     notifications: res.data.notifications,
                     userId,
                     page: nextPageNotification,
-                    maxPage: res.data.notifications.length === 0 ? true : false
+                    maxPage: res.data.notifications.length === 0 ? true : false,
+                    currentNotifications
                 }
             });
         } catch (error) {

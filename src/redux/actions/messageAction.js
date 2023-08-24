@@ -12,7 +12,7 @@ export const getMessages =
             });
 
             const res = await getDataApi(`/messages/${conversation._id}?page=${page}`);
-            if (res.data.messages.length === 0) {
+            if (res.data.messages.length === 0 && page > 1) {
                 dispatch({
                     type: GLOBALTYPES.MESSAGE.UPDATE_MESSAGE,
                     payload: {
@@ -89,14 +89,43 @@ export const getConversation =
     };
 
 export const getConversations =
-    ({ auth }) =>
+    ({ auth, page }) =>
     async (dispatch) => {
         try {
-            const res = await getDataApi(`/conversations/${auth?.user._id}`);
+            const res = await getDataApi(`/conversations/${auth?.user._id}?page=${page}`);
             dispatch({
                 type: GLOBALTYPES.MESSAGE.GET_CONVERSATIONS,
-                payload: res.data.conversations
+                payload: {
+                    conversations: res.data.conversations,
+                    page,
+                    maxPage: res.data.conversations.length === 0 ? true : false
+                }
             });
+        } catch (error) {
+            console.log(error);
+            dispatch({
+                type: GLOBALTYPES.ALERT,
+                payload: {
+                    error: error.response?.data.msg || 'Error'
+                }
+            });
+        }
+    };
+
+export const deleteConversations =
+    ({ conversationId, auth }) =>
+    async (dispatch) => {
+        try {
+            await deleteDataApi(`/conversation/${conversationId}`);
+            dispatch({
+                type: GLOBALTYPES.MESSAGE.SET_CURRENT_CONVERSATION,
+                payload: {}
+            });
+            dispatch({
+                type: GLOBALTYPES.MESSAGE.SET_CURRENT_CONVERSATION,
+                payload: {}
+            });
+            dispatch(getConversations({ auth, page: 1 }));
         } catch (error) {
             dispatch({
                 type: GLOBALTYPES.ALERT,
@@ -134,7 +163,7 @@ export const createMessage =
                 socket.emit('created_message', res.data);
 
                 if (
-                    !message.conversations.find(
+                    !message.conversations?.data.find(
                         (conversation) => conversation._id === res.data.conversation._id
                     )
                 ) {
@@ -142,8 +171,8 @@ export const createMessage =
                         type: GLOBALTYPES.MESSAGE.SET_CURRENT_CONVERSATION,
                         payload: res.data.conversation
                     });
-
-                    dispatch(getConversations({ auth }));
+                    console.log('ok');
+                    dispatch(getConversations({ auth, page: 1 }));
                 }
 
                 dispatch({
@@ -156,6 +185,8 @@ export const createMessage =
                 }, 100);
             })
             .catch((err) => {
+                console.log(err);
+
                 dispatch({
                     type: GLOBALTYPES.ALERT,
                     payload: {

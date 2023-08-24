@@ -41,7 +41,7 @@ function HeaderCard({ post, auth, detailPost }) {
     };
 
     const handleRemovePost = () => {
-        dispatch(deletePost({ postId: post._id }));
+        dispatch(deletePost({ post, auth }));
 
         if (detailPost) {
             window.location.reload();

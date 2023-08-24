@@ -88,12 +88,12 @@ function Info({ userInfo, id, auth }) {
                     </div>
                     <div className='fullname_message_wrapper'>
                         <h4 className='fullname text-gray-500 font-bold'>{fullname}</h4>
-                        {userInfo._id !== auth?.user._id && (
-                            <button
-                                onClick={handleMessage}
-                                className='message_btn px-2.5 py-1 rounded-md text-gray-600 bg-gray-200 hover:bg-gray-300 hover:text-gray-700'
-                            >
-                                <Link to='/message'>
+                        {userInfo?._id !== auth?.user._id && (
+                            <button onClick={handleMessage} className='message_btn'>
+                                <Link
+                                    to='/message'
+                                    className='block px-2.5 py-1 rounded-md text-gray-600 bg-gray-200 hover:bg-gray-300 hover:text-gray-700'
+                                >
                                     <MessageIcon fontSize='small' /> <span>Message</span>
                                 </Link>
                             </button>
