@@ -90,7 +90,6 @@ function messageReducer(state = initialState, action) {
                     messages[action.payload.deletedMessage.conversationId].data,
                     action.payload.deletedMessage._id
                 );
-                console.log(newMessages);
                 return {
                     ...state,
                     messages: {

@@ -306,8 +306,6 @@ export const likePost = (post, user, socket) => async (dispatch) => {
             }
         })
         .catch((e) => {
-            console.log(e);
-
             dispatch({
                 type: GLOBALTYPES.ALERT,
                 payload: {
@@ -330,6 +328,7 @@ export const unlikePost = (postId, user, socket) => async (dispatch) => {
     })
         .then((res) => {
             socket.emit('unlike_post', res.data.newPost);
+
             dispatch({
                 type: GLOBALTYPES.POST.UPDATE_POST,
                 payload: res.data.newPost
@@ -343,7 +342,6 @@ export const unlikePost = (postId, user, socket) => async (dispatch) => {
             });
         })
         .catch((e) => {
-            console.log(e);
             dispatch({
                 type: GLOBALTYPES.ALERT,
                 payload: {
@@ -389,21 +387,25 @@ export const savedPost =
     ({ auth, post, socket }) =>
     async (dispatch) => {
         try {
-            const res = await patchDataApi(`/saved_post/${post._id}`);
-
             dispatch({
-                type: GLOBALTYPES.AUTH,
+                type: GLOBALTYPES.ALERT,
                 payload: {
-                    ...auth,
-                    user: res.data.user
+                    loading: true
                 }
             });
+
+            const res = await patchDataApi(`/saved_post/${post._id}`);
 
             dispatch({
                 type: GLOBALTYPES.ALERT,
                 payload: {
                     success: res.data.status
                 }
+            });
+
+            dispatch({
+                type: GLOBALTYPES.POST.UPDATE_POST,
+                payload: res.data.updatedPost
             });
 
             if (post.user._id !== auth.user._id) {
@@ -436,17 +438,21 @@ export const savedPost =
     };
 
 export const unSavedPost =
-    ({ auth, post }) =>
+    ({ post }) =>
     async (dispatch) => {
         try {
+            dispatch({
+                type: GLOBALTYPES.ALERT,
+                payload: {
+                    loading: true
+                }
+            });
+
             const res = await patchDataApi(`/unsaved_post/${post._id}`);
 
             dispatch({
-                type: GLOBALTYPES.AUTH,
-                payload: {
-                    ...auth,
-                    user: res.data.user
-                }
+                type: GLOBALTYPES.POST.UPDATE_POST,
+                payload: res.data.updatedPost
             });
 
             dispatch({

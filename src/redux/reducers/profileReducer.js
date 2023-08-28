@@ -4,7 +4,8 @@ import { GLOBALTYPES } from '../actions/globalTypes';
 const initialState = {
     loading: false,
     users: [],
-    posts: {}
+    posts: {},
+    saved: {}
 };
 
 function profileReducer(state = initialState, action) {

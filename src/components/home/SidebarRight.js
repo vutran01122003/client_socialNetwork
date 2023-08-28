@@ -1,37 +1,50 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { getSuggestUser } from '../../redux/actions/suggestUser';
-import { suggestedUsersSelector } from '../../redux/selector';
-import { CircularProgress } from '@mui/material';
+import { messageSelector } from '../../redux/selector';
 import UserCard from '../UserCard';
+import { getConversation, getConversations } from '../../redux/actions/messageAction';
 
-function SidebarLeft({ auth }) {
+function SidebarRight({ auth }) {
     const dispatch = useDispatch();
-    const suggestedUsers = useSelector(suggestedUsersSelector);
+    const message = useSelector(messageSelector);
+    const conversations = message.conversations?.data;
+    const handleMessage = async (user) => {
+        dispatch(
+            getConversation({
+                userData: user,
+                message
+            })
+        );
+    };
 
     useEffect(() => {
-        dispatch(getSuggestUser());
+        dispatch(getConversations({ auth, page: 1 }));
+        // eslint-disable-next-line
     }, [dispatch]);
 
     return (
         <div className='app_sidebar_right'>
             <div className='sidebar_right'>
-                <div className='suggestion_wrapper'>
-                    <h1 className='suggestion_title'>Suggestions</h1>
-                    <div className='suggestion_users_wrapper'>
-                        {suggestedUsers?.loading ? (
-                            <CircularProgress className='absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2' />
-                        ) : (
+                <div className='contact_wrapper'>
+                    <h1 className='contact_title'>Contacts</h1>
+                    <div className='contact_users_wrapper'>
+                        {Object.keys(message.conversations).length > 0 && (
                             <>
-                                {suggestedUsers?.users.length === 0 ? (
-                                    <h3 className='text-center font-semibold mt-10'>No User</h3>
-                                ) : (
-                                    <>
-                                        {suggestedUsers.users.map((user) => (
-                                            <UserCard key={user._id} user={user} auth={auth} />
-                                        ))}
-                                    </>
-                                )}
+                                {conversations.map((conversation) => {
+                                    return (
+                                        <div key={conversation._id}>
+                                            <UserCard
+                                                user={conversation.recipients.find(
+                                                    (recipient) => recipient._id !== auth?.user._id
+                                                )}
+                                                onClick={handleMessage}
+                                                conversation={conversation}
+                                                homeSidebar={true}
+                                                contactSidebar={true}
+                                            />
+                                        </div>
+                                    );
+                                })}
                             </>
                         )}
                     </div>
@@ -41,4 +54,4 @@ function SidebarLeft({ auth }) {
     );
 }
 
-export default SidebarLeft;
+export default SidebarRight;

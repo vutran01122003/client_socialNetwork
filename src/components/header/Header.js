@@ -99,7 +99,7 @@ function Header({ auth, theme }) {
     }, [dispatch, nextPageNotification]);
 
     return (
-        <AppBar color='inherit' elevation={1}>
+        <AppBar color='inherit' elevation={0}>
             <Container maxWidth='xl'>
                 <Toolbar
                     disableGutters

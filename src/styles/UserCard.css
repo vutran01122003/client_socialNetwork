@@ -7,6 +7,19 @@
     background-color: var(--white-color);
 }
 
+.account_wrapper.home_sidebar {
+    background: transparent;
+}
+
+.account_wrapper.home_sidebar:hover {
+    background-color: var(--hover-background-color-v3);
+} 
+
+.account_wrapper.home_sidebar {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
 .account {
     flex: 1;
     display: flex;
@@ -34,7 +47,7 @@
 
 .user_description :is(.user_description_username, .user_description_fullname) {
     overflow: hidden;
-    max-width: 150px;
+    max-width: 120px;
     text-overflow: ellipsis;
     white-space: nowrap;
 }

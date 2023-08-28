@@ -13,8 +13,10 @@
     --favourite-active-color: rgb(255, 48, 64);
     --hover-background-color: #F2F3F5;
     --hover-background-color-v2: #e3e4e6;
+    --hover-background-color-v3: #DADDE1;
     --active-background-color: #cdcdd0;
-    --sencondary-text-color: #65676B;    
+    --sencondary-text-color: #65676B;   
+    --sencondary-text-color-v2: #333;    
     --box-shadow-gray: 0 0 3px gray;
     --box-shadow-black: 0 0 3px #000;
     --border-post-pagination: 1px solid #d5d6d7;

@@ -1,0 +1,116 @@
+@media only screen and (max-width: 740px) {
+    .main_home .app_sidebar_left {
+        display: none;
+    }
+
+    .main_home .sidebar_left {
+        display: none;
+    }
+
+    .main_home .home {
+        max-width: 100%;
+    }
+}
+
+@media only screen and (max-width: 1239px) {
+    .main_home .app_sidebar_right {
+        display: none;
+    }
+
+    .app_container .main_home .home {
+        flex: 1;
+        margin-right: 8px;
+     }
+}
+
+@media only screen and (min-width: 740px) and (max-width: 1023px) {
+    .main_home .app_sidebar_left .sidebar_item_wrapper {
+        gap: 4px;
+        padding: 8px 4px;
+        justify-content: center;
+    }
+
+    .main_home .app_sidebar_left .sidebar_item_wrapper span {
+        display: none;
+    }
+
+    .main_home .app_sidebar_left .sidebar_item_wrapper span {
+        font-size: 15px;
+    } 
+
+    .main_home .app_sidebar_left {
+        flex-basis: 20%;
+    }
+
+    .main_home .sidebar_left {
+        width: 15%;
+    }
+
+    .app_container .main_home .home {
+       flex-basis: 80%;
+    }
+
+    .main_home .app_sidebar_left .user_description :is(.user_description_username, .user_description_fullname) {
+        max-width: 50px;
+    }
+
+    .main_home .app_sidebar_left .user_description :is(.user_description_username, .user_description_fullname) {
+        display: none;
+    }
+
+    .main_home .app_sidebar_left .suggestion_title_wrapper {
+        flex-direction: column;
+        align-items: center;
+        font-size: medium;
+        gap: 4px;
+        margin: 15px 0;
+    }
+
+    .account_wrapper.home_sidebar {
+        flex-direction: column;
+        gap: 8px;
+        justify-content: center;
+    }
+
+    .account_wrapper.home_sidebar .account {
+        gap: 0;
+    }
+
+    .account_wrapper.home_sidebar .follow_btn button,
+    .account_wrapper.home_sidebar .unfollow_btn button{
+        width: 60px;
+        padding: 0;
+    }
+
+}
+
+@media only screen and (min-width: 1024px) and (max-width: 1239px) {
+    .app_container .main_home {
+        justify-content: unset;
+    }
+
+    .main_home .app_sidebar_left {
+        flex-basis: 25%;
+    }
+
+    .main_home .app_sidebar_left .user_description :is(.user_description_username, .user_description_fullname) {
+        max-width: 70px;
+    }
+
+    .account_wrapper.home_sidebar .follow_btn button,
+    .account_wrapper.home_sidebar .unfollow_btn button{
+        width: 70px;
+        padding: 0;
+    }
+}
+
+@media only screen and (min-width: 1240px) and (max-width: 1400px) {
+    .main_home .app_sidebar_left .user_description :is(.user_description_username, .user_description_fullname) {
+        max-width: 90px;
+    }
+
+    .account_wrapper.home_sidebar .follow_btn button,
+    .account_wrapper.home_sidebar .unfollow_btn button{
+        width: 100px;
+    }
+}

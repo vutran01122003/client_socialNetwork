@@ -15,6 +15,10 @@ html, body, #root {
     margin: 0;
 }
 
+.css-19r6kue-MuiContainer-root {
+    border-bottom: var(--border-post-pagination);
+}
+
 #theme:checked ~ .App  {
     filter: invert(1);
 }

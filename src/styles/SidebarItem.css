@@ -1,0 +1,15 @@
+.sidebar_item_wrapper {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    cursor: pointer;
+    padding: 8px;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    gap: 20px;
+    color: var(--sencondary-text-color-v2);
+}
+
+.sidebar_item_wrapper:hover {
+    background: var(--hover-background-color-v3);
+}

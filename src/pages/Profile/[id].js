@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { authSelector, profileSelector } from '../../redux/selector';
 import { getUser } from '../../redux/actions/profileActions';
-import { CircularProgress } from '@mui/material';
 
 function Profile() {
     const { id } = useParams();
@@ -30,16 +29,15 @@ function Profile() {
         }
     }, [profile.users, auth.user, id, dispatch]);
 
-    if (!userInfo && !profile.loading)
-        return <div className='font-semibold w-full h-full text-center mt-10'>User Not Found</div>;
-
     return (
         <>
-            {auth.user && (
+            {auth.user && userInfo ? (
                 <div className='profile_container flex flex-col'>
                     <Info userInfo={userInfo} id={id} auth={auth} />
                     <Post userInfo={userInfo} id={id} auth={auth} profile={profile} />
                 </div>
+            ) : (
+                <div className='font-semibold w-full h-full text-center mt-10'>User Not Found</div>
             )}
         </>
     );

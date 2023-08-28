@@ -7,8 +7,10 @@ export const getUser =
     async (dispatch) => {
         try {
             dispatch({
-                type: GLOBALTYPES.PROFILE.LOADING,
-                payload: true
+                type: GLOBALTYPES.ALERT,
+                payload: {
+                    loading: true
+                }
             });
 
             const res = await getDataApi(`/user/${id}`);
@@ -18,15 +20,12 @@ export const getUser =
             });
 
             dispatch({
-                type: GLOBALTYPES.PROFILE.LOADING,
-                payload: false
+                type: GLOBALTYPES.ALERT,
+                payload: {
+                    loading: false
+                }
             });
         } catch (error) {
-            dispatch({
-                type: GLOBALTYPES.PROFILE.LOADING,
-                payload: false
-            });
-
             dispatch({
                 type: GLOBALTYPES.ALERT,
                 payload: { error: error.response?.data.msg || 'Not Found' }

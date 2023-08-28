@@ -14,18 +14,35 @@ import { deleteConversations, getMessages } from '../redux/actions/messageAction
 import { GLOBALTYPES } from '../redux/actions/globalTypes';
 import { messageSelector } from '../redux/selector';
 
-function UserCard({ user, onClick, auth, conversation, conversationHeader, peer, socket }) {
+function UserCard({
+    user,
+    onClick,
+    auth,
+    conversation,
+    conversationHeader,
+    peer,
+    socket,
+    homeSidebar,
+    contactSidebar
+}) {
     const dispatch = useDispatch();
     let message = useSelector(messageSelector);
     const [openMoreBtn, setOpenMoreBtn] = useState(false);
-    const Elem = conversation ? 'div' : Link;
+    const Elem = conversation && !contactSidebar ? 'div' : Link;
+
+    const handleActivePage = () => {
+        dispatch({
+            type: GLOBALTYPES.ACTIVE_PAGE,
+            payload: contactSidebar ? `Message` : `Home`
+        });
+    };
 
     const handleToggleOpenMoreBtn = () => {
         setOpenMoreBtn((prev) => !prev);
     };
 
     const handleDeleteConversation = () => {
-        dispatch(deleteConversations({ conversationId: conversationHeader._id, auth }));
+        dispatch(deleteConversations({ conversationId: conversationHeader._id, auth, socket }));
     };
 
     const handleCallUser = async ({ video }) => {
@@ -79,16 +96,23 @@ function UserCard({ user, onClick, auth, conversation, conversationHeader, peer,
 
     return (
         <div
-            className={`account_wrapper hover:bg-gray-100 ${
-                conversation && message.currentReceiver?._id === user._id
+            className={`account_wrapper ${homeSidebar ? 'home_sidebar' : ''} hover:bg-gray-100 ${
+                conversation && message.currentReceiver?._id === user._id && !contactSidebar
                     ? 'border-l-4 border-gray-500'
                     : ''
             }`}
         >
             <Elem
-                to={`/profile/${user?._id}`}
+                to={contactSidebar ? `/message` : `/profile/${user?._id}`}
                 className={`account`}
-                onClick={conversation ? handleGetMessages : onClick}
+                onClick={
+                    conversation && !contactSidebar
+                        ? handleGetMessages
+                        : () => {
+                              handleActivePage();
+                              onClick(contactSidebar ? user : null);
+                          }
+                }
             >
                 <div className='avatar_wrapper w-10 h-10'>
                     <Avatar avatar={user?.avatar} size='small' />

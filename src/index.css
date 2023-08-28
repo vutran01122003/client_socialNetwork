@@ -1,8 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url(./styles/responsive/SidebarResponsive.css);
-@import url(./styles/responsive/layoutResponsive.css);
+@import url(./styles/responsive/MessageSidebarResponsive.css);
+@import url(./styles/responsive/HomeSidebarResponsive.css);
 @import url(./styles/responsive/PostCardResponesive.css);
 @import url(./styles/responsive/scrollResponsive.css);
 @import url(./styles/responsive/ProfileResponesive.css);
@@ -34,5 +34,7 @@
 @import url(./styles/Message.css);
 @import url(./styles/LeftMessageSidebar.css);
 @import url(./styles/CallModal.css);
+@import url(./styles/SidebarItem.css);
+@import url(./styles/Home.css);
 
 

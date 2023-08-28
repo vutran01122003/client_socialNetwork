@@ -113,20 +113,28 @@ export const getConversations =
     };
 
 export const deleteConversations =
-    ({ conversationId, auth }) =>
+    ({ conversationId, auth, socket }) =>
     async (dispatch) => {
         try {
-            await deleteDataApi(`/conversation/${conversationId}`);
+            const res = await deleteDataApi(`/conversation/${conversationId}`);
+            socket.emit('deleted_conversation', {
+                conversationId: res.data.deletedConversation._id,
+                receiverId: res.data.deletedConversation.recipients.find(
+                    (recipientId) => recipientId !== auth.user._id
+                )
+            });
             dispatch({
                 type: GLOBALTYPES.MESSAGE.SET_CURRENT_CONVERSATION,
                 payload: {}
             });
+
             dispatch({
-                type: GLOBALTYPES.MESSAGE.SET_CURRENT_CONVERSATION,
+                type: GLOBALTYPES.MESSAGE.SET_CURRENT_RECEIVER,
                 payload: {}
             });
             dispatch(getConversations({ auth, page: 1 }));
         } catch (error) {
+            console.log(error);
             dispatch({
                 type: GLOBALTYPES.ALERT,
                 payload: {
@@ -214,6 +222,7 @@ export const deleteMessage =
                 }
             });
         } catch (error) {
+            console.log(error);
             dispatch({
                 type: GLOBALTYPES.ALERT,
                 payload: {

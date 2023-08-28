@@ -30,4 +30,13 @@ main {
     gap: 4px;
 }
 
+.main_home {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    max-width: 100%;
+    justify-content: space-between;
+}
+
+
 

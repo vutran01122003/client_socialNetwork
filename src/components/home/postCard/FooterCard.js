@@ -31,7 +31,7 @@ function FooterCard({ post, auth, socket }) {
     };
 
     const handleUnSavedPost = () => {
-        dispatch(unSavedPost({ post: post, auth }));
+        dispatch(unSavedPost({ post: post }));
     };
 
     const handleScrollToInputComment = () => {
@@ -110,7 +110,7 @@ function FooterCard({ post, auth, socket }) {
                         <span className='interactive_icon_name ml-2'>Comments</span>
                     </div>
 
-                    {auth.user.saved.find((savedPost) => savedPost._id === post._id) ? (
+                    {post.saved.find((userId) => userId === auth.user?._id) ? (
                         <div
                             onClick={handleUnSavedPost}
                             className='flex-1 text-center hover:bg-gray-100 rounded-md p-1 cursor-pointer'

@@ -54,7 +54,6 @@ function RightMessageSidebar({ auth }) {
                                         user={conversation.recipients.find(
                                             (recipient) => recipient._id !== auth?.user._id
                                         )}
-                                        messagePage={true}
                                         conversation={conversation}
                                     />
                                 </div>

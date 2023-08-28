@@ -79,7 +79,7 @@ function PostsThumb({ posts, userProfileId, profile }) {
                     </Link>
                 </div>
             ))}
-            {profile.loading && (
+            {profile?.loading && (
                 <div className='w-full p-2 flex items-center justify-center'>
                     <CircularProgress />
                 </div>

@@ -98,10 +98,34 @@
     }
 
     .sidebar_right::-webkit-scrollbar-track{
-        background-color: var(--white-color) !important;
+        background: var(--app-background-color) !important;
     }
 
     .sidebar_right::-webkit-scrollbar-corner {
+        background-color: transparent;
+    }
+}
+
+/* Left sidebar */
+.sidebar_left::-webkit-scrollbar {
+    width: 8px;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) { 
+    .sidebar_left:hover {
+      background-color: rgba(0,0,0,0.15);  
+    }
+    
+    .sidebar_left::-webkit-scrollbar-thumb {
+      background-color: inherit;
+      border-radius: 80px;
+    }
+
+    .sidebar_left::-webkit-scrollbar-track{
+        background: var(--app-background-color) !important;
+    }
+
+    .sidebar_left::-webkit-scrollbar-corner {
         background-color: transparent;
     }
 }

@@ -113,7 +113,7 @@ function SocketClient({ auth }) {
                         (conversation) => conversation._id === data.conversation._id
                     )
                 ) {
-                    dispatch(getConversations({ auth }));
+                    dispatch(getConversations({ auth, page: 1 }));
                 }
 
                 if (!message.messages[data.conversation._id]) {
@@ -239,6 +239,18 @@ function SocketClient({ auth }) {
                     createdNotification,
                     authId: auth?.user._id
                 }
+            });
+        });
+
+        socket.on('deleted_conversation', () => {
+            dispatch(getConversations({ auth, page: 1 }));
+            dispatch({
+                type: GLOBALTYPES.MESSAGE.SET_CURRENT_CONVERSATION,
+                payload: {}
+            });
+            dispatch({
+                type: GLOBALTYPES.MESSAGE.SET_CURRENT_RECEIVER,
+                payload: {}
             });
         });
 

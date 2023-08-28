@@ -23,7 +23,7 @@ function Search() {
     const handleGetUser = async ({ searchValue, page, loadMore }) => {
         if (searchValue !== '') {
             const formatSearchValue = searchValue.toLowerCase().replace(/ /g, '');
-            dispatch(getSearchUser({ formatSearchValue, page, loadMore }));
+            dispatch(getSearchUser({ searchValue: formatSearchValue, page, loadMore }));
         }
         return;
     };
@@ -43,7 +43,7 @@ function Search() {
             if (elem) observer.current.observe(elem);
         },
         // eslint-disable-next-line
-        [users.loading, users.page]
+        [users.loading, users.page, searchValue]
     );
 
     useEffect(() => {

@@ -1,37 +1,84 @@
-.app_sidebar_right{
-    width: 380px;
-    min-width: 350px;
+.app_sidebar_left {
+    flex-basis: 30%;
+    align-self: flex-start;
+    height: 100vh;
+}
+
+.sidebar_left {
+    position: fixed;
+    top: calc(var(--header-height));
+    width: 23%;
+    left: 0;
+    bottom: 0;
+    background: var(--app-background-color);
+    overflow-y: scroll;
+    transition: background-color 0.3s linear;
+}
+
+.app_sidebar_right {
+    flex-basis: 30%;
+    align-self: flex-start;
+    height: 100vh;
 }
 
 .sidebar_right {
-    background: var(--white-color);
     position: fixed;
-    right: 0;
     top: calc(var(--header-height));
+    width: 20%;
+    right: 0;
     bottom: 0;
-    width: 380px;
-    height: 100vh;
+    background: var(--app-background-color);
     overflow-y: scroll;
     transition: background-color 0.3s linear;
-    box-shadow: var(--box-shadow-gray);
-
 }
 
-.suggestion_wrapper {
-    background: var(--white-color);
-    padding: 8px;
+.suggestion_wrapper, .contact_wrapper {
+    padding-left: 8px;
+    padding-top: 8px;
+    background: var(--app-background-color);
     min-height: 100vh;
 }
 
-.suggestion_title {
+.contact_title {
+    color: var(--sencondary-text-color);
     font-weight: 500;
-    font-size: larger;
+    font-size: large;
     margin: 0 0 15px 7px;
 }
 
-.suggestion_users_wrapper {
+.suggestion_title_wrapper {
+    color: var(--sencondary-text-color);
+    font-weight: 500;
+    font-size: large;
+    margin: 15px 7px;
+}
+
+.suggestion_title_wrapper .new_suggested_user_btn {
+    cursor: pointer;
+}
+
+.suggestion_title_wrapper .new_suggested_user_btn:hover {
+    color: var(--black-color);
+}
+
+.suggestion_title_wrapper .new_suggested_user_btn:active {
+    animation: spin 0.3s linear;
+}
+
+@keyframes spin {
+    from {
+        transform:rotate(0deg);
+    }
+    to {
+        transform:rotate(360deg);
+    }
+}
+
+
+.suggestion_users_wrapper, .contact_users_wrapper {
     position: relative;
     width: 100%;
     align-items: center;
     min-height: inherit;
 }
+
