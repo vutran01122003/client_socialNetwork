@@ -2,6 +2,7 @@ import { getDataApi, patchDataApi } from '../../utils/fetchData';
 import { GLOBALTYPES } from './globalTypes';
 import { uploadFile } from '../../utils/uploadFile';
 import { createNotification } from './notifyAction';
+
 export const getUser =
     ({ id }) =>
     async (dispatch) => {
@@ -33,7 +34,7 @@ export const getUser =
         }
     };
 
-export const getUserPost =
+export const getUserPosts =
     ({ id, page = 1 }) =>
     async (dispatch) => {
         try {
@@ -68,6 +69,40 @@ export const getUserPost =
                 type: GLOBALTYPES.ALERT,
                 payload: {
                     error: error.response?.data.msg
+                }
+            });
+        }
+    };
+
+export const getUserSavedPosts =
+    ({ id, page }) =>
+    async (dispatch) => {
+        try {
+            dispatch({
+                type: GLOBALTYPES.PROFILE.LOADING,
+                payload: true
+            });
+
+            const res = await getDataApi(`/posts/${id}/saved?page=${page}`);
+
+            dispatch({
+                type: GLOBALTYPES.PROFILE.GET_USER_SAVED_POSTS,
+                payload: {
+                    savedPosts: res.data.savedPosts,
+                    page,
+                    maxPage: res.data.savedPosts.length === 0 ? true : false
+                }
+            });
+
+            dispatch({
+                type: GLOBALTYPES.PROFILE.LOADING,
+                payload: false
+            });
+        } catch (error) {
+            dispatch({
+                type: GLOBALTYPES.ALERT,
+                payload: {
+                    error: error.response?.data.msg || 'Error'
                 }
             });
         }

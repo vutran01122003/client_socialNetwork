@@ -1,9 +1,9 @@
-import { deleteDataApi, getDataApi, postDataApi } from '../../utils/fetchData';
+import { deleteDataApi, getDataApi, patchDataApi, postDataApi } from '../../utils/fetchData';
 import { uploadFile } from '../../utils/uploadFile';
 import { GLOBALTYPES } from './globalTypes';
 
 export const getMessages =
-    ({ page = 1, conversation }) =>
+    ({ page = 1, conversation, currentMessages = 0 }) =>
     async (dispatch) => {
         try {
             dispatch({
@@ -11,7 +11,9 @@ export const getMessages =
                 payload: { loading: true }
             });
 
-            const res = await getDataApi(`/messages/${conversation._id}?page=${page}`);
+            const res = await getDataApi(
+                `/messages/${conversation._id}?page=${page}&currentQuantity=${currentMessages}`
+            );
             if (res.data.messages.length === 0 && page > 1) {
                 dispatch({
                     type: GLOBALTYPES.MESSAGE.UPDATE_MESSAGE,
@@ -103,6 +105,25 @@ export const getConversations =
             });
         } catch (error) {
             console.log(error);
+            dispatch({
+                type: GLOBALTYPES.ALERT,
+                payload: {
+                    error: error.response?.data.msg || 'Error'
+                }
+            });
+        }
+    };
+
+export const updateReadedUsers =
+    ({ conversationId }) =>
+    async (dispatch) => {
+        try {
+            const res = await patchDataApi(`/conversation/${conversationId}`);
+            dispatch({
+                type: GLOBALTYPES.MESSAGE.UPDATE_READED_CONVERSATION,
+                payload: res.data.updatedConversation
+            });
+        } catch (error) {
             dispatch({
                 type: GLOBALTYPES.ALERT,
                 payload: {

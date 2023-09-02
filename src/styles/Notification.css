@@ -3,7 +3,7 @@
     position: relative;
 }
 
-.notifications_num_wrapper{
+.notifications_num_wrapper {
     position: absolute;
     top: 1px;
     right: 16px;
@@ -15,6 +15,23 @@
     width: 16px;
     background: var(--favourite-active-color);
     border-radius: 50%;
+}
+
+.notification_md {
+    justify-content: center;
+    align-items: center;
+}
+
+.notifications_num_wrapper.notifications_num_wrapper_md {
+    top: 2px;
+    right: 15px;
+    height: 13px;
+    width: 13px;
+    align-items: center;
+}
+
+.notifications_num_wrapper.notifications_num_wrapper_md  .notifications_num {
+    line-height: 10px;
 }
 
 .notifications_num {

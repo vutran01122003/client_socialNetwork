@@ -408,6 +408,12 @@ export const savedPost =
                 payload: res.data.updatedPost
             });
 
+            dispatch({
+                type: GLOBALTYPES.PROFILE.RESET_USER_SAVED_POSTS,
+                payload: {
+                    userId: auth.user._id
+                }
+            });
             if (post.user._id !== auth.user._id) {
                 dispatch(
                     createNotification({
@@ -427,7 +433,6 @@ export const savedPost =
                 );
             }
         } catch (e) {
-            console.log(e);
             dispatch({
                 type: GLOBALTYPES.ALERT,
                 payload: {
@@ -438,7 +443,7 @@ export const savedPost =
     };
 
 export const unSavedPost =
-    ({ post }) =>
+    ({ post, auth }) =>
     async (dispatch) => {
         try {
             dispatch({
@@ -453,6 +458,13 @@ export const unSavedPost =
             dispatch({
                 type: GLOBALTYPES.POST.UPDATE_POST,
                 payload: res.data.updatedPost
+            });
+
+            dispatch({
+                type: GLOBALTYPES.PROFILE.RESET_USER_SAVED_POSTS,
+                payload: {
+                    userId: auth.user._id
+                }
             });
 
             dispatch({

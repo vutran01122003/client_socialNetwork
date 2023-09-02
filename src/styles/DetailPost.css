@@ -1,5 +1,6 @@
 .post_item.detail_post_item {
     width: 100%;
+    padding: 4px;
 }
 
 .detail_post_item .carousel_wrapper {

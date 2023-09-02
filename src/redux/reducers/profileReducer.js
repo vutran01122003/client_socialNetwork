@@ -37,10 +37,28 @@ function profileReducer(state = initialState, action) {
                     }
                 }
             };
+        case GLOBALTYPES.PROFILE.GET_USER_SAVED_POSTS: {
+            return {
+                ...state,
+                saved: {
+                    ...state.saved,
+                    data:
+                        action.payload.page === 1
+                            ? [...action.payload.savedPosts]
+                            : [...state.saved.data, ...action.payload.savedPosts],
+                    page: action.payload.page,
+                    maxPage: action.payload.maxPage
+                }
+            };
+        }
         case GLOBALTYPES.PROFILE.RESET_USER_POSTS:
             const newPosts = { ...state.posts };
             delete newPosts[action.payload.userId];
             return { ...state, posts: newPosts };
+        case GLOBALTYPES.PROFILE.RESET_USER_SAVED_POSTS:
+            const newSavedPosts = { ...state.saved };
+            delete newSavedPosts[action.payload.userId];
+            return { ...state, saved: newSavedPosts };
         case GLOBALTYPES.PROFILE.SET_USER: {
             const newUsers = replaceOldElem(state.users, action.payload);
             return { ...state, users: [...newUsers] };

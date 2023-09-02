@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Tippy from '@tippyjs/react/headless';
 import BodyCard from '../home/postCard/BodyCard';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -22,26 +22,32 @@ function MessageScreen({ auth, message, scrollToBottom, messageScreenRef }) {
         dispatch(deleteMessage({ messageId }));
     };
 
-    const firstMessageElementRef = (elem) => {
-        if (message.loading) return;
-        if (observer.current) observer.current.disconnect();
-        observer.current = new IntersectionObserver((entries) => {
-            if (
-                entries[0].isIntersecting &&
-                !message.messages[message.currentConversation._id].maxPage
-            ) {
-                setPrevScrollHeight(messageScreenRef.current.scrollHeight);
-                dispatch(
-                    getMessages({
-                        page: message.messages[message.currentConversation._id].page + 1,
-                        conversation: message.currentConversation
-                    })
-                );
-            }
-        });
+    const firstMessageElementRef = useCallback(
+        (elem) => {
+            if (message.loading) return;
+            if (observer.current) observer.current.disconnect();
+            observer.current = new IntersectionObserver((entries) => {
+                if (
+                    entries[0].isIntersecting &&
+                    !message.messages[message.currentConversation._id].maxPage
+                ) {
+                    setPrevScrollHeight(messageScreenRef.current.scrollHeight);
+                    dispatch(
+                        getMessages({
+                            page: message.messages[message.currentConversation._id].page + 1,
+                            currentMessages:
+                                message.messages[message.currentConversation._id].result,
+                            conversation: message.currentConversation
+                        })
+                    );
+                }
+            });
 
-        if (elem) observer.current.observe(elem);
-    };
+            if (elem) observer.current.observe(elem);
+        },
+        // eslint-disable-next-line
+        [message.loading, message.messages]
+    );
 
     useEffect(() => {
         if (

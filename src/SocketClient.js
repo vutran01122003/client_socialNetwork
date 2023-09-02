@@ -2,11 +2,12 @@ import { useEffect, useRef, useState } from 'react';
 import { io } from 'socket.io-client';
 import { GLOBALTYPES } from './redux/actions/globalTypes';
 import { useDispatch, useSelector } from 'react-redux';
-import { getConversations, getMessages } from './redux/actions/messageAction';
+import { getConversations, getMessages, updateReadedUsers } from './redux/actions/messageAction';
 import { callSelector, messageSelector, peerSelector, socketSelector } from './redux/selector';
 import PhoneDisabledIcon from '@mui/icons-material/PhoneDisabled';
 import getStream from './utils/getStream';
 import Avatar from './components/Avatar';
+import { getDataApi } from './utils/fetchData';
 
 function SocketClient({ auth }) {
     const dispatch = useDispatch();
@@ -107,7 +108,20 @@ function SocketClient({ auth }) {
     useEffect(() => {
         // Message
         if (socket && Object.keys(message).length > 1) {
-            socket.on('created_message', (data) => {
+            socket.on('created_message', async (data) => {
+                const userId = data.createdMessage.sender;
+                if (message.currentReceiver._id === data.createdMessage.sender) {
+                    // If you and other user are chatting, conversation will not notify unreaded conversation notication
+                    dispatch(updateReadedUsers({ conversationId: data.conversation._id }));
+                } else {
+                    // Create unreaded conversation notication
+                    const res = await getDataApi(`/conversation/${userId}`);
+                    dispatch({
+                        type: GLOBALTYPES.MESSAGE.UPDATE_READED_CONVERSATION,
+                        payload: res.data.conversation
+                    });
+                }
+
                 if (
                     !message.conversations?.data.find(
                         (conversation) => conversation._id === data.conversation._id

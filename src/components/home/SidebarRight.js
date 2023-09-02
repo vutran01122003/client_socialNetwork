@@ -9,6 +9,7 @@ function SidebarRight({ auth }) {
     const message = useSelector(messageSelector);
     const conversations = message.conversations?.data;
     const handleMessage = async (user) => {
+        console.log(user);
         dispatch(
             getConversation({
                 userData: user,
@@ -37,6 +38,7 @@ function SidebarRight({ auth }) {
                                                 user={conversation.recipients.find(
                                                     (recipient) => recipient._id !== auth?.user._id
                                                 )}
+                                                auth={auth}
                                                 onClick={handleMessage}
                                                 conversation={conversation}
                                                 homeSidebar={true}

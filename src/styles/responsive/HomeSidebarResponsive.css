@@ -99,8 +99,7 @@
 
     .account_wrapper.home_sidebar .follow_btn button,
     .account_wrapper.home_sidebar .unfollow_btn button{
-        width: 70px;
-        padding: 0;
+        width: 80px;
     }
 }
 

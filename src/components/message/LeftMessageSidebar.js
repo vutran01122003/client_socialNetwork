@@ -39,6 +39,7 @@ function RightMessageSidebar({ auth }) {
                                 return (
                                     <div ref={getLastAccount} key={conversation._id}>
                                         <UserCard
+                                            auth={auth}
                                             user={conversation.recipients.find(
                                                 (recipient) => recipient._id !== auth?.user._id
                                             )}
@@ -51,6 +52,7 @@ function RightMessageSidebar({ auth }) {
                             return (
                                 <div key={conversation._id}>
                                     <UserCard
+                                        auth={auth}
                                         user={conversation.recipients.find(
                                             (recipient) => recipient._id !== auth?.user._id
                                         )}

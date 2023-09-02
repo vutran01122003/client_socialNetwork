@@ -1,5 +1,6 @@
 import { GLOBALTYPES } from '../actions/globalTypes';
 import removeElem from '../../utils/removeElem';
+import replaceOldElem from '../../utils/replaceOldElem';
 
 const initialState = {
     loading: false,
@@ -110,6 +111,17 @@ function messageReducer(state = initialState, action) {
                         ...state.messages[action.payload.conversationId],
                         ...action.payload.updatedMessage
                     }
+                }
+            };
+        }
+        case GLOBALTYPES.MESSAGE.UPDATE_READED_CONVERSATION: {
+            const conversationsData = [...state.conversations.data];
+            const newConversations = replaceOldElem(conversationsData, action.payload);
+            return {
+                ...state,
+                conversations: {
+                    ...state.conversations,
+                    data: newConversations
                 }
             };
         }

@@ -4,23 +4,49 @@ import ModeCommentIcon from '@mui/icons-material/ModeComment';
 import MultipleImageIcon from '../icon/MultipleImageIcon';
 import { useCallback, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { getUserPost } from '../../redux/actions/profileActions';
+import { getUserPosts, getUserSavedPosts } from '../../redux/actions/profileActions';
 import { CircularProgress } from '@mui/material';
+import { getPostsDiscover } from '../../redux/actions/discoverAction';
 
-function PostsThumb({ posts, userProfileId, profile }) {
+function PostsThumb({
+    posts,
+    userProfileId,
+    profile,
+    postsDiscover,
+    userPosts,
+    savedPosts,
+    discoveredPosts,
+    saved
+}) {
     const observer = useRef();
     const dispatch = useDispatch();
-
     const getLastPostThumb = useCallback(
         (elem) => {
             if (observer.current) observer.current.disconnect();
             observer.current = new IntersectionObserver((entries) => {
                 if (entries[0].isIntersecting) {
-                    if (userProfileId && !profile.posts[userProfileId].maxPage) {
+                    if (discoveredPosts && !postsDiscover.maxPage) {
                         dispatch(
-                            getUserPost({
+                            getPostsDiscover({
+                                page: postsDiscover.page + 1
+                            })
+                        );
+                    }
+
+                    if (userPosts && !profile.posts[userProfileId].maxPage) {
+                        dispatch(
+                            getUserPosts({
                                 id: userProfileId,
                                 page: profile.posts[userProfileId].page + 1
+                            })
+                        );
+                    }
+
+                    if (savedPosts && !profile.saved.maxPage) {
+                        dispatch(
+                            getUserSavedPosts({
+                                id: userProfileId,
+                                page: profile.saved.page + 1
                             })
                         );
                     }
@@ -30,14 +56,14 @@ function PostsThumb({ posts, userProfileId, profile }) {
             if (elem) observer.current.observe(elem);
         },
         // eslint-disable-next-line
-        [dispatch, profile?.posts]
+        [dispatch, profile?.posts, profile?.saved, postsDiscover?.data, saved]
     );
 
     return (
         <div className='user_posts'>
             {posts.map((post, index) => (
                 <div
-                    ref={posts.length === index + 1 && userProfileId ? getLastPostThumb : null}
+                    ref={posts.length === index + 1 ? getLastPostThumb : null}
                     key={post._id}
                     className='post_thumb_item'
                 >
@@ -79,7 +105,7 @@ function PostsThumb({ posts, userProfileId, profile }) {
                     </Link>
                 </div>
             ))}
-            {profile?.loading && (
+            {(profile?.loading || postsDiscover?.loading) && (
                 <div className='w-full p-2 flex items-center justify-center'>
                     <CircularProgress />
                 </div>
