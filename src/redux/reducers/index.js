@@ -15,9 +15,11 @@ import notifyReducer from './notifyReducer';
 import messageReducer from './messageReducer';
 import callReducer from './callReducer';
 import peerReducer from './peerReducer';
+import passwordReducer from './passwordReducer';
 
 const rootReducer = combineReducers({
     auth: authReducer,
+    password: passwordReducer,
     alert: alertReducer,
     theme: themeReducer,
     activePage: activePageReducer,

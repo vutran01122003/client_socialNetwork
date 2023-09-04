@@ -144,7 +144,7 @@ export default function Login() {
                             <Grid container>
                                 <Grid item xs>
                                     <Link
-                                        href='#'
+                                        href='/password'
                                         variant='body2'
                                         style={{ textDecoration: 'none' }}
                                     >

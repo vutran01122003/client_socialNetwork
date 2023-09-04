@@ -13,12 +13,12 @@ export const getAuthInfo = () => async (dispatch) => {
         .catch((e) => {
             if (e.response?.data.status === 403) {
                 localStorage.removeItem('logged');
-                dispatch({
-                    type: GLOBALTYPES.ALERT,
-                    payload: {
-                        error: e.response?.data.msg || 'Error'
-                    }
-                });
+                // dispatch({
+                //     type: GLOBALTYPES.ALERT,
+                //     payload: {
+                //         error: e.response?.data.msg || 'Error'
+                //     }
+                // });
             } else
                 dispatch({
                     type: GLOBALTYPES.ALERT,

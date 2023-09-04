@@ -13,6 +13,7 @@ import Layout from './components/layout/Layout';
 import { getAuthInfo } from './redux/actions/authAction';
 import SocketClient from './SocketClient';
 import PeerClient from './PeerClient';
+import Password from './pages/Password';
 
 function App() {
     const dispatch = useDispatch();
@@ -42,6 +43,7 @@ function App() {
                     <Routes>
                         <Route path='/register' element={<Register />} />
                         <Route path='/login' element={<Login />} />
+                        <Route path='/password' element={<Password />} />
                         <Route path='/' element={<Layout theme={theme} auth={auth} />}>
                             <Route index element={auth.token ? <Home /> : <Login />} />
                             <Route path='*' element={<PageRender />} />

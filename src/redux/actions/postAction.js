@@ -71,7 +71,6 @@ export const createPost =
                     );
                 })
                 .catch((err) => {
-                    console.log(err);
                     dispatch({
                         type: GLOBALTYPES.ALERT,
                         payload: {

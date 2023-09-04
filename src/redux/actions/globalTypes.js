@@ -9,6 +9,11 @@ export const GLOBALTYPES = {
         SEARCH_LOADING: 'SEARCH_LOADING',
         GET_USER: 'GET_USER'
     },
+    PASSWORD: {
+        RESET: 'RESET',
+        SEND_CODE: 'SEND_CODE',
+        CONFIRM_CODE: 'CONFIRM_CODE'
+    },
     PROFILE: {
         LOADING: 'LOADING',
         GET_USER: 'GET_USER',
