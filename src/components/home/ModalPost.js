@@ -250,126 +250,124 @@ function ModalPost({ auth, currentPost, detailPost, messageInput, message, scrol
                     </div>
                 )}
 
-                <div>
-                    <textarea
-                        className='post_textarea w-full outline-none overflow-auto'
-                        placeholder={
-                            messageInput
-                                ? `${'Enter your message...'}`
-                                : `What's on your mind, ${auth.user?.username}?`
-                        }
-                        value={content}
-                        onChange={handleChangeValueTextarea}
-                    ></textarea>
-                    {openVideo && (
-                        <div className='camera_wrapper'>
-                            <video autoPlay muted ref={videoRef} />
-                            <canvas ref={canvasRef} hidden />
-                        </div>
-                    )}
+                <textarea
+                    className='post_textarea w-full outline-none overflow-auto'
+                    placeholder={
+                        messageInput
+                            ? `${'Enter your message...'}`
+                            : `What's on your mind, ${auth.user?.username}?`
+                    }
+                    value={content}
+                    onChange={handleChangeValueTextarea}
+                ></textarea>
+                {openVideo && (
+                    <div className='camera_wrapper'>
+                        <video autoPlay muted ref={videoRef} />
+                        <canvas ref={canvasRef} hidden />
+                    </div>
+                )}
 
-                    {files?.length > 0 && (
-                        <div className='show_images'>
-                            <div className='images_wrapper relative'>
-                                <div className='remove_img_btn hover:text-red-500'>
-                                    <CloseIcon onClick={handleClearImages} fontSize='small' />
-                                </div>
-                                {files.map((file, index) => {
-                                    if (
-                                        file.video ||
-                                        (file?.url && file?.url.includes('/video/upload/'))
-                                    ) {
-                                        return (
-                                            <video key={index} controls>
-                                                <source src={file.video || file.url} />
-                                            </video>
-                                        );
-                                    }
-
-                                    return (
-                                        <img
-                                            src={
-                                                file?.imgCamera ||
-                                                (file.url ?? URL.createObjectURL(file))
-                                            }
-                                            key={index}
-                                            alt='previewed_image'
-                                        />
-                                    );
-                                })}
+                {files?.length > 0 && (
+                    <div className='show_images'>
+                        <div className='images_wrapper relative'>
+                            <div className='remove_img_btn hover:text-red-500'>
+                                <CloseIcon onClick={handleClearImages} fontSize='small' />
                             </div>
+                            {files.map((file, index) => {
+                                if (
+                                    file.video ||
+                                    (file?.url && file?.url.includes('/video/upload/'))
+                                ) {
+                                    return (
+                                        <video key={index} controls>
+                                            <source src={file.video || file.url} />
+                                        </video>
+                                    );
+                                }
+
+                                return (
+                                    <img
+                                        src={
+                                            file?.imgCamera ||
+                                            (file.url ?? URL.createObjectURL(file))
+                                        }
+                                        key={index}
+                                        alt='previewed_image'
+                                    />
+                                );
+                            })}
                         </div>
-                    )}
-                    <div className='more_btn_wrapper'>
-                        <div className='icons_btn_wrapper relative'>
-                            {openVideo ? (
-                                <>
-                                    <ArrowBackIcon
-                                        onClick={() => {
-                                            handleStopCamera(stream);
-                                        }}
-                                        className='text-gray-500 hover:text-black close_camera_btn'
+                    </div>
+                )}
+                <div className='more_btn_wrapper'>
+                    <div className='icons_btn_wrapper relative'>
+                        {openVideo ? (
+                            <>
+                                <ArrowBackIcon
+                                    onClick={() => {
+                                        handleStopCamera(stream);
+                                    }}
+                                    className='text-gray-500 hover:text-black close_camera_btn'
+                                    fontSize='large'
+                                />
+                                <label className='absolute left-1/2 -translate-x-1/2 block p-1 rounded-full hover:bg-gray-200 transition linear'>
+                                    <PhotoCameraIcon
+                                        onClick={handleCaptureCamera}
                                         fontSize='large'
                                     />
-                                    <label className='absolute left-1/2 -translate-x-1/2 block p-1 rounded-full hover:bg-gray-200 transition linear'>
+                                </label>
+                            </>
+                        ) : (
+                            <>
+                                {!messageInput && (
+                                    <span className='font-semibold text-base whitespace-nowrap'>
+                                        Add to your post
+                                    </span>
+                                )}
+                                <div className='icons_wrapper flex gap-3 items-center'>
+                                    <label htmlFor='insert_image' className='icon-item'>
+                                        <ImageIcon sx={{ color: '#50C878' }} />
+                                    </label>
+
+                                    <label className='icon-item'>
                                         <PhotoCameraIcon
-                                            onClick={handleCaptureCamera}
-                                            fontSize='large'
+                                            sx={{ color: '#F02849' }}
+                                            onClick={handleOpenCamera}
                                         />
                                     </label>
-                                </>
-                            ) : (
-                                <>
-                                    {!messageInput && (
-                                        <span className='font-semibold text-base whitespace-nowrap'>
-                                            Add to your post
-                                        </span>
-                                    )}
-                                    <div className='icons_wrapper flex gap-3 items-center'>
-                                        <label htmlFor='insert_image' className='icon-item'>
-                                            <ImageIcon sx={{ color: '#50C878' }} />
-                                        </label>
 
-                                        <label className='icon-item'>
-                                            <PhotoCameraIcon
-                                                sx={{ color: '#F02849' }}
-                                                onClick={handleOpenCamera}
-                                            />
-                                        </label>
-
-                                        <label className='icon-item'>
-                                            <EmotionBtn setContent={setContent} />
-                                        </label>
-                                        <input
-                                            id='insert_image'
-                                            type='file'
-                                            ref={inputRef}
-                                            multiple
-                                            accept='image/*,video/*'
-                                            onChange={handleInsertFiles}
-                                            hidden
-                                        />
+                                    <label className='icon-item'>
+                                        <EmotionBtn setContent={setContent} />
+                                    </label>
+                                    <input
+                                        id='insert_image'
+                                        type='file'
+                                        ref={inputRef}
+                                        multiple
+                                        accept='image/*,video/*'
+                                        onChange={handleInsertFiles}
+                                        hidden
+                                    />
+                                </div>
+                                {messageInput && (
+                                    <div
+                                        onClick={handleSendMessage}
+                                        className={`send_message ${
+                                            content ? 'text-gray-700' : 'text-gray-300'
+                                        }`}
+                                    >
+                                        <SendIcon />
                                     </div>
-                                    {messageInput && (
-                                        <div
-                                            onClick={handleSendMessage}
-                                            className={`send_message ${
-                                                content ? 'text-gray-700' : 'text-gray-300'
-                                            }`}
-                                        >
-                                            <SendIcon />
-                                        </div>
-                                    )}
-                                </>
-                            )}
-                        </div>
-
-                        {!messageInput && (
-                            <button onClick={handleSumbitPost} className='post_btn'>
-                                {Object.keys(currentPost).length > 0 ? 'Save' : 'Post'}
-                            </button>
+                                )}
+                            </>
                         )}
                     </div>
+
+                    {!messageInput && (
+                        <button onClick={handleSumbitPost} className='post_btn'>
+                            {Object.keys(currentPost).length > 0 ? 'Save' : 'Post'}
+                        </button>
+                    )}
                 </div>
             </form>
         </div>

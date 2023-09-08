@@ -3,10 +3,16 @@ import Header from '../header/Header';
 import { Toolbar } from '@mui/material';
 import SidebarRight from '../home/SidebarRight';
 import SidebarLeft from '../home/SidebarLeft';
+import CallModal from '../message/CallModal';
+import { useSelector } from 'react-redux';
+import { callSelector, peerSelector, socketSelector } from '../../redux/selector';
 
 function Layout({ auth, theme }) {
     let { page } = useParams();
     page = page ? page : 'home';
+    // const peer = useSelector(peerSelector);
+    // const socket = useSelector(socketSelector);
+    // const call = useSelector(callSelector);
 
     return (
         <>

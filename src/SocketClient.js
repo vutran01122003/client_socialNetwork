@@ -26,11 +26,6 @@ function SocketClient({ auth }) {
             payload: {}
         });
 
-        dispatch({
-            type: GLOBALTYPES.CALL.CALLING,
-            payload: false
-        });
-
         const restUserId =
             call?.sender._id === auth.user._id ? call?.receiver._id : call?.sender._id;
         socket.emit('end_call', { restUserId });
@@ -56,6 +51,7 @@ function SocketClient({ auth }) {
                     type: GLOBALTYPES.CALL.CALLING,
                     payload: false
                 });
+
                 dispatch({
                     type: GLOBALTYPES.CALL.CALL_USER,
                     payload: {}
@@ -65,8 +61,6 @@ function SocketClient({ auth }) {
                     stream.getTracks().forEach(function (track) {
                         track.stop();
                     });
-                } else {
-                    window.location.reload();
                 }
             });
 
@@ -84,6 +78,17 @@ function SocketClient({ auth }) {
                             data.isVideo
                                 ? (remoteVideo.current.srcObject = stream)
                                 : (remoteAudio.current.srcObject = stream);
+                        });
+
+                        // enable camera from remote
+                        socket.on('play_remote_video', () => {
+                            socket.off('stream');
+                            const call = peer.call(data.peerId, stream);
+                            call.on('stream', function (stream) {
+                                data.isVideo
+                                    ? (remoteVideo.current.srcObject = stream)
+                                    : (remoteAudio.current.srcObject = stream);
+                            });
                         });
                     })
                     .catch(() => {
@@ -104,6 +109,19 @@ function SocketClient({ auth }) {
         }
         // eslint-disable-next-line
     }, [peer, dispatch, stream]);
+
+    useEffect(() => {
+        if (socket && Object.keys(call).length > 0) {
+            socket.on('disconnected_user', (data) => {
+                if (data?.userId === call?.receiver?._id || data?.userId === call?.sender?._id) {
+                    handleEndCall();
+                }
+            });
+            return () => {
+                socket.off('disconnected_user');
+            };
+        }
+    }, [socket, call]);
 
     useEffect(() => {
         // Message

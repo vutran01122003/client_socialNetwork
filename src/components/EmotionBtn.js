@@ -13,12 +13,13 @@ function EmotionBtn({ setContent }) {
         setContent((prev) => prev + EmotionValue);
     };
 
-    const emotionIcons = [
-        '🙂','😀','😄','😆','😅','😂','🤣','😊','☹️','😞','😔','😖',
-        '😓','😢','😢','😭','😟','😣','😩','😫','🤔','😉','😏','😌',
-        '😍','😘','😕','😙','😚','😤','😠','😳','🙃','😇','😈','😐',
-        '😛','😝','😜','😋','🤤','😎','😒','🙁','😴','😪','😱','😰',
-        '😑','👿','💀','👻','🤡','🐧'
+    const emotionIcons = [ 
+        '🙂', '😀', '😄', '😆', '😅', '😂', '🤣', '😊', '☹️', '😞', 
+        '😔', '😖', '😓', '😢', '😢', '😭', '😟', '😣', '😩', '😫', 
+        '🤔', '😉', '😏', '😌', '😍', '😘', '😕', '😙', '😚', '😤', 
+        '😠', '😳', '🙃', '😇', '😈', '😐', '😛', '😝', '😜', '😋', 
+        '🤤', '😎', '😒', '🙁', '😴', '😪', '😱', '😰', '😑', '👿', 
+        '💀', '👻', '🤡', '🐧'
     ];
 
     return (
@@ -26,8 +27,7 @@ function EmotionBtn({ setContent }) {
             <Tippy
                 interactive
                 visible={openEmotionBtn}
-                placement='top'
-                zIndex={99}
+                placement='top-end'
                 onClickOutside={handleToggleOpenEmotionBtn}
                 render={(attrs) => (
                     <div className='emotion_wrapper' tabIndex='-1' {...attrs}>

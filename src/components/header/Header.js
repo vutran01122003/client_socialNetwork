@@ -142,7 +142,7 @@ function Header({ auth, theme }) {
                                     display: { xs: 'none', md: 'flex' }
                                 }}
                             >
-                                <Search />
+                                <Search auth={auth} />
                             </Box>
 
                             <Box sx={{ flexGrow: 0, display: 'flex', gap: 4 }}>

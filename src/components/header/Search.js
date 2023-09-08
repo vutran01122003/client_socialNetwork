@@ -7,7 +7,7 @@ import { getSearchUser } from '../../redux/actions/usersAction';
 import { userSelector } from '../../redux/selector';
 import UserCard from '../UserCard';
 
-function Search() {
+function Search({ auth }) {
     const users = useSelector(userSelector);
     const observer = useRef();
 
@@ -75,15 +75,17 @@ function Search() {
                 <div className='box_search' tabIndex='-1' {...attrs}>
                     <div className='label text-gray-600 font-semibold px-2 py-1'>Account</div>
                     {users.userList.map((user, index) => {
-                        if (users?.userList.length === index + 1)
+                        if (users?.userList.length === index + 1) {
                             return (
                                 <div className='last_item' ref={getLastUserCard} key={user._id}>
-                                    <UserCard user={user} onClick={hideResult} />
+                                    <UserCard user={user} onClick={hideResult} auth={auth} />
                                 </div>
                             );
+                        }
+
                         return (
                             <div key={user._id}>
-                                <UserCard user={user} onClick={hideResult} />
+                                <UserCard user={user} onClick={hideResult} auth={auth} />
                             </div>
                         );
                     })}

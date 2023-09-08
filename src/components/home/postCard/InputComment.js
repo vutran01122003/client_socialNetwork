@@ -42,7 +42,7 @@ function InputComment({ inputCommentRef, post, auth, comment, socket }) {
                     onChange={handlecommentValue}
                 />
                 <div
-                    className={`flex gap-2 absolute right-2 top-1/2 -translate-y-1/2 ${
+                    className={`flex gap-2 absolute right-2 top-1/2 -translate-y-1/2 z-[1000] ${
                         commentValue ? 'text-gray-700' : 'text-gray-300'
                     }`}
                 >

@@ -3,20 +3,45 @@ import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { GLOBALTYPES } from './redux/actions/globalTypes';
 import PhoneDisabledIcon from '@mui/icons-material/PhoneDisabled';
-import { authSelector, callSelector, peerSelector, socketSelector } from './redux/selector';
+import { callSelector, peerSelector, socketSelector } from './redux/selector';
 import getStream from './utils/getStream';
 import Avatar from './components/Avatar';
 
-function PeerClient() {
+function PeerClient({ auth }) {
     const dispatch = useDispatch();
     const call = useSelector(callSelector);
     const peer = useSelector(peerSelector);
-    const auth = useSelector(authSelector);
     const socket = useSelector(socketSelector);
     const [stream, setStream] = useState(null);
     const remoteVideo = useRef();
     const localVideo = useRef();
     const remoteAudio = useRef();
+
+    const playVideo = async () => {
+        socket.emit('play_video', {
+            userId: call?.sender._id === auth.user._id ? call?.receiver._id : call?.sender._id
+        });
+        try {
+            const newStream = await navigator.mediaDevices.getUserMedia({ video: true });
+            localVideo.current.srcObject = newStream;
+            setStream(newStream);
+            localVideo.current.play();
+        } catch (error) {
+            console.error('Không thể mở camera:', error);
+        }
+    };
+
+    // Hàm để tắt camera
+    const stopVideo = () => {
+        if (stream) {
+            const tracks = stream.getTracks();
+            tracks.forEach((track) => {
+                if (track.readyState === 'live' && track.kind === 'video') {
+                    track.stop();
+                }
+            });
+        }
+    };
 
     const handleEndCall = () => {
         dispatch({
@@ -36,19 +61,25 @@ function PeerClient() {
     };
 
     useEffect(() => {
-        if (Object.keys(peer).length > 0 && Object.keys(call).length > 0) {
+        if (Object.keys(peer).length > 0) {
             const callVideo = call.video;
 
             peer.on('call', function (call) {
                 getStream({ audio: true, video: callVideo })
                     .then((stream) => {
+                        console.log('peer');
                         setStream(stream);
                         call.on('stream', function (stream) {
                             callVideo
                                 ? (remoteVideo.current.srcObject = stream)
                                 : (remoteAudio.current.srcObject = stream);
                         });
-                        if (callVideo) localVideo.current.srcObject = stream;
+
+                        if (callVideo) {
+                            localVideo.current.srcObject = stream;
+                            localVideo.current.play();
+                        }
+
                         call.answer(stream);
                     })
                     .catch(() => {
@@ -65,7 +96,8 @@ function PeerClient() {
                 peer.off('call');
             };
         }
-    }, [peer, dispatch, call]);
+        // eslint-disable-next-lin
+    }, [peer, dispatch, call?.video, stream]);
 
     useEffect(() => {
         const peer = new Peer(undefined, {
@@ -102,10 +134,13 @@ function PeerClient() {
                             </div>
                         ) : (
                             <div className='call_modal_video'>
-                                <video className='local_video' ref={localVideo} autoPlay muted />
+                                <video className='local_video' ref={localVideo} muted />
                                 <video className='remote_video' ref={remoteVideo} autoPlay />
                             </div>
                         )}
+                        <button onClick={stopVideo}>Stop video</button>
+                        <button onClick={playVideo}>Play video</button>
+
                         <div className='call_modal_video_footer'>
                             <div
                                 onClick={() => {

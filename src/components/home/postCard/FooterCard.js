@@ -14,7 +14,6 @@ import UserModal from '../../UserModal';
 function FooterCard({ post, auth, socket }) {
     const [like, setLike] = useState(false);
     const [likesPopup, setLikesPopup] = useState(false);
-
     const dispatch = useDispatch();
     const inputCommentRef = useRef();
 
@@ -57,6 +56,7 @@ function FooterCard({ post, auth, socket }) {
                         users: post.likes
                     }}
                     setPopup={setLikesPopup}
+                    auth={auth}
                 />
             )}
 

@@ -127,6 +127,7 @@ export const updateComment =
                 });
             })
             .catch((error) => {
+                console.log(error);
                 dispatch({
                     type: GLOBALTYPES.ALERT,
                     payload: {

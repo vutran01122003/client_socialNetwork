@@ -31,6 +31,16 @@ function CallModal({ auth, call, socket, peer }) {
         <>
             {call?.receiver && (
                 <div className='call_modal_wrapper'>
+                    <audio autoPlay loop hidden>
+                        <source
+                            src={
+                                call.receiver?._id === auth.user?._id
+                                    ? require('../../audio/messengerCall.mp3')
+                                    : require('../../audio/messengerDialTone.mp3')
+                            }
+                            type='audio/mp3'
+                        />
+                    </audio>
                     <div className='call_modal'>
                         <div className='call_modal_header'>
                             <h1 className='call_modal_header_title uppercase text-base'>

@@ -36,7 +36,7 @@ function App() {
                 {auth?.user && (
                     <>
                         <SocketClient auth={auth} />
-                        <PeerClient />
+                        <PeerClient auth={auth} />
                     </>
                 )}
                 <Fragment>
