@@ -9,12 +9,10 @@ function InputComment({ inputCommentRef, post, auth, comment, socket }) {
     const dispatch = useDispatch();
 
     const handlecommentValue = (e) => {
-        e.preventDefault();
         setCommentValue(e.target.value);
     };
 
     const handleSubmitComment = async (e) => {
-        e.preventDefault();
         if (commentValue) {
             dispatch(
                 createComment({

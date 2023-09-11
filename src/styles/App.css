@@ -4,61 +4,6 @@
     box-sizing: border-box;
 }
 
-html, body, #root {
-    background: var(--app-background-color);
-}
-
-.App {
-    min-height: 100vh;
-    width: 100%;
-    background: var(--app-background-color);
-    margin: 0;
-}
-
-.css-19r6kue-MuiContainer-root {
-    border-bottom: var(--border-post-pagination);
-}
-
-#theme:checked ~ .App  {
-    filter: invert(1);
-}
-
-/* Tag HTML */
-#theme:checked ~ .App :is(img, video) {
-    filter: invert(1);
-}
-
-/* Toast */
-#theme:checked ~ .App .toast {
-    filter: invert(1);
-}
-
-/* Swiper */
-#theme:checked ~ .App :is(.swiper-button-next, .swiper-button-prev, .swiper-pagination) {
-    filter: invert(1);
-}
-
-/* Profile */
-#theme:checked ~ .App :is(.post_thumb_item_info, .website_link) {
-    filter: invert(1);
-}    
-
-/* Edit Profile */
-#theme:checked ~ .App :is(.edit_close_btn, .count_letter, .save_edit_btn) {
-    filter: invert(1);
-}
-
-/* Post */
-#theme:checked ~ .App :is(.btn_like_active_comment, .interactive_icons_wrapper, .count_one_like_wrapper, .count_like_wrapper) {
-    filter: invert(1);
-}
-
-/* Modal Post */
-#theme:checked ~ .App :is(.icon-item, .post_close_btn, .remove_img_btn, .post_btn) {
-    filter: invert(1);
-}
-
-/* Prevent image dragging*/
 img { 
     -webkit-user-drag: none; 
     -khtml-user-drag: none; 
@@ -66,8 +11,19 @@ img {
     -o-user-drag: none; 
 }
 
-/* Prevent link dragging */
+video {
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+}
+
 a {
     user-select: none;
     -webkit-user-drag: none;
+}
+
+.App {
+    min-height: 100vh;
+    width: 100%;
+    background: var(--white-background-color-v2);
+    margin: 0;
 }

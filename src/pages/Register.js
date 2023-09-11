@@ -20,7 +20,13 @@ import { useNavigate } from 'react-router-dom';
 
 function Copyright(props) {
     return (
-        <Typography variant='body2' color='text.secondary' align='center' {...props}>
+        <Typography
+            className='copy_right_content'
+            variant='body2'
+            color='text.secondary'
+            align='center'
+            {...props}
+        >
             {'Copyright © '}
             <Link color='inherit' href='/'>
                 Smedia
@@ -98,7 +104,13 @@ export default function Register() {
                     <Typography component='h1' variant='h5'>
                         Sign up
                     </Typography>
-                    <Box component='form' noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                    <Box
+                        className='register_input_wrapper'
+                        component='form'
+                        noValidate
+                        onSubmit={handleSubmit}
+                        sx={{ mt: 3 }}
+                    >
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <TextField
@@ -188,7 +200,7 @@ export default function Register() {
                                         defaultValue={gender}
                                         row
                                         name='gender'
-                                        className='flex justify-between w-full'
+                                        className='flex w-full gender_radio_group'
                                         onChange={handleUserData}
                                     >
                                         <FormControlLabel

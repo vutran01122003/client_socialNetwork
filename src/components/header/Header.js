@@ -145,7 +145,14 @@ function Header({ auth, theme }) {
                                 <Search auth={auth} />
                             </Box>
 
-                            <Box sx={{ flexGrow: 0, display: 'flex', gap: 4 }}>
+                            <Box
+                                sx={{
+                                    flexGrow: 0,
+                                    display: 'flex',
+                                    gap: 1.5,
+                                    alignItems: 'center'
+                                }}
+                            >
                                 <Box
                                     className={`text-white`}
                                     sx={{
@@ -165,9 +172,9 @@ function Header({ auth, theme }) {
                                             to={page.path}
                                             className={`${
                                                 activePage === page.name
-                                                    ? 'text-gray-700'
+                                                    ? 'text-gray-700 page_item_active'
                                                     : 'text-gray-400'
-                                            } hover:text-gray-700 px-4 transition linear`}
+                                            } hover:text-gray-700 px-4 transition linear page_item`}
                                         >
                                             <page.icon fontSize='large' />
                                         </Link>
@@ -182,9 +189,9 @@ function Header({ auth, theme }) {
                                         to='/message'
                                         className={`${
                                             activePage === 'Message'
-                                                ? 'text-gray-700'
+                                                ? 'page_item_active text-gray-700'
                                                 : 'text-gray-400'
-                                        } hover:text-gray-700 px-4 transition linear relative block`}
+                                        } hover:text-gray-700 px-4 transition linear relative block page_item`}
                                     >
                                         <MessageIcon fontSize='large' />
                                         {Object.keys(message?.conversations).length > 0 &&
@@ -226,8 +233,10 @@ function Header({ auth, theme }) {
                                                     handleToggleNotify();
                                                 }}
                                                 className={`notify_icon ${
-                                                    showNotify ? 'text-gray-700' : 'text-gray-400'
-                                                } hover:text-gray-700 px-4 transition linear`}
+                                                    showNotify
+                                                        ? 'text-gray-700 page_item_active'
+                                                        : 'text-gray-400'
+                                                } hover:text-gray-700 px-4 transition linear page_item`}
                                             >
                                                 <NotificationsIcon fontSize='large' />
                                                 {notify.unread !== 0 && (
@@ -299,9 +308,10 @@ function Header({ auth, theme }) {
                                         aria-controls='menu-appbar'
                                         aria-haspopup='true'
                                         onClick={handleOpenNavMenu}
-                                        color='gray'
                                     >
-                                        <MenuIcon />
+                                        <MenuIcon
+                                            className={theme ? 'text-white' : 'text-gray-400'}
+                                        />
                                     </IconButton>
                                     <Menu
                                         id='menu-appbar'
@@ -347,6 +357,23 @@ function Header({ auth, theme }) {
                                                 </Typography>
                                             </MenuItem>
                                         ))}
+                                        {/* message */}
+                                        <MenuItem onClick={handleCloseNavMenu} className='my-2'>
+                                            <Typography
+                                                sx={{
+                                                    width: '120px'
+                                                }}
+                                                textAlign='center'
+                                            >
+                                                <Link
+                                                    to='/message'
+                                                    className='flex gap-2 text-gray-700 hover:text-gray-800'
+                                                >
+                                                    <MessageIcon />
+                                                    Message
+                                                </Link>
+                                            </Typography>
+                                        </MenuItem>
                                     </Menu>
                                 </Box>
                                 <Tooltip

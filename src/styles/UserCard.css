@@ -12,7 +12,7 @@
 }
 
 .account_wrapper.home_sidebar:hover {
-    background-color: var(--hover-background-color-v3);
+    background-color: var(--white-background-color-v5);
 } 
 
 .account_wrapper.home_sidebar {
@@ -68,5 +68,5 @@
 }
 
 .conversation_icon:hover {
-    background-color: var(--hover-background-color-v2);
+    background-color: var(--white-background-color-v4);
 }

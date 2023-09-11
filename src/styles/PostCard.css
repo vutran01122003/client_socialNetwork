@@ -33,8 +33,13 @@
 }
 
 .more_item:hover {
-    background: var(--hover-background-color);
+    background: var(--white-background-color-v6);
 }
+
+.info_sumamry {   
+    transition: 0.3s linear;
+}
+
 
 /* Body card */
 .body_content {

@@ -10,7 +10,7 @@
     width: 23%;
     left: 0;
     bottom: 0;
-    background: var(--app-background-color);
+    background: var(--white-background-color-v2);
     overflow-y: scroll;
     transition: background-color 0.3s linear;
 }
@@ -27,7 +27,7 @@
     width: 20%;
     right: 0;
     bottom: 0;
-    background: var(--app-background-color);
+    background: var(--white-background-color-v2);
     overflow-y: scroll;
     transition: background-color 0.3s linear;
 }
@@ -35,19 +35,19 @@
 .suggestion_wrapper, .contact_wrapper {
     padding-left: 8px;
     padding-top: 8px;
-    background: var(--app-background-color);
+    background: var(--white-background-color-v2);
     min-height: 100vh;
 }
 
 .contact_title {
-    color: var(--sencondary-text-color);
+    color: var(--sencondary-text-color-v1);
     font-weight: 500;
     font-size: large;
     margin: 0 0 15px 7px;
 }
 
 .suggestion_title_wrapper {
-    color: var(--sencondary-text-color);
+    color: var(--sencondary-text-color-v1);
     font-weight: 500;
     font-size: large;
     margin: 15px 7px;

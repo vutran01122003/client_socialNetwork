@@ -1,0 +1,260 @@
+/* App */
+.App.dark {
+    color: var(--white-color);
+    background: var(--dark-background-color-v1);
+}
+
+/* Login */
+.App.dark .login_input_wrapper {
+    background: var(--white-color);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+/* Register */
+.App.dark .register_input_wrapper {
+    background: var(--white-color);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.gender_radio_group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.App.dark .register_input_wrapper .gender_radio_group {
+    color: var(--black-color);
+}
+
+.App.dark .copy_right_content {
+    color: var(--white-color);
+}
+
+/* Mui react */
+.App.dark header.css-yiikg7-MuiPaper-root-MuiAppBar-root {
+    background: var(--dark-background-color-v1);
+}
+
+/* Header */
+.App.dark .search_wrapper input {
+    background: var(--dark-background-color-v2);
+}
+
+.App.dark .page_menu {
+    color: var(--white-color) !important;
+}
+
+.App.dark .page_item {
+    color: var(--dark-background-color-v4);
+}
+
+.App.dark .page_item_active {
+    color: var(--white-color);
+}
+
+/* Sidebar */
+.App.dark .suggestion_wrapper, .App.dark .contact_wrapper {
+    color: var(--white-color);
+    background: var(--dark-background-color-v1);
+}
+
+.App.dark .suggestion_wrapper .new_suggested_user_btn,
+.App.dark :is(.suggestion_wrapper, .contact_wrapper) :is(.suggestion_title, .contact_title),
+.App.dark :is(.suggestion_wrapper, .contact_wrapper) :is(.user_description_username, .message_user_description_username)  {
+    color: var(--white-color);
+}
+
+.App.dark :is(.suggestion_wrapper, .contact_wrapper) :is(.user_description_fullname, .message_user_description_fullname) {
+    color: var(--sencondary-text-color-v3)
+}
+
+.App.dark .sidebar_item_wrapper, 
+.App.dark .sidebar_item_wrapper span {
+    color: var(--white-color);
+}
+
+.App.dark .sidebar_left, 
+.App.dark .sidebar_right {
+    background: var(--dark-background-color-v1);
+}
+
+/* Status */
+.App.dark .btn_status_popup {
+    background-color: var(--dark-background-color-v2);
+}
+
+/* Post */
+.App.dark .wrapper {
+    background: #242526;
+}
+
+.App.dark .post_item {
+    background: #242526;
+}
+
+.App.dark .interactive_details, 
+.App.dark .interactive_icons_wrapper {
+    color: var(--white-color);
+}
+
+.App.dark .comment_content_wrapper {
+    background-color: var(--dark-background-color-v2);
+}
+
+.App.dark :is(.created_at, .btn_reply_comment, .btn_like_default_comment, .time_createdAt_comment, .comment_more_btn) {
+    color: var(--white-color);
+}
+
+.App.dark .comment_more_btn:hover {
+    background: var(--dark-background-color-v4);
+}
+
+.App.dark .input_comment_wrapper input {
+    color: var(--white-color);
+    background-color: var(--dark-background-color-v2);
+}
+
+/* Emotion icons */
+.App.dark .emotion_wrapper {
+    background: var(--dark-background-color-v1);
+    box-shadow: var(--box-shadow-white);
+}
+
+.App.dark .emotion_wrapper::-webkit-scrollbar-thumb{
+    background-color: rgba(22, 24, 35, 0.06);
+    border-radius: 50px;
+}
+
+/* Tippy modal */
+.App.dark .more_wrapper,
+.App.dark .comment_more_popup {
+    background: var(--dark-background-color-v2);
+    color: var(--white-color);
+    box-shadow: var(--box-shadow-white);
+}
+
+/* Notifications */
+.App.dark .notify_wrapper {
+    background: var(--dark-background-color-v1);
+    box-shadow: var(--box-shadow-white);
+}
+
+.App.dark .notify_wrapper .notify_title,
+.App.dark .more_icon_notications_wrapper,
+.App.dark .notify_wrapper .notify_item_wrapper {
+    color: var(--white-color);
+}
+
+.App.dark .more_icon_notications_wrapper:hover {
+    background: var(--dark-background-color-v3);
+}
+
+.App.dark .notify_wrapper .notify_item_wrapper:hover {
+    background: var(--dark-background-color-v3);
+}
+
+.App.dark .notify_wrapper::-webkit-scrollbar-thumb {
+    background-color: var(--dark-background-color-v4);
+}
+
+/* Status */
+.App.dark .post_modal {
+    background: var(--overlap-background-color);
+}
+
+.App.dark .post_form, 
+.App.dark .post_textarea {
+    background: var(--dark-background-color-v1);
+}
+
+.App.dark .post_form {
+    box-shadow: var(--box-shadow-white);
+}
+
+/* User modal */
+.App.dark .modal_container {
+    background: var(--overlap-background-color);
+}
+
+.App.dark .modal_container {
+    background: var(--dark-background-color-v1);
+    box-shadow: var(--box-shadow-white);
+}
+
+.App.dark .modal_container .account_wrapper {
+    background: var(--dark-background-color-v2);
+}
+
+.App.dark .modal_container .account_wrapper .user_description :is(.user_description_username, .user_description_fullname) {
+    color: var(--white-color);
+}
+
+/* Discover */
+.App.dark .discover_wrapper {
+    background: var(--dark-background-color-v2);
+}
+
+/* Message */
+.App.dark .message_notify,
+.App.dark .left_message_sidebar,
+.App.dark .left_message_sidebar_user_list {
+    background: var(--dark-background-color-v2);
+}
+
+.App.dark  .message_notify,
+.App.dark .left_message_sidebar_contacts {
+    color: var(--white-color);
+}
+
+.App.dark .left_message_sidebar_user_list .account_wrapper {
+    background: transparent;
+}  
+
+.App.dark .left_message_sidebar_user_list .account_wrapper:hover {
+    background: var(--dark-background-color-v4);
+}  
+
+.App.dark .left_message_sidebar_user_list .account_wrapper .message_user_description 
+:is(.message_user_description_username, .message_user_description_fullname) {
+    color: var(--white-color);
+}
+
+.App.dark .message_user_header .account_wrapper {
+    background: var(--dark-background-color-v2);
+}
+
+.App.dark .message_user_header .account_wrapper 
+.user_description :is(.user_description_username, .user_description_fullname) {
+    color: var(--white-color);
+}
+
+.App.dark .message_screen {
+    background: var(--dark-background-color-v2);
+}
+
+/* Profile */
+.App.dark .user_posts_wrapper {
+    background-color: var(--dark-background-color-v1);
+}
+
+.App.dark .user_posts_type .user_posts_type_item {
+    color: var(--sencondary-text-color-v3);
+}
+
+.App.dark .user_posts_type .user_posts_type_item.active {
+    color: var(--white-color);
+}
+
+.App.dark .post_thumb_item {
+    box-shadow: var(--box-shadow-white);
+}
+
+/* Edit profile  */
+.App.dark .edit_container {
+    background: var(--dark-background-color-v1);
+}
+
+

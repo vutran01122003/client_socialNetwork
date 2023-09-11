@@ -20,11 +20,17 @@ function CallModal({ auth, call, socket, peer }) {
     };
 
     const handleAnswerCall = ({ receiverId, senderId, peerId, isVideo }) => {
-        dispatch({
-            type: GLOBALTYPES.CALL.CALLING,
-            payload: true
+        navigator.permissions.query({ name: 'camera' }).then(function (result) {
+            if (result.state === 'denied') {
+                alert('You must allow your browser to access the camera and microphone');
+            } else {
+                dispatch({
+                    type: GLOBALTYPES.CALL.CALLING,
+                    payload: true
+                });
+                socket.emit('answer_call', { receiverId, senderId, peerId, isVideo });
+            }
         });
-        socket.emit('answer_call', { receiverId, senderId, peerId, isVideo });
     };
 
     return (

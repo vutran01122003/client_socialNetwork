@@ -31,8 +31,8 @@ function App() {
     return (
         <Router>
             <Alert />
-            <input type='checkbox' checked={theme} readOnly id='theme' hidden={true} />
-            <div className='App'>
+
+            <div className={`App ${theme ? 'dark' : 'light'}`}>
                 {auth?.user && (
                     <>
                         <SocketClient auth={auth} />

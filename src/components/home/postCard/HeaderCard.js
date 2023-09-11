@@ -50,7 +50,7 @@ function HeaderCard({ post, auth, detailPost }) {
 
     return (
         <div className='header_card flex items-center justify-between'>
-            <div className='user_info flex  items-center'>
+            <div className='user_info flex items-center'>
                 <Link to={`/profile/${user._id}`}>
                     <Avatar avatar={user.avatar} size='small' />
                 </Link>

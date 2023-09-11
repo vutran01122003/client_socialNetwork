@@ -1,5 +1,5 @@
-function getStream({ audio, video }) {
-    return navigator.mediaDevices.getUserMedia({
+async function getStream({ audio, video }) {
+    return await navigator.mediaDevices.getUserMedia({
         audio,
         video
     });

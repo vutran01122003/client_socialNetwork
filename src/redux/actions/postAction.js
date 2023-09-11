@@ -413,6 +413,7 @@ export const savedPost =
                     userId: auth.user._id
                 }
             });
+
             if (post.user._id !== auth.user._id) {
                 dispatch(
                     createNotification({

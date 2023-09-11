@@ -53,11 +53,11 @@
 }
 
 .more_icon_notications_wrapper:hover {
-    background: var(--hover-background-color);
+    background: var(--white-background-color-v6);
 }
 
 .more_icon_notications_wrapper:active {
-    background: var(--active-background-color);
+    background: var(--white-background-color-v7);
 }
 
 .notify_wrapper {
@@ -101,7 +101,7 @@
 
 
 .notify_item_wrapper:hover {
-    background: var(--hover-background-color);
+    background: var(--white-background-color-v6);
 }
 
 .notify_item {
@@ -129,7 +129,7 @@
 }
 
 .notify_createdAt {
-    color: var(--sencondary-text-color);
+    color: var(--sencondary-text-color-v1);
     font-size: 14px;
 }
 

@@ -5,17 +5,16 @@ function Avatar({ avatar, size }) {
 
     const handleImageDefault = () => {
         if (imgRef.current) {
-            imgRef.current.src =
-                'https://static2.yan.vn/YanNews/2167221/202102/facebook-cap-nhat-avatar-doi-voi-tai-khoan-khong-su-dung-anh-dai-dien-e4abd14d.jpg';
+            imgRef.current.src = require('../images/avatar_default.png');
         }
     };
 
     return (
-        <div className={`${size} border border-slate-500 rounded-full select-none`}>
+        <div className={`${size} border border-slate-200 rounded-full select-none`}>
             <img
                 ref={imgRef}
                 src={avatar}
-                className={`object-cover overflow-hidden rounded-full ${size}`}
+                className={`object-cover overflow-hidden rounded-full w-full h-full ${size}`}
                 alt='avatar'
                 onError={handleImageDefault}
             />

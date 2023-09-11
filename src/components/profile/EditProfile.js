@@ -1,14 +1,14 @@
 import { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { authSelector, themSelector } from '../../redux/selector';
+import { authSelector } from '../../redux/selector';
 import EditIcon from '@mui/icons-material/Edit';
 import { checkImageUpload, loadURLToInputFiled } from '../../utils/uploadFile';
 import { GLOBALTYPES } from '../../redux/actions/globalTypes';
 import { updateUser } from '../../redux/actions/profileActions';
+import Avatar from '../Avatar';
 
 function Edit({ setOnEdit }) {
     const refInput = useRef();
-    const theme = useSelector(themSelector);
     const dispatch = useDispatch();
     const auth = useSelector(authSelector);
     const [fileInput, setFileInput] = useState(null);
@@ -71,7 +71,7 @@ function Edit({ setOnEdit }) {
 
     return (
         <div
-            className={`${theme === true ? 'bg-white/75' : ''} edit_wrapper`}
+            className='edit_wrapper'
             onMouseDown={(e) => {
                 if (e.target === e.currentTarget) {
                     setOnEdit(false);
@@ -96,14 +96,11 @@ function Edit({ setOnEdit }) {
                     </h1>
                     <div className='profile_image flex w-full justify-center'>
                         <div className='img_wrapper relative'>
-                            <img
-                                src={avatarProfile}
-                                alt='avatar'
-                                className='medium rounded-full border border-black object-cover object-center'
-                            />
+                            <Avatar avatar={avatarProfile} size='big' />
+
                             <label
                                 htmlFor='avatar'
-                                className='block absolute bottom-0 right-0 bg-black/60 hover:bg-black/70 transition linear rounded-full w-8 h-8 flex items-center justify-center cursor-pointer'
+                                className='block absolute bottom-1 right-5 bg-black/60 hover:bg-black/70 transition linear rounded-full w-8 h-8 flex items-center justify-center cursor-pointer'
                             >
                                 <EditIcon fontSize='small' className='text-white' />
                             </label>

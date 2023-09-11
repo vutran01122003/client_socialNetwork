@@ -1,12 +1,9 @@
-import { themSelector } from '../redux/selector';
-import { useSelector } from 'react-redux';
 import UserCard from './UserCard';
 
 function UserModal({ modalInfo, setPopup, auth }) {
-    const theme = useSelector(themSelector);
     return (
         <div
-            className={`${theme === true ? 'bg-white/75' : ''} modal_wrapper`}
+            className='modal_wrapper'
             onMouseDown={(e) => {
                 if (e.target === e.currentTarget) {
                     setPopup(false);

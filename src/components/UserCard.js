@@ -50,24 +50,30 @@ function UserCard({
     };
 
     const handleCallUser = async ({ video }) => {
-        const data = {
-            peerId: peer._id,
-            sender: {
-                _id: auth.user._id,
-                username: auth.user.username,
-                fullname: auth.user.fullname,
-                avatar: auth.user.avatar
-            },
-            receiver: user,
-            video
-        };
+        navigator.permissions.query({ name: 'camera' }).then(async function (result) {
+            if (result.state === 'denied') {
+                alert('You must allow your browser to access the camera and microphone');
+            } else {
+                const data = {
+                    peerId: peer._id,
+                    sender: {
+                        _id: auth.user._id,
+                        username: auth.user.username,
+                        fullname: auth.user.fullname,
+                        avatar: auth.user.avatar
+                    },
+                    receiver: user,
+                    video
+                };
 
-        dispatch({
-            type: GLOBALTYPES.CALL.CALL_USER,
-            payload: data
+                dispatch({
+                    type: GLOBALTYPES.CALL.CALL_USER,
+                    payload: data
+                });
+
+                socket.emit('call_user', data);
+            }
         });
-
-        socket.emit('call_user', data);
     };
 
     const handleCallAudioUser = async () => {
@@ -79,8 +85,6 @@ function UserCard({
     };
 
     const handleGetMessages = (e) => {
-        e.preventDefault();
-
         if (!conversation.readedUsers.includes(auth.user._id)) {
             dispatch(updateReadedUsers({ conversationId: conversation._id }));
         }

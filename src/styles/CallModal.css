@@ -7,7 +7,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: var(--modal-overlap-background-color);
+    background: var(--overlap-background-color);
     user-select: none;
     z-index: 9000;
     overflow: auto;
@@ -84,7 +84,7 @@
     user-select: none;
     z-index: 9999;
     overflow: auto;
-    background: var(--modal-overlap-background-color);
+    background: var(--overlap-background-color);
 }
 
 .call_modal_video_wrapper {
@@ -103,7 +103,7 @@
 }
 
 .call_model_title {
-    font-size: small;
+    font-size: medium;
     text-transform: uppercase;
     font-weight: 600;
     padding: 15px;
@@ -123,11 +123,11 @@
 }
 
 .call_modal_video video.local_video {
+    z-index: 99;
     position: absolute;
     right: 0;
     top: 0;
     width: 20%;
-    border-top-right-radius: 10px;
     border: var(--border-post-pagination);
 }
 

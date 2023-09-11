@@ -52,7 +52,6 @@
 }
 
 /* Notify */
-
 .notify_wrapper::-webkit-scrollbar {
     width: 8px;
 }
@@ -92,15 +91,23 @@
       background-color: rgba(0,0,0,0.15);  
     }
     
+    .App.dark .sidebar_right:hover { 
+        background-color: var(--dark-background-color-v4);
+    }
+
     .sidebar_right::-webkit-scrollbar-thumb {
       background-color: inherit;
       border-radius: 80px;
     }
 
-    .sidebar_right::-webkit-scrollbar-track{
-        background: var(--app-background-color) !important;
+    .sidebar_right::-webkit-scrollbar-track {
+        background: var(--white-background-color-v2);
     }
 
+    .App.dark .sidebar_right::-webkit-scrollbar-track {
+        background-color: var(--dark-background-color-v1);
+    }
+    
     .sidebar_right::-webkit-scrollbar-corner {
         background-color: transparent;
     }
@@ -116,13 +123,21 @@
       background-color: rgba(0,0,0,0.15);  
     }
     
+    .App.dark .sidebar_left:hover { 
+        background-color: var(--dark-background-color-v4);
+    }
+
     .sidebar_left::-webkit-scrollbar-thumb {
       background-color: inherit;
       border-radius: 80px;
     }
 
     .sidebar_left::-webkit-scrollbar-track{
-        background: var(--app-background-color) !important;
+        background: var(--white-background-color-v2);
+    }
+
+    .App.dark .sidebar_left::-webkit-scrollbar-track {
+        background: var(--dark-background-color-v1);
     }
 
     .sidebar_left::-webkit-scrollbar-corner {
@@ -131,7 +146,6 @@
 }
 
 /* Left Message SideBar */
-
 .left_message_sidebar::-webkit-scrollbar {
     width: 8px;
 }
@@ -140,6 +154,10 @@
     .left_message_sidebar:hover {
       background-color: rgba(0,0,0,0.1);  
     }
+
+    .App.dark .left_message_sidebar:hover {
+        background-color: var(--dark-background-color-v4);  
+    }
     
     .left_message_sidebar::-webkit-scrollbar-thumb {
       background-color: inherit;
@@ -147,9 +165,13 @@
     }
 
     .left_message_sidebar::-webkit-scrollbar-track{
-        background-color: var(--white-color) !important;
+        background-color: var(--white-color);
     }
 
+    .App.dark .left_message_sidebar::-webkit-scrollbar-track{
+        background-color: var(--dark-background-color-v2);
+    }
+    
     .left_message_sidebar::-webkit-scrollbar-corner {
         background-color: transparent;
     }

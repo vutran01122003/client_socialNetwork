@@ -4,7 +4,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import SendIcon from '@mui/icons-material/Send';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useDispatch, useSelector } from 'react-redux';
-import { socketSelector, themSelector } from '../../redux/selector';
+import { socketSelector } from '../../redux/selector';
 import { checkImageUpload, checkVideoUpload } from '../../utils/uploadFile';
 import { GLOBALTYPES } from '../../redux/actions/globalTypes';
 import { useEffect, useRef, useState } from 'react';
@@ -14,7 +14,6 @@ import readFile from '../../utils/readFile';
 import { createMessage } from '../../redux/actions/messageAction';
 
 function ModalPost({ auth, currentPost, detailPost, messageInput, message, scrollToBottom }) {
-    const theme = useSelector(themSelector);
     const socket = useSelector(socketSelector);
 
     const inputRef = useRef();
@@ -131,9 +130,11 @@ function ModalPost({ auth, currentPost, detailPost, messageInput, message, scrol
         const width = video.clientWidth;
         const height = video.clientHeight;
 
+        const ctx = canvas.getContext('2d');
         canvas.setAttribute('width', width);
         canvas.setAttribute('height', height);
-
+        ctx.translate(width, 0);
+        ctx.scale(-1, 1);
         canvas.getContext('2d').drawImage(video, 0, 0, width, height);
         let image_data_url = canvas.toDataURL('image/jpeg');
 
@@ -141,13 +142,10 @@ function ModalPost({ auth, currentPost, detailPost, messageInput, message, scrol
     };
 
     const handleChangeValueTextarea = (e) => {
-        e.preventDefault();
         setContent(e.target.value);
     };
 
     const handleSendMessage = async (e) => {
-        e.preventDefault();
-
         if (!content) return;
         if (files.length >= 5) {
             dispatch({
@@ -177,8 +175,6 @@ function ModalPost({ auth, currentPost, detailPost, messageInput, message, scrol
     };
 
     const handleSumbitPost = async (e) => {
-        e.preventDefault();
-
         if (files.length >= 5) {
             dispatch({
                 type: GLOBALTYPES.ALERT,
@@ -228,9 +224,7 @@ function ModalPost({ auth, currentPost, detailPost, messageInput, message, scrol
                     handleCloseModalPost(stream);
                 }
             }}
-            className={`${theme === true ? 'bg-white/75' : ''} ${
-                messageInput ? 'message_modal' : 'post_modal'
-            }`}
+            className={`${messageInput ? 'message_modal' : 'post_modal'}`}
         >
             <form className='post_form'>
                 {!messageInput && (

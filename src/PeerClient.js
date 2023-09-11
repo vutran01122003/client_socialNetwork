@@ -2,10 +2,9 @@ import { Peer } from 'peerjs';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { GLOBALTYPES } from './redux/actions/globalTypes';
-import PhoneDisabledIcon from '@mui/icons-material/PhoneDisabled';
 import { callSelector, peerSelector, socketSelector } from './redux/selector';
 import getStream from './utils/getStream';
-import Avatar from './components/Avatar';
+import CallUserModal from './components/message/CallUserModal';
 
 function PeerClient({ auth }) {
     const dispatch = useDispatch();
@@ -16,32 +15,6 @@ function PeerClient({ auth }) {
     const remoteVideo = useRef();
     const localVideo = useRef();
     const remoteAudio = useRef();
-
-    const playVideo = async () => {
-        socket.emit('play_video', {
-            userId: call?.sender._id === auth.user._id ? call?.receiver._id : call?.sender._id
-        });
-        try {
-            const newStream = await navigator.mediaDevices.getUserMedia({ video: true });
-            localVideo.current.srcObject = newStream;
-            setStream(newStream);
-            localVideo.current.play();
-        } catch (error) {
-            console.error('Không thể mở camera:', error);
-        }
-    };
-
-    // Hàm để tắt camera
-    const stopVideo = () => {
-        if (stream) {
-            const tracks = stream.getTracks();
-            tracks.forEach((track) => {
-                if (track.readyState === 'live' && track.kind === 'video') {
-                    track.stop();
-                }
-            });
-        }
-    };
 
     const handleEndCall = () => {
         dispatch({
@@ -57,17 +30,111 @@ function PeerClient({ auth }) {
             stream.getTracks().forEach(function (track) {
                 track.stop();
             });
+        } else {
+            window.location.reload();
         }
     };
 
     useEffect(() => {
-        if (Object.keys(peer).length > 0) {
-            const callVideo = call.video;
+        if (socket && Object.keys(call).length > 0) {
+            socket.on('disconnected_user', ({ userId }) => {
+                console.log(userId);
+                if (call.receiver._id === userId || call.sender._id === userId) {
+                    if (stream) {
+                        stream.getTracks().forEach(function (track) {
+                            track.stop();
+                        });
+                    } else {
+                        window.location.reload();
+                    }
 
+                    dispatch({
+                        type: GLOBALTYPES.CALL.CALL_USER,
+                        payload: {}
+                    });
+                }
+            });
+
+            return () => {
+                socket.off('disconnected_user');
+            };
+        }
+    }, [socket, call, dispatch, stream]);
+
+    useEffect(() => {
+        if (socket && Object.keys(peer).length > 0) {
+            socket.on('answer_user', (data) => {
+                dispatch({
+                    type: GLOBALTYPES.CALL.CALL_USER,
+                    payload: data
+                });
+            });
+
+            socket.on('end_call', () => {
+                dispatch({
+                    type: GLOBALTYPES.CALL.CALLING,
+                    payload: false
+                });
+
+                dispatch({
+                    type: GLOBALTYPES.CALL.CALL_USER,
+                    payload: {}
+                });
+
+                if (stream) {
+                    stream.getTracks().forEach(function (track) {
+                        track.stop();
+                    });
+                } else {
+                    window.location.reload();
+                }
+            });
+
+            socket.on('answer_call', (data) => {
+                dispatch({
+                    type: GLOBALTYPES.CALL.CALLING,
+                    payload: true
+                });
+                getStream({ audio: true, video: data.isVideo ? {} : data.isVideo })
+                    .then((stream) => {
+                        setStream(stream);
+                        if (data.isVideo) {
+                            localVideo.current.srcObject = stream;
+                            localVideo.current.play();
+                        }
+
+                        const call = peer.call(data.peerId, stream);
+                        call.on('stream', function (stream) {
+                            data.isVideo
+                                ? (remoteVideo.current.srcObject = stream)
+                                : (remoteAudio.current.srcObject = stream);
+                        });
+                    })
+                    .catch(() => {
+                        dispatch({
+                            type: GLOBALTYPES.ALERT,
+                            payload: {
+                                error: 'Error'
+                            }
+                        });
+                    });
+            });
+
+            return () => {
+                socket.off('answer_user');
+                socket.off('end_call');
+                socket.off('answer_call');
+            };
+        }
+        // eslint-disable-next-line
+    }, [socket, peer, dispatch]);
+
+    useEffect(() => {
+        if (Object.keys(peer).length > 0 && socket) {
+            const callVideo = call.video;
             peer.on('call', function (call) {
                 getStream({ audio: true, video: callVideo })
                     .then((stream) => {
-                        console.log('peer');
                         setStream(stream);
                         call.on('stream', function (stream) {
                             callVideo
@@ -97,8 +164,9 @@ function PeerClient({ auth }) {
             };
         }
         // eslint-disable-next-lin
-    }, [peer, dispatch, call?.video, stream]);
+    }, [socket, peer, dispatch, call?.video]);
 
+    // Initial peer client
     useEffect(() => {
         const peer = new Peer(undefined, {
             path: '/',
@@ -117,42 +185,14 @@ function PeerClient({ auth }) {
 
     return (
         <>
-            {call.calling && call?.receiver._id === auth?.user._id && (
-                <div className='call_model_overlap peer'>
-                    <div className='call_modal_video_wrapper'>
-                        <div className='call_model_title'>
-                            {`Calling ${call.video ? 'video' : 'audio'}`}
-                        </div>
-                        {!call?.video ? (
-                            <div className='call_model_avatar'>
-                                <Avatar avatar={call.sender.avatar} size='big' />
-                                <h3 className='text-center text-xl font-semibold mt-4'>
-                                    {call.sender.username}
-                                </h3>
-                                <h4 className='text-center mt-4'>00:00</h4>
-                                <audio ref={remoteAudio} hidden autoPlay></audio>
-                            </div>
-                        ) : (
-                            <div className='call_modal_video'>
-                                <video className='local_video' ref={localVideo} muted />
-                                <video className='remote_video' ref={remoteVideo} autoPlay />
-                            </div>
-                        )}
-                        <button onClick={stopVideo}>Stop video</button>
-                        <button onClick={playVideo}>Play video</button>
-
-                        <div className='call_modal_video_footer'>
-                            <div
-                                onClick={() => {
-                                    handleEndCall();
-                                }}
-                                className='call_icon-item text-red-500'
-                            >
-                                <PhoneDisabledIcon />
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            {call.calling && (
+                <CallUserModal
+                    call={call}
+                    localVideo={localVideo}
+                    remoteVideo={remoteVideo}
+                    remoteAudio={remoteAudio}
+                    handleEndCall={handleEndCall}
+                />
             )}
         </>
     );

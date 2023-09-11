@@ -56,9 +56,7 @@ function profileReducer(state = initialState, action) {
             delete newPosts[action.payload.userId];
             return { ...state, posts: newPosts };
         case GLOBALTYPES.PROFILE.RESET_USER_SAVED_POSTS:
-            const newSavedPosts = { ...state.saved };
-            delete newSavedPosts[action.payload.userId];
-            return { ...state, saved: newSavedPosts };
+            return { ...state, saved: {} };
         case GLOBALTYPES.PROFILE.SET_USER: {
             const newUsers = replaceOldElem(state.users, action.payload);
             return { ...state, users: [...newUsers] };

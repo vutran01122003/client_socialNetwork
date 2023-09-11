@@ -15,7 +15,6 @@ function FormEmail({ email, setEmail }) {
         const pattern = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
         const checkValidEmail = pattern.test(email);
         if (checkValidEmail) {
-            e.preventDefault();
             dispatch(sendCode({ email }));
         } else {
             dispatch({

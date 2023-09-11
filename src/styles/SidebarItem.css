@@ -11,5 +11,5 @@
 }
 
 .sidebar_item_wrapper:hover {
-    background: var(--hover-background-color-v3);
+    background: var(--white-background-color-v5);
 }

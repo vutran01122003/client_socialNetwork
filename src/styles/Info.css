@@ -21,7 +21,7 @@
 }
 
 .message_btn:hover {
-    background: var(--hover-background-color);
+    background: var(--white-background-color-v6);
 }
 
 .website_link {

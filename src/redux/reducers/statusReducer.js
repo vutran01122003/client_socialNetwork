@@ -4,6 +4,7 @@ function statusReducer(
     state = {
         openModalHomePost: false,
         openModalDetailPost: false,
+        openModalUser: false,
         currentPost: {}
     },
     action
@@ -17,6 +18,10 @@ function statusReducer(
             return { ...state, openModalDetailPost: true };
         case GLOBALTYPES.STATUS.HIDE_MODAL_DETAIL_POST:
             return { ...state, openModalDetailPost: false };
+        case GLOBALTYPES.STATUS.OPEN_MODAL_USER:
+            return { ...state, openModalUser: true };
+        case GLOBALTYPES.STATUS.HIDE_MODAL_USER:
+            return { ...state, openModalUser: false };
         case GLOBALTYPES.STATUS.CURRENT_EDIT_STATUS:
             return { ...state, currentPost: action.payload };
         default:

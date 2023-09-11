@@ -44,5 +44,5 @@
 }
 
 .emotion__icon_wrapper:hover {
-    background-color: var(--hover-background-color);
+    background-color: var(--white-background-color-v6);
 }

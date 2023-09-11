@@ -17,7 +17,7 @@
     gap: 8px;
     justify-content: center;
     align-items: center; 
-    color: var(--sencondary-text-color);
+    color: var(--sencondary-text-color-v1);
     font-size: small;
     font-weight: 500;
     opacity: 0.8;
@@ -62,7 +62,7 @@
 
 .message_receiver .body_card_message {
     color: var(--black-color);
-    background: var(--message-receiver-color);
+    background: var(--white-background-color-v2);
 }
 
 .message_screen {
@@ -88,7 +88,7 @@
 }
 
 .message_modal .camera_wrapper  video {
-    width: 30vw;
+    width: 35%;
 
 }
 
@@ -123,8 +123,7 @@
     font-weight: 500;
     width: 35vw;
     padding: 15px;
-    border-bottom: var( --border-post-pagination);
-    background: var(--comment-background-color);
+    background: var(--white-background-color-v1);
 }
 
 .body_card_message .body_content {

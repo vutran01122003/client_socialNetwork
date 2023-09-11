@@ -13,7 +13,7 @@
     padding: 8px;
     font-weight: 500;
     font-size: larger;
-    color: var(--sencondary-text-color);
+    color: var(--sencondary-text-color-v1);
 }
 
 .left_message_sidebar_user_list {

@@ -21,7 +21,13 @@ import { blue } from '@mui/material/colors';
 
 function Copyright(props) {
     return (
-        <Typography variant='body2' color='text.secondary' align='center' {...props}>
+        <Typography
+            className='copy_right_content'
+            variant='body2'
+            color='text.secondary'
+            align='center'
+            {...props}
+        >
             {'Copyright © '}
             <Link color='inherit' href='/'>
                 Smedia
@@ -90,49 +96,44 @@ export default function Login() {
                             Sign in
                         </Typography>
                         <Box component='form' noValidate sx={{ mt: 1 }}>
-                            <TextField
-                                margin='normal'
-                                required
-                                fullWidth
-                                id='email'
-                                label='Email Address'
-                                name='email'
-                                autoComplete='email'
-                                autoFocus
-                                value={userData.email}
-                                onChange={handleUserData}
-                            />
+                            <Box className='relative login_input_wrapper'>
+                                <TextField
+                                    className='input_login outline-none'
+                                    margin='normal'
+                                    required
+                                    fullWidth
+                                    id='email'
+                                    label='Email Address'
+                                    name='email'
+                                    autoComplete='email'
+                                    autoFocus
+                                    value={userData.email}
+                                    onChange={handleUserData}
+                                />
+                                <TextField
+                                    className='input_login'
+                                    margin='normal'
+                                    required
+                                    fullWidth
+                                    name='password'
+                                    label='Password'
+                                    type={showPassword ? 'text' : 'password'}
+                                    id='password'
+                                    autoComplete='current-password'
+                                    value={userData.password}
+                                    onChange={handleUserData}
+                                ></TextField>
 
-                            <TextField
-                                margin='normal'
-                                required
-                                fullWidth
-                                name='password'
-                                label='Password'
-                                type={showPassword ? 'text' : 'password'}
-                                id='password'
-                                autoComplete='current-password'
-                                value={userData.password}
-                                onChange={handleUserData}
-                            ></TextField>
-                            <span
-                                onClick={(e) => {
-                                    setShowPassword((prev) => !prev);
-                                }}
-                                className='text-blue-500 text-sm select-none flex gap-2 items-center font-medium'
-                            >
-                                {showPassword ? (
-                                    <>
-                                        <Visibility />
-                                        Show
-                                    </>
-                                ) : (
-                                    <>
-                                        <VisibilityOff />
-                                        Hide
-                                    </>
-                                )}
-                            </span>
+                                <span
+                                    onClick={(e) => {
+                                        setShowPassword((prev) => !prev);
+                                    }}
+                                    className='text-blue-500 text-sm select-none flex gap-2 items-center font-medium absolute bottom-[32px] right-4'
+                                >
+                                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                                </span>
+                            </Box>
+
                             <Button
                                 fullWidth
                                 variant='contained'
@@ -147,6 +148,7 @@ export default function Login() {
                                         href='/password'
                                         variant='body2'
                                         style={{ textDecoration: 'none' }}
+                                        className='whitespace-nowrap'
                                     >
                                         Forgot password?
                                     </Link>

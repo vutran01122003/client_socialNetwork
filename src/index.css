@@ -7,6 +7,7 @@
 @import url(./styles/responsive/scrollResponsive.css);
 @import url(./styles/responsive/ProfileResponesive.css);
 @import url(./styles/App.css);
+@import url(./styles/darkMode.css);
 @import url(./styles/Header.css);
 @import url(./styles/NotFound.css);
 @import url(./styles/Search.css);

@@ -1,22 +1,39 @@
 :root {
-    --header-height: 64px;
-    --padding-height: 8px;
-    --primary-color: teal;
-    --comment-background-color: #F0F2F5;
-    --modal-overlap-background-color: rgba(0, 0, 0, 0.7);
-    --modal-video-background-color: linear-gradient(160deg, rgb(61, 196, 241), rgb(47, 128, 237));
-    --message-sender-color: rgb(16, 126, 229);
-    --message-receiver-color: #F0F2F5;
-    --app-background-color: #F0F2F5;
     --white-color: #fff;
     --black-color: #000;
+    --primary-color: teal;
+    --sencondary-text-color-v1: #65676B;
+    --sencondary-text-color-v2: #333;   
+    --sencondary-text-color-v3: #b3b4b5;
+
+    --header-height: 64px;
+    --padding-height: 8px;
+
+    --dark-background-color-v1: #242526;
+    --dark-background-color-v2: #3A3B3C;
+    --dark-background-color-v3: #333435;
+    --dark-background-color-v4: #7f7f82;
+    --white-background-color-v1: #F0F2F5;
+    --white-background-color-v2: #F0F2F5;
+    --white-background-color-v3: #EBEDF0;
+    --white-background-color-v4: #e3e4e6;
+    --white-background-color-v5: rgb(218, 221, 225, 0.5);
+    --white-background-color-v6: rgb(242, 243, 245, 0.4);
+    --white-background-color-v7: #cdcdd0;
+
+    --box-shadow-gray: 0 0 3px gray;
+    --box-shadow-black: 0 0 3px #000;
+    --box-shadow-white: 0 0 2px #fff;
+    
+    --border-pagination-light-color: 1px solid #d5d6d7;
+    --border-pagination-dark-color: 1px solid #959696;
+
+    --overlap-background-color:  rgba(0, 0, 0, 0.7);
+    --modal-video-background-color: linear-gradient(160deg, rgb(61, 196, 241), rgb(47, 128, 237));
+    --message-sender-color: rgb(16, 126, 229);
+
     --favourite-active-color: rgb(255, 48, 64);
-    --hover-background-color: #F2F3F5;
-    --hover-background-color-v2: #e3e4e6;
-    --hover-background-color-v3: #DADDE1;
-    --active-background-color: #cdcdd0;
-    --sencondary-text-color: #65676B;   
-    --sencondary-text-color-v2: #333;    
+    
     --box-shadow-gray: 0 0 3px gray;
     --box-shadow-black: 0 0 3px #000;
     --border-post-pagination: 1px solid #d5d6d7;

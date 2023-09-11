@@ -33,8 +33,8 @@ function Profile() {
         <>
             {auth.user && userInfo ? (
                 <div className='profile_container flex flex-col'>
-                    <Info userInfo={userInfo} id={id} auth={auth} />
-                    <Post userInfo={userInfo} id={id} auth={auth} profile={profile} />
+                    <Info userInfo={userInfo} auth={auth} />
+                    <Post id={id} auth={auth} profile={profile} />
                 </div>
             ) : (
                 <div className='font-semibold w-full h-full text-center mt-10'>User Not Found</div>

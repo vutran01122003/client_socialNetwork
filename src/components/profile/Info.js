@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 import { getConversation } from '../../redux/actions/messageAction';
 import { messageSelector } from '../../redux/selector';
 
-function Info({ userInfo, id, auth }) {
+function Info({ userInfo, auth }) {
     const dispatch = useDispatch();
     const message = useSelector(messageSelector);
     const [onEdit, setOnEdit] = useState(false);
@@ -59,7 +59,7 @@ function Info({ userInfo, id, auth }) {
                                 {fullname}
                             </h5>
                         </div>
-                        {auth.user?._id === id ? (
+                        {auth.user?._id === userInfo._id ? (
                             <div className='edit_btn whitespace-nowrap'>
                                 <button
                                     onClick={handleEdit}
