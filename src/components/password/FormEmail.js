@@ -32,7 +32,7 @@ function FormEmail({ email, setEmail }) {
                 <div className='flex items-center justify-center relative'>
                     <Link
                         to='/'
-                        className='absolute top-0 left-0 text-gray-600 hover:text-gray-800 cursor-pointer'
+                        className='absolute top-0 left-0 text-gray-600 hover:text-gray-500 cursor-pointer'
                     >
                         <KeyboardBackspaceIcon fontSize='large' />
                     </Link>
@@ -41,7 +41,7 @@ function FormEmail({ email, setEmail }) {
                 <div className='flex flex-col gap-2'>
                     <h3 className='font-semibold'>We'll send you a code to your email address:</h3>
                     <input
-                        className='px-5 py-2 border border-gray-500 outline-none rounded-lg'
+                        className='email_sendCode px-5 py-2 border border-gray-500 outline-none rounded-lg'
                         onChange={handleChangeEmail}
                         value={email}
                         placeholder='example@gmail.com'

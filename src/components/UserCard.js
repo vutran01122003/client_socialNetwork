@@ -50,9 +50,16 @@ function UserCard({
     };
 
     const handleCallUser = async ({ video }) => {
-        navigator.permissions.query({ name: 'camera' }).then(async function (result) {
-            if (result.state === 'denied') {
-                alert('You must allow your browser to access the camera and microphone');
+        Promise.all([
+            navigator.permissions.query({ name: 'camera' }),
+            navigator.permissions.query({ name: 'microphone' })
+        ]).then(function (permissionStatuses) {
+            const cameraPermissionStatus = permissionStatuses[0].state;
+            const microphonePermissionStatus = permissionStatuses[1].state;
+            if (cameraPermissionStatus === 'denied') {
+                alert('You must allow your browser to access the camera');
+            } else if (microphonePermissionStatus === 'denied') {
+                alert('You must allow your browser to access the microphone');
             } else {
                 const data = {
                     peerId: peer._id,
@@ -127,7 +134,7 @@ function UserCard({
                                 ? handleGetMessages
                                 : () => {
                                       handleActivePage();
-                                      onClick(contactSidebar ? user : null);
+                                      if (onClick) onClick(contactSidebar ? user : null);
                                   }
                         }
                     >
@@ -178,9 +185,11 @@ function UserCard({
                             )}
                     </Elem>
 
-                    {auth && !conversationHeader && !conversation && !contactSidebar && (
-                        <Follow userInfo={user} auth={auth} size={'small'} />
-                    )}
+                    {auth &&
+                        user._id !== auth.user._id &&
+                        !conversationHeader &&
+                        !conversation &&
+                        !contactSidebar && <Follow userInfo={user} auth={auth} size={'small'} />}
 
                     {conversationHeader && (
                         <div className='conversation_icon_wrapper text-gray-500'>

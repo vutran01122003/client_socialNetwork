@@ -38,7 +38,6 @@ function PeerClient({ auth }) {
     useEffect(() => {
         if (socket && Object.keys(call).length > 0) {
             socket.on('disconnected_user', ({ userId }) => {
-                console.log(userId);
                 if (call.receiver._id === userId || call.sender._id === userId) {
                     if (stream) {
                         stream.getTracks().forEach(function (track) {

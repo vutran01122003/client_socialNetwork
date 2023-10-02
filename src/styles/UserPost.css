@@ -129,6 +129,8 @@
 }
 
 .post_thumb_item_info_icon {
+    display: flex;
+    gap: 10%;
     color: var(--white-color);
 }
 

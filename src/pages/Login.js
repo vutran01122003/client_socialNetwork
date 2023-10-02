@@ -4,7 +4,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -15,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginAction } from '../redux/actions/authAction';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { Navigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { authSelector } from '../redux/selector';
 import { blue } from '@mui/material/colors';
 
@@ -128,7 +127,7 @@ export default function Login() {
                                     onClick={(e) => {
                                         setShowPassword((prev) => !prev);
                                     }}
-                                    className='text-blue-500 text-sm select-none flex gap-2 items-center font-medium absolute bottom-[32px] right-4'
+                                    className='text-blue-500 text-sm select-none flex gap-2 items-center font-medium absolute bottom-[36px] right-4'
                                 >
                                     {showPassword ? <Visibility /> : <VisibilityOff />}
                                 </span>
@@ -145,19 +144,16 @@ export default function Login() {
                             <Grid container>
                                 <Grid item xs>
                                     <Link
-                                        href='/password'
-                                        variant='body2'
-                                        style={{ textDecoration: 'none' }}
-                                        className='whitespace-nowrap'
+                                        to='/password'
+                                        className='text-sm text-blue-500 hover:underline decoration-1'
                                     >
                                         Forgot password?
                                     </Link>
                                 </Grid>
                                 <Grid item>
                                     <Link
-                                        href='/register'
-                                        variant='body2'
-                                        style={{ textDecoration: 'none' }}
+                                        to='/register'
+                                        className='text-sm text-blue-500 hover:underline decoration-1'
                                     >
                                         {"Don't have an account? Sign Up"}
                                     </Link>

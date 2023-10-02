@@ -107,7 +107,11 @@ function Header({ auth, theme }) {
     return (
         <>
             {auth?.user && (
-                <AppBar color='inherit' elevation={0}>
+                <AppBar
+                    color='inherit'
+                    style={{ background: theme ? '#242526' : 'white' }}
+                    elevation={0}
+                >
                     <Container maxWidth='xl'>
                         <Toolbar
                             disableGutters

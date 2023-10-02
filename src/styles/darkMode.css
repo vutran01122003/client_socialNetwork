@@ -8,7 +8,8 @@
 .App.dark .login_input_wrapper {
     background: var(--white-color);
     padding: 10px;
-    border-radius: 10px;
+    border-radius: 15px;
+    padding-bottom: 15px;
 }
 
 /* Register */
@@ -16,6 +17,7 @@
     background: var(--white-color);
     padding: 20px;
     border-radius: 10px;
+    padding-top: 30px;
 }
 
 .gender_radio_group {
@@ -33,6 +35,23 @@
     color: var(--white-color);
 }
 
+/* Forgot password */
+.App.dark .email_sendCode {
+    color: var(--black-color);
+}
+
+.App.dark .email_enterCode {
+    color: var(--black-color);
+}
+
+.App.dark .countdown {
+    color: var(--black-color);
+}
+
+.App.dark :is(.new_password_input, .confirm_new_password_input) {
+    color: var(--black-color);
+}
+
 /* Mui react */
 .App.dark header.css-yiikg7-MuiPaper-root-MuiAppBar-root {
     background: var(--dark-background-color-v1);
@@ -40,7 +59,31 @@
 
 /* Header */
 .App.dark .search_wrapper input {
+    color: var(--white-color);
     background: var(--dark-background-color-v2);
+}
+
+.App.dark .box_search {
+    background: var(--dark-background-color-v2);
+    box-shadow: var(--box-shadow-white);
+}
+
+.App.dark .box_search .label {
+    color: var(--white-color) !important;
+}
+
+
+.App.dark .box_search .account_wrapper {
+    background: var(--dark-background-color-v2);
+}
+
+.App.dark .box_search .account_wrapper:hover {
+    background-color: var(--white-background-color-v6);
+}
+
+.App.dark .box_search .account_wrapper .user_description 
+:is(.user_description_username, .user_description_fullname) {
+    color: var(--white-color);
 }
 
 .App.dark .page_menu {
@@ -49,6 +92,10 @@
 
 .App.dark .page_item {
     color: var(--dark-background-color-v4);
+}
+
+.App.dark .page_item:hover {
+    color: var(--white-color);
 }
 
 .App.dark .page_item_active {
@@ -100,6 +147,11 @@
     color: var(--white-color);
 }
 
+.App.dark .interactive_icons_wrapper div:hover {
+    background: var(--white-background-color-v5);
+
+}
+
 .App.dark .comment_content_wrapper {
     background-color: var(--dark-background-color-v2);
 }
@@ -109,7 +161,8 @@
 }
 
 .App.dark .comment_more_btn:hover {
-    background: var(--dark-background-color-v4);
+    background: var(--white-background-color-v5);
+
 }
 
 .App.dark .input_comment_wrapper input {
@@ -163,6 +216,10 @@
 /* Status */
 .App.dark .post_modal {
     background: var(--overlap-background-color);
+}
+
+.App.dark .message_input {
+    background: var(--dark-background-color-v2);
 }
 
 .App.dark .post_form, 
@@ -254,7 +311,16 @@
 
 /* Edit profile  */
 .App.dark .edit_container {
+    color: var(--black-color);
     background: var(--dark-background-color-v1);
+}
+
+.App.dark .edit_container label {
+    color: var(--white-color);
+}
+
+.App.dark .edit_container label:hover {
+    background-color: var(--white-background-color-v6);
 }
 
 

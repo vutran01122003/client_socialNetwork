@@ -20,9 +20,16 @@ function CallModal({ auth, call, socket, peer }) {
     };
 
     const handleAnswerCall = ({ receiverId, senderId, peerId, isVideo }) => {
-        navigator.permissions.query({ name: 'camera' }).then(function (result) {
-            if (result.state === 'denied') {
-                alert('You must allow your browser to access the camera and microphone');
+        Promise.all([
+            navigator.permissions.query({ name: 'camera' }),
+            navigator.permissions.query({ name: 'microphone' })
+        ]).then(function (permissionStatuses) {
+            const cameraPermissionStatus = permissionStatuses[0].state;
+            const microphonePermissionStatus = permissionStatuses[1].state;
+            if (cameraPermissionStatus === 'denied') {
+                alert('You must allow your browser to access the camera');
+            } else if (microphonePermissionStatus === 'denied') {
+                alert('You must allow your browser to access the microphone');
             } else {
                 dispatch({
                     type: GLOBALTYPES.CALL.CALLING,

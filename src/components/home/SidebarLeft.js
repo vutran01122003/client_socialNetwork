@@ -5,7 +5,7 @@ import { suggestedUsersSelector } from '../../redux/selector';
 import { CircularProgress } from '@mui/material';
 import UserCard from '../UserCard';
 import SidebarItem from './SidebarItem';
-import SwitchAccountIcon from '@mui/icons-material/SwitchAccount';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
 import MessageIcon from '@mui/icons-material/Message';
 import ImageSearchIcon from '@mui/icons-material/ImageSearch';
@@ -28,7 +28,11 @@ function SidebarLeft({ auth }) {
                     <div className='auth_user_wrapper'>
                         <UserCard user={auth.user} homeSidebar={true} />
                     </div>
-                    <SidebarItem name={'Saved'} Icon={SwitchAccountIcon} />
+                    <SidebarItem
+                        name={'My Profile'}
+                        Icon={AccountBoxIcon}
+                        url={`/profile/${auth.user?._id}`}
+                    />
                     <SidebarItem name={'Videos'} Icon={VideoLibraryIcon} />
                     <SidebarItem name={'Message'} Icon={MessageIcon} url={'/message'} />
                     <SidebarItem name={'Discover'} Icon={ImageSearchIcon} url={'/discover'} />

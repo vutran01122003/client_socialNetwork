@@ -104,7 +104,6 @@ export const getConversations =
                 }
             });
         } catch (error) {
-            console.log(error);
             dispatch({
                 type: GLOBALTYPES.ALERT,
                 payload: {
@@ -155,7 +154,6 @@ export const deleteConversations =
             });
             dispatch(getConversations({ auth, page: 1 }));
         } catch (error) {
-            console.log(error);
             dispatch({
                 type: GLOBALTYPES.ALERT,
                 payload: {
@@ -200,7 +198,6 @@ export const createMessage =
                         type: GLOBALTYPES.MESSAGE.SET_CURRENT_CONVERSATION,
                         payload: res.data.conversation
                     });
-                    console.log('ok');
                     dispatch(getConversations({ auth, page: 1 }));
                 }
 
@@ -214,8 +211,6 @@ export const createMessage =
                 }, 100);
             })
             .catch((err) => {
-                console.log(err);
-
                 dispatch({
                     type: GLOBALTYPES.ALERT,
                     payload: {
@@ -243,7 +238,6 @@ export const deleteMessage =
                 }
             });
         } catch (error) {
-            console.log(error);
             dispatch({
                 type: GLOBALTYPES.ALERT,
                 payload: {

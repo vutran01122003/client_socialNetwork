@@ -13,12 +13,6 @@ export const getAuthInfo = () => async (dispatch) => {
         .catch((e) => {
             if (e.response?.data.status === 403) {
                 localStorage.removeItem('logged');
-                // dispatch({
-                //     type: GLOBALTYPES.ALERT,
-                //     payload: {
-                //         error: e.response?.data.msg || 'Error'
-                //     }
-                // });
             } else
                 dispatch({
                     type: GLOBALTYPES.ALERT,
@@ -97,7 +91,6 @@ export const register = (userData) => async (dispatch) => {
             payload: { success: res.data.status }
         });
     } catch (err) {
-        console.log(err);
         dispatch({
             type: GLOBALTYPES.ALERT,
             payload: {

@@ -52,7 +52,7 @@ function FormResetPassword({ password, handleSendCodeAgain }) {
                 <div className='flex items-center justify-center relative'>
                     <KeyboardBackspaceIcon
                         fontSize='large'
-                        className='absolute top-0 left-0 text-gray-600 hover:text-gray-800 cursor-pointer'
+                        className='absolute top-0 left-0 text-gray-600 hover:text-gray-500 cursor-pointer'
                         onClick={handleSendCodeAgain}
                     />
                     <h1 className='font-bold text-center text-2xl'>New password</h1>
@@ -60,7 +60,7 @@ function FormResetPassword({ password, handleSendCodeAgain }) {
                 <form className='flex flex-col gap-3'>
                     <input
                         type='password'
-                        className='outline-none border rounded-md border-gray-500 px-2 py-3.5'
+                        className='new_password_input outline-none border rounded-md border-gray-500 px-2 py-3.5'
                         placeholder='New password'
                         autoComplete=''
                         value={newPassword}
@@ -68,7 +68,7 @@ function FormResetPassword({ password, handleSendCodeAgain }) {
                     />
                     <input
                         type='password'
-                        className='outline-none border rounded-md border-gray-500 px-2 py-3.5'
+                        className='confirm_new_password_input outline-none border rounded-md border-gray-500 px-2 py-3.5'
                         placeholder='Confirm new password'
                         autoComplete=''
                         value={newConfirmPassword}

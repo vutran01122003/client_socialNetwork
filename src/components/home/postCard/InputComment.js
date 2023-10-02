@@ -13,6 +13,7 @@ function InputComment({ inputCommentRef, post, auth, comment, socket }) {
     };
 
     const handleSubmitComment = async (e) => {
+        e.preventDefault();
         if (commentValue) {
             dispatch(
                 createComment({
@@ -47,7 +48,7 @@ function InputComment({ inputCommentRef, post, auth, comment, socket }) {
                     <div>
                         <EmotionBtn setContent={setCommentValue} />
                     </div>
-                    <button>
+                    <button type='submit'>
                         <SendIcon />
                     </button>
                 </div>

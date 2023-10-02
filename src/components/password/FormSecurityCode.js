@@ -45,7 +45,7 @@ function FormSecurityCode({ email, password, handleSendCodeAgain }) {
                 <div className='flex items-center justify-center relative'>
                     <KeyboardBackspaceIcon
                         fontSize='large'
-                        className='absolute top-0 left-0 text-gray-600 hover:text-gray-800 cursor-pointer'
+                        className='absolute top-0 left-0 text-gray-600 hover:text-gray-500 cursor-pointer'
                         onClick={handleSendCodeAgain}
                     />
                     <h1 className='font-bold text-center text-2xl'>Enter security code</h1>
@@ -57,13 +57,13 @@ function FormSecurityCode({ email, password, handleSendCodeAgain }) {
 
                         <div className='relative mt-4'>
                             {second > 0 && (
-                                <h3 className='font-bold absolute top-1/2 right-3 -translate-y-1/2'>
+                                <h3 className='countdown font-bold absolute top-1/2 right-3 -translate-y-1/2'>
                                     {second}s
                                 </h3>
                             )}
 
                             <input
-                                className='px-3 py-4 pr-12 border border-gray-500 outline-none rounded-lg w-full'
+                                className='email_enterCode px-3 py-4 pr-12 border border-gray-500 outline-none rounded-lg w-full'
                                 onChange={handleChangeCode}
                                 placeholder='Enter code'
                                 value={code}

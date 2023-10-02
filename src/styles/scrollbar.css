@@ -8,6 +8,13 @@
     border-radius: 50px;
 }
 
+
+.App.dark .box_search::-webkit-scrollbar-thumb{
+    background: var(--white-background-color-v5);
+    border-radius: 50px;
+}
+
+
 /* Story */
 .story_textarea::-webkit-scrollbar {
     width: 5px;

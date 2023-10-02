@@ -61,22 +61,29 @@ function ModalPost({ auth, currentPost, detailPost, messageInput, message, scrol
     };
 
     const handleOpenCamera = async () => {
-        setOpenVideo(true);
-        try {
-            let stream = await navigator.mediaDevices.getUserMedia({
-                video: true,
-                audio: false
-            });
-            setStream(stream);
-            if (videoRef.current !== null) videoRef.current.srcObject = stream;
-        } catch (error) {
-            dispatch({
-                type: GLOBALTYPES.ALERT,
-                payload: {
-                    error
+        navigator.permissions
+            .query({ name: 'camera' })
+            .then(async (permissionObj) => {
+                if (permissionObj.state === 'denied') {
+                    alert('You must allow your browser to access the camera');
+                } else {
+                    setOpenVideo(true);
+                    let stream = await navigator.mediaDevices.getUserMedia({
+                        video: true,
+                        audio: false
+                    });
+                    setStream(stream);
+                    if (videoRef.current !== null) videoRef.current.srcObject = stream;
                 }
+            })
+            .catch(() => {
+                dispatch({
+                    type: GLOBALTYPES.ALERT,
+                    payload: {
+                        error: 'Error'
+                    }
+                });
             });
-        }
     };
 
     const handleInsertFiles = async (e) => {

@@ -9,7 +9,6 @@ function SidebarRight({ auth }) {
     const message = useSelector(messageSelector);
     const conversations = message.conversations?.data;
     const handleMessage = async (user) => {
-        console.log(user);
         dispatch(
             getConversation({
                 userData: user,
@@ -31,22 +30,31 @@ function SidebarRight({ auth }) {
                     <div className='contact_users_wrapper'>
                         {Object.keys(message.conversations).length > 0 && (
                             <>
-                                {conversations.map((conversation) => {
-                                    return (
-                                        <div key={conversation._id}>
-                                            <UserCard
-                                                user={conversation.recipients.find(
-                                                    (recipient) => recipient._id !== auth?.user._id
-                                                )}
-                                                auth={auth}
-                                                onClick={handleMessage}
-                                                conversation={conversation}
-                                                homeSidebar={true}
-                                                contactSidebar={true}
-                                            />
-                                        </div>
-                                    );
-                                })}
+                                {conversations.length !== 0 ? (
+                                    <>
+                                        {conversations.map((conversation) => {
+                                            return (
+                                                <div key={conversation._id}>
+                                                    <UserCard
+                                                        user={conversation.recipients.find(
+                                                            (recipient) =>
+                                                                recipient._id !== auth?.user._id
+                                                        )}
+                                                        auth={auth}
+                                                        onClick={handleMessage}
+                                                        conversation={conversation}
+                                                        homeSidebar={true}
+                                                        contactSidebar={true}
+                                                    />
+                                                </div>
+                                            );
+                                        })}
+                                    </>
+                                ) : (
+                                    <span className='w-full flex items-center justify-center text-gray-500 font-semibold'>
+                                        No contact
+                                    </span>
+                                )}
                             </>
                         )}
                     </div>
