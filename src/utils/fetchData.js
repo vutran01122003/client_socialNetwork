@@ -5,8 +5,8 @@ export const postDataApi = (uri, data) => {
     return res;
 };
 
-export const getDataApi = (uri) => {
-    const res = instance.get(`/api${uri}`);
+export const getDataApi = (uri, data = null) => {
+    const res = instance.get(`/api${uri}`, { params: data });
     return res;
 };
 

@@ -16,6 +16,7 @@ import messageReducer from './messageReducer';
 import callReducer from './callReducer';
 import peerReducer from './peerReducer';
 import passwordReducer from './passwordReducer';
+import marketplaceReducer from './marketplaceReducer';
 
 const rootReducer = combineReducers({
     auth: authReducer,
@@ -34,7 +35,8 @@ const rootReducer = combineReducers({
     peer: peerReducer,
     notify: notifyReducer,
     message: messageReducer,
-    call: callReducer
+    call: callReducer,
+    marketplace: marketplaceReducer
 });
 
 export default rootReducer;

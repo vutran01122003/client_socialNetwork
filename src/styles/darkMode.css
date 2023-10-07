@@ -323,4 +323,15 @@
     background-color: var(--white-background-color-v6);
 }
 
+/* Marketplace */
+
+.App.dark .marketplace_container {
+    background: var(--dark-background-color-v1);
+}
+
+
+.App.dark .marketplace_item {
+    box-shadow: var(--box-shadow-white);
+}
+
 

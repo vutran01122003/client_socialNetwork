@@ -5,11 +5,11 @@ import { suggestedUsersSelector } from '../../redux/selector';
 import { CircularProgress } from '@mui/material';
 import UserCard from '../UserCard';
 import SidebarItem from './SidebarItem';
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
-import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
-import MessageIcon from '@mui/icons-material/Message';
+import AccountBoxOutlinedIcon from '@mui/icons-material/AccountBoxOutlined';
+import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
 import ImageSearchIcon from '@mui/icons-material/ImageSearch';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
+import StorefrontIcon from '@mui/icons-material/Storefront';
 
 function SidebarLeft({ auth }) {
     const dispatch = useDispatch();
@@ -30,11 +30,11 @@ function SidebarLeft({ auth }) {
                     </div>
                     <SidebarItem
                         name={'My Profile'}
-                        Icon={AccountBoxIcon}
+                        Icon={AccountBoxOutlinedIcon}
                         url={`/profile/${auth.user?._id}`}
                     />
-                    <SidebarItem name={'Videos'} Icon={VideoLibraryIcon} />
-                    <SidebarItem name={'Message'} Icon={MessageIcon} url={'/message'} />
+                    <SidebarItem name={'Marketplace'} Icon={StorefrontIcon} url={'/marketplace'} />
+                    <SidebarItem name={'Message'} Icon={MessageOutlinedIcon} url={'/message'} />
                     <SidebarItem name={'Discover'} Icon={ImageSearchIcon} url={'/discover'} />
                     <div className='flex gap-2 items-center suggestion_title_wrapper'>
                         <h1 className='suggestion_title'>Suggestions</h1>
