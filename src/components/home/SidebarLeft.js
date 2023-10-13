@@ -51,7 +51,9 @@ function SidebarLeft({ auth }) {
                         ) : (
                             <>
                                 {suggestedUsers?.users.length === 0 ? (
-                                    <h3 className='text-center font-semibold mt-10'>No User</h3>
+                                    <h3 className='text-center font-semibold mt-10 text-gray-500'>
+                                        No User
+                                    </h3>
                                 ) : (
                                     <>
                                         {suggestedUsers.users.map((user) => (

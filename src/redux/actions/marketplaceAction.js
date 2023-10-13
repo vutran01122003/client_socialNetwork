@@ -13,7 +13,6 @@ export const getProducts =
             nextPage
         })
             .then((res) => {
-                console.log(res.data.data.marketplace_search.feed_units.edges);
                 dispatch({
                     type: GLOBALTYPES.MARKETPLACE.GET_PRODUCTS,
                     payload: {
@@ -27,7 +26,6 @@ export const getProducts =
                 });
             })
             .catch((e) => {
-                console.log(e);
                 dispatch({
                     type: GLOBALTYPES.ALERT,
                     payload: {
@@ -48,7 +46,6 @@ export const getKeywords =
     async (dispatch) => {
         try {
             const res = await postDataApi('/keywords', { searchValue });
-            console.log(res.data.data);
             dispatch({
                 type: GLOBALTYPES.MARKETPLACE.MARKETPLACE_SET_QUERY_LIST,
                 payload: res.data.data

@@ -78,167 +78,174 @@ export default function Register() {
     }
 
     return (
-        <ThemeProvider theme={defaultTheme}>
-            <Container
-                component='main'
-                maxWidth='xs'
-                sx={{
-                    display: 'flex',
-                    height: '100%',
-                    flexDirection: 'column',
-                    justifyContent: 'center'
-                }}
-            >
-                <CssBaseline />
-                <Box
+        <div className='register h-screen w-screen flex justify-center'>
+            <ThemeProvider theme={defaultTheme}>
+                <Container
+                    component='main'
+                    maxWidth='xs'
                     sx={{
-                        marginTop: 0,
                         display: 'flex',
+                        height: '100%',
                         flexDirection: 'column',
-                        alignItems: 'center'
+                        justifyContent: 'center'
                     }}
                 >
-                    <Avatar sx={{ m: 1, bgcolor: blue[600] }}>
-                        <LockOutlinedIcon />
-                    </Avatar>
-                    <Typography component='h1' variant='h5'>
-                        Sign up
-                    </Typography>
+                    <CssBaseline />
                     <Box
-                        className='register_input_wrapper'
-                        component='form'
-                        noValidate
-                        onSubmit={handleSubmit}
-                        sx={{ mt: 3 }}
+                        sx={{
+                            marginTop: 0,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center'
+                        }}
                     >
-                        <Grid container spacing={2}>
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    id='fullname'
-                                    label='Fullname'
-                                    name='fullname'
-                                    onChange={handleUserData}
-                                    value={fullname}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    id='username'
-                                    label='Username'
-                                    name='username'
-                                    value={username.toLowerCase().replace(/ /g, '')}
-                                    onChange={handleUserData}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    id='email'
-                                    label='Email Address'
-                                    name='email'
-                                    autoComplete='email'
-                                    value={email}
-                                    onChange={handleUserData}
-                                />
-                            </Grid>
-
-                            <Grid item xs={12} className='relative'>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    name='password'
-                                    label='Password'
-                                    type={showPassword ? 'text' : 'password'}
-                                    id='password'
-                                    value={password}
-                                    autoComplete='new-password'
-                                    onChange={handleUserData}
-                                />
-                                <span
-                                    onClick={(e) => {
-                                        setShowPassword((prev) => !prev);
-                                    }}
-                                    className='text-blue-500 text-sm select-none absolute right-2 top-1/2 transform  -translate-y-1/4'
-                                >
-                                    {showPassword ? <Visibility /> : <VisibilityOff />}
-                                </span>
-                            </Grid>
-
-                            <Grid item xs={12} className='relative'>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    name='cf_password'
-                                    label='Confirm Password'
-                                    type={showCfPassword ? 'text' : 'password'}
-                                    id='cf_password'
-                                    onChange={handleUserData}
-                                    value={cf_password}
-                                    autoComplete='new-password'
-                                />
-                                <span
-                                    onClick={(e) => {
-                                        setShowCfPassword((prev) => !prev);
-                                    }}
-                                    className='text-blue-500 text-sm select-none absolute right-2 top-1/2 transform  -translate-y-1/4'
-                                >
-                                    {showCfPassword ? <Visibility /> : <VisibilityOff />}
-                                </span>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <FormControl className='w-full'>
-                                    <FormLabel id='demo-radio-buttons-group-label'>
-                                        Gender
-                                    </FormLabel>
-                                    <RadioGroup
-                                        aria-labelledby='demo-radio-buttons-group-label'
-                                        defaultValue={gender}
-                                        row
-                                        name='gender'
-                                        className='flex w-full gender_radio_group'
+                        <Avatar sx={{ m: 1, bgcolor: blue[600] }}>
+                            <LockOutlinedIcon />
+                        </Avatar>
+                        <Typography component='h1' variant='h5'>
+                            Sign up
+                        </Typography>
+                        <Box
+                            className='register_input_wrapper'
+                            component='form'
+                            noValidate
+                            onSubmit={handleSubmit}
+                            sx={{ mt: 3 }}
+                        >
+                            <Grid container spacing={2}>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        required
+                                        fullWidth
+                                        id='fullname'
+                                        label='Fullname'
+                                        name='fullname'
                                         onChange={handleUserData}
+                                        value={fullname}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        required
+                                        fullWidth
+                                        id='username'
+                                        label='Username'
+                                        name='username'
+                                        value={username.toLowerCase().replace(/ /g, '')}
+                                        onChange={handleUserData}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        required
+                                        fullWidth
+                                        id='email'
+                                        label='Email Address'
+                                        name='email'
+                                        autoComplete='email'
+                                        value={email}
+                                        onChange={handleUserData}
+                                    />
+                                </Grid>
+
+                                <Grid item xs={12} className='relative'>
+                                    <TextField
+                                        required
+                                        fullWidth
+                                        name='password'
+                                        label='Password'
+                                        type={showPassword ? 'text' : 'password'}
+                                        id='password'
+                                        value={password}
+                                        autoComplete='new-password'
+                                        onChange={handleUserData}
+                                    />
+                                    <span
+                                        onClick={(e) => {
+                                            setShowPassword((prev) => !prev);
+                                        }}
+                                        className='text-blue-500 text-sm select-none absolute right-2 top-1/2 transform  -translate-y-1/4'
                                     >
-                                        <FormControlLabel
-                                            value='male'
-                                            control={<Radio />}
-                                            label='Male'
-                                        />
-                                        <FormControlLabel
-                                            value='female'
-                                            control={<Radio />}
-                                            label='Female'
-                                        />
-                                        <FormControlLabel
-                                            value='other'
-                                            control={<Radio />}
-                                            label='Other'
-                                        />
-                                    </RadioGroup>
-                                </FormControl>
+                                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                                    </span>
+                                </Grid>
+
+                                <Grid item xs={12} className='relative'>
+                                    <TextField
+                                        required
+                                        fullWidth
+                                        name='cf_password'
+                                        label='Confirm Password'
+                                        type={showCfPassword ? 'text' : 'password'}
+                                        id='cf_password'
+                                        onChange={handleUserData}
+                                        value={cf_password}
+                                        autoComplete='new-password'
+                                    />
+                                    <span
+                                        onClick={(e) => {
+                                            setShowCfPassword((prev) => !prev);
+                                        }}
+                                        className='text-blue-500 text-sm select-none absolute right-2 top-1/2 transform  -translate-y-1/4'
+                                    >
+                                        {showCfPassword ? <Visibility /> : <VisibilityOff />}
+                                    </span>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <FormControl className='w-full'>
+                                        <FormLabel id='demo-radio-buttons-group-label'>
+                                            Gender
+                                        </FormLabel>
+                                        <RadioGroup
+                                            aria-labelledby='demo-radio-buttons-group-label'
+                                            defaultValue={gender}
+                                            row
+                                            name='gender'
+                                            className='flex w-full gender_radio_group'
+                                            onChange={handleUserData}
+                                        >
+                                            <FormControlLabel
+                                                value='male'
+                                                control={<Radio />}
+                                                label='Male'
+                                            />
+                                            <FormControlLabel
+                                                value='female'
+                                                control={<Radio />}
+                                                label='Female'
+                                            />
+                                            <FormControlLabel
+                                                value='other'
+                                                control={<Radio />}
+                                                label='Other'
+                                            />
+                                        </RadioGroup>
+                                    </FormControl>
+                                </Grid>
                             </Grid>
-                        </Grid>
-                        <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
-                            Sign Up
-                        </Button>
-                        <Grid container justifyContent='flex-end'>
-                            <Grid item>
-                                <Link
-                                    to='/login'
-                                    className='text-sm text-blue-500 hover:underline decoration-1'
-                                >
-                                    Already have an account? Sign in
-                                </Link>
+                            <Button
+                                type='submit'
+                                fullWidth
+                                variant='contained'
+                                sx={{ mt: 3, mb: 2 }}
+                            >
+                                Sign Up
+                            </Button>
+                            <Grid container justifyContent='flex-end'>
+                                <Grid item>
+                                    <Link
+                                        to='/login'
+                                        className='text-sm text-blue-500 hover:underline decoration-1'
+                                    >
+                                        Already have an account? Sign in
+                                    </Link>
+                                </Grid>
                             </Grid>
-                        </Grid>
+                        </Box>
                     </Box>
-                </Box>
-                <Copyright sx={{ mt: 5 }} />
-            </Container>
-        </ThemeProvider>
+                    <Copyright sx={{ mt: 5 }} />
+                </Container>
+            </ThemeProvider>
+        </div>
     );
 }

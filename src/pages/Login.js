@@ -67,11 +67,12 @@ export default function Login() {
     if (localStorage.getItem('logged')) return <></>;
 
     return (
-        <>
+        <div className='login h-screen w-screen flex justify-center'>
             <ThemeProvider theme={defaultTheme}>
                 <Container
                     component='main'
                     maxWidth='xs'
+                    className='login'
                     sx={{
                         display: 'flex',
                         height: '100%',
@@ -127,7 +128,7 @@ export default function Login() {
                                     onClick={(e) => {
                                         setShowPassword((prev) => !prev);
                                     }}
-                                    className='text-blue-500 text-sm select-none flex gap-2 items-center font-medium absolute bottom-[36px] right-4'
+                                    className='text-blue-500 text-sm select-none flex gap-2 items-center font-medium absolute bottom-6 right-2'
                                 >
                                     {showPassword ? <Visibility /> : <VisibilityOff />}
                                 </span>
@@ -145,7 +146,7 @@ export default function Login() {
                                 <Grid item xs>
                                     <Link
                                         to='/password'
-                                        className='text-sm text-blue-500 hover:underline decoration-1'
+                                        className='text-sm text-blue-500 hover:underline decoration-1 whitespace-nowrap'
                                     >
                                         Forgot password?
                                     </Link>
@@ -164,6 +165,6 @@ export default function Login() {
                     <Copyright sx={{ mt: 8, mb: 4 }} />
                 </Container>
             </ThemeProvider>
-        </>
+        </div>
     );
 }

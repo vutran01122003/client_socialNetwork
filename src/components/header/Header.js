@@ -20,6 +20,8 @@ import Person4Icon from '@mui/icons-material/Person4';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
+import StoreIcon from '@mui/icons-material/Store';
+import SearchIcon from '@mui/icons-material/Search';
 import Avatar from '../Avatar';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -41,6 +43,7 @@ function Header({ auth, theme }) {
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const [showNotify, setShowNotify] = React.useState(false);
     const [showNotifyMd, setShowNotifyMd] = React.useState(false);
+    const [openPopupSearch, setOpenPopupSearch] = React.useState(false);
     const [nextPageNotification, setNextPageNotification] = React.useState(1);
     const activePage = useSelector(activePageSelector).name;
     const notify = useSelector(notificationSelector);
@@ -60,6 +63,9 @@ function Header({ auth, theme }) {
         setShowNotifyMd((prev) => !prev);
     };
 
+    const handleToggleOpenPopupSearch = () => {
+        setOpenPopupSearch((prev) => !prev);
+    };
     const handleActivePage = (pageName) => {
         dispatch(activePageAction(pageName));
     };
@@ -135,17 +141,13 @@ function Header({ auth, theme }) {
                                         src={require('../../images/logo2.png')}
                                         style={{ height: '40px' }}
                                         alt=''
+                                        className='header_app_logo'
                                     />
-                                    <span className='text-2xl'> Smedia </span>
+                                    <span className='text-2xl header_app_name'> Smedia </span>
                                 </Link>
                             </Box>
 
-                            <Box
-                                sx={{
-                                    height: '40px',
-                                    display: { xs: 'none', md: 'flex' }
-                                }}
-                            >
+                            <Box>
                                 <Search auth={auth} />
                             </Box>
 
@@ -265,6 +267,23 @@ function Header({ auth, theme }) {
                                     }}
                                 >
                                     <div className='flex justify-center items-center notification_md'>
+                                        <div className='search_icon_wrapper px-4 text-gray-400 hover:text-gray-700 px-4 transition linear'>
+                                            <Tippy
+                                                interactive
+                                                visible={openPopupSearch}
+                                                onClickOutside={handleToggleOpenPopupSearch}
+                                                placement='bottom-start'
+                                                render={(attrs) => (
+                                                    <div tabIndex='-1' {...attrs}>
+                                                        <Search auth={auth} popup />
+                                                    </div>
+                                                )}
+                                            >
+                                                <div onClick={handleToggleOpenPopupSearch}>
+                                                    <SearchIcon />
+                                                </div>
+                                            </Tippy>
+                                        </div>
                                         <Tippy
                                             interactive
                                             visible={showNotifyMd}
@@ -377,6 +396,16 @@ function Header({ auth, theme }) {
                                                     Message
                                                 </Link>
                                             </Typography>
+                                        </MenuItem>
+
+                                        <MenuItem onClick={handleCloseNavMenu} className='my-2'>
+                                            <Link
+                                                to='/marketplace'
+                                                className='flex gap-2 text-gray-700 hover:text-gray-800'
+                                            >
+                                                <StoreIcon />
+                                                Marketplace
+                                            </Link>
                                         </MenuItem>
                                     </Menu>
                                 </Box>

@@ -4,7 +4,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import SendIcon from '@mui/icons-material/Send';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useDispatch, useSelector } from 'react-redux';
-import { socketSelector } from '../../redux/selector';
+import { socketSelector, themeSelector } from '../../redux/selector';
 import { checkImageUpload, checkVideoUpload } from '../../utils/uploadFile';
 import { GLOBALTYPES } from '../../redux/actions/globalTypes';
 import { useEffect, useRef, useState } from 'react';
@@ -15,7 +15,7 @@ import { createMessage } from '../../redux/actions/messageAction';
 
 function ModalPost({ auth, currentPost, detailPost, messageInput, message, scrollToBottom }) {
     const socket = useSelector(socketSelector);
-
+    const theme = useSelector(themeSelector);
     const inputRef = useRef();
     const videoRef = useRef();
     const canvasRef = useRef();
@@ -152,8 +152,14 @@ function ModalPost({ auth, currentPost, detailPost, messageInput, message, scrol
         setContent(e.target.value);
     };
 
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            handleSendMessage();
+        }
+    };
+
     const handleSendMessage = async (e) => {
-        if (!content) return;
+        if (!content.trim()) return;
         if (files.length >= 5) {
             dispatch({
                 type: GLOBALTYPES.ALERT,
@@ -219,7 +225,7 @@ function ModalPost({ auth, currentPost, detailPost, messageInput, message, scrol
     useEffect(() => {
         const post = currentPost;
         if (post) {
-            setContent(post.content || '');
+            setContent(post.content.trim() || '');
             setFiles(post.files || []);
         }
     }, [currentPost]);
@@ -258,8 +264,9 @@ function ModalPost({ auth, currentPost, detailPost, messageInput, message, scrol
                             ? `${'Enter your message...'}`
                             : `What's on your mind, ${auth.user?.username}?`
                     }
-                    value={content}
+                    value={content.trim()}
                     onChange={handleChangeValueTextarea}
+                    onKeyDown={handleKeyDown}
                 ></textarea>
                 {openVideo && (
                     <div className='camera_wrapper'>
@@ -308,7 +315,7 @@ function ModalPost({ auth, currentPost, detailPost, messageInput, message, scrol
                                     onClick={() => {
                                         handleStopCamera(stream);
                                     }}
-                                    className='text-gray-500 hover:text-black close_camera_btn'
+                                    className={`text-gray-500 hover:text-black close_camera_btn`}
                                     fontSize='large'
                                 />
                                 <label className='absolute left-1/2 -translate-x-1/2 block p-1 rounded-full hover:bg-gray-200 transition linear'>
@@ -353,8 +360,12 @@ function ModalPost({ auth, currentPost, detailPost, messageInput, message, scrol
                                 {messageInput && (
                                     <div
                                         onClick={handleSendMessage}
-                                        className={`send_message ${
-                                            content ? 'text-gray-700' : 'text-gray-300'
+                                        className={`send_message  ${
+                                            content.trim()
+                                                ? theme
+                                                    ? 'text-white'
+                                                    : 'text-black'
+                                                : 'text-gray-500'
                                         }`}
                                     >
                                         <SendIcon />

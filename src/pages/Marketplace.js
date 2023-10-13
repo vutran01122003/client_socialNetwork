@@ -6,11 +6,12 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getKeywords, getProducts } from '../redux/actions/marketplaceAction';
 import { GLOBALTYPES } from '../redux/actions/globalTypes';
+import { marketplaceSelector } from '../redux/selector';
 
 function Marketplace() {
     const dispatch = useDispatch();
     const observer = useRef();
-    const marketplace = useSelector((state) => state.marketplace);
+    const marketplace = useSelector(marketplaceSelector);
     const products = marketplace.data;
     const [searchValue, setSearchValue] = useState('');
     const [prevSearchValue, setPrevSearchValue] = useState('');
@@ -28,13 +29,8 @@ function Marketplace() {
         setSearchValue(e.target.value);
     };
 
-    const handleKeydown = (e) => {
-        if (searchValue === prevSearchValue) return;
-        if (e.key === 'Enter') handleGetProduct({ searchValue });
-    };
-
     const handleGetProduct = ({ searchValue, nextPage }) => {
-        if (searchValue !== prevSearchValue) {
+        if (searchValue !== prevSearchValue || searchValue !== marketplace.searchedKeyword) {
             dispatch({
                 type: GLOBALTYPES.MARKETPLACE.MARKETPLACE_RESET
             });
@@ -49,10 +45,15 @@ function Marketplace() {
         });
     };
 
-    const handleClickProduct = (keyword) => {
+    const handleClickNameProduct = (keyword) => {
         setSearchValue(keyword);
         handleGetProduct({ searchValue: keyword });
         handleHideSearch();
+    };
+
+    const handleKeydown = (e) => {
+        if (searchValue === prevSearchValue) return;
+        if (e.key === 'Enter') handleGetProduct({ searchValue });
     };
 
     const lastPostElementRef = useCallback(
@@ -62,9 +63,7 @@ function Marketplace() {
             observer.current = new IntersectionObserver((entries) => {
                 if (entries[0].isIntersecting && !marketplace.maxPage) {
                     handleGetProduct({
-                        searchValue: marketplace.searchedKeyword
-                            ? marketplace.searchedKeyword
-                            : 'laptop',
+                        searchValue: marketplace.searchedKeyword,
                         nextPage: marketplace.nextPage
                     });
                 }
@@ -72,12 +71,7 @@ function Marketplace() {
             if (elem) observer.current.observe(elem);
         },
         // eslint-disable-next-line
-        [
-            marketplace.loading,
-            marketplace.nextPage,
-            marketplace.maxPage,
-            marketplace.searchedKeyword
-        ]
+        [marketplace.loading]
     );
 
     useEffect(() => {
@@ -126,11 +120,12 @@ function Marketplace() {
                                     tabIndex='-1'
                                     {...attrs}
                                 >
-                                    {marketplace.queryList.map((queryItem) => (
+                                    {marketplace.queryList.map((queryItem, index) => (
                                         <div
+                                            key={queryItem.query + index}
                                             className='more_item'
                                             onClick={() => {
-                                                handleClickProduct(queryItem.query);
+                                                handleClickNameProduct(queryItem.query);
                                             }}
                                         >
                                             {queryItem.query}
@@ -148,7 +143,7 @@ function Marketplace() {
                             onKeyDown={handleKeydown}
                             onClick={handleOpenSeach}
                             placeholder='Search marketplace'
-                            value={searchValue || marketplace.searchedKeyword}
+                            value={searchValue}
                         />
                         <SearchIcon fontSize='small' className='marketplace_search_icon' />
                     </div>
@@ -171,7 +166,8 @@ function Marketplace() {
                                     <img
                                         src={
                                             product.node.listing.primary_listing_photo?.thumbnail
-                                                .uri
+                                                .uri ||
+                                            product.node.listing.primary_listing_photo?.image.uri
                                         }
                                         alt='product'
                                     />

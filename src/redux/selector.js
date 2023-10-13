@@ -2,7 +2,7 @@ export const authSelector = (state) => state.auth;
 
 export const alertSelector = (state) => state.alert;
 
-export const themSelector = (state) => state.theme;
+export const themeSelector = (state) => state.theme;
 
 export const activePageSelector = (state) => state.activePage;
 
@@ -31,3 +31,5 @@ export const callSelector = (state) => state.call;
 export const peerSelector = (state) => state.peer;
 
 export const passwordSelector = (state) => state.password;
+
+export const marketplaceSelector = (state) => state.marketplace;

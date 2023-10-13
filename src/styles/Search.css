@@ -1,5 +1,26 @@
+.popup_search_container {
+    background: var(--white-color);
+    min-width: 100vw;
+    border-bottom: var(--border-pagination-dark-color);
+}
+
+.popup_search_container .search_wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+
+.popup_search_container .search_wrapper .search_wrapper input.search_input {
+    width: 100%;
+}
+
+#tippy-3 {
+    transform: translate3d(-16.3px, 51.2px, 0px) !important;
+}
+
 .box_search {
-    background: #fff;
+    background: var(--white-color);
     border-radius: 5px;
     box-shadow: rgba(0, 0, 0, 0.12) 0px 2px 12px;
     width: 340px;

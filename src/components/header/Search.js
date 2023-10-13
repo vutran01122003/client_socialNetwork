@@ -7,7 +7,7 @@ import { getSearchUser } from '../../redux/actions/usersAction';
 import { userSelector } from '../../redux/selector';
 import UserCard from '../UserCard';
 
-function Search({ auth }) {
+function Search({ auth, popup }) {
     const users = useSelector(userSelector);
     const observer = useRef();
 
@@ -66,55 +66,57 @@ function Search({ auth }) {
     };
 
     return (
-        <Tippy
-            visible={openResult && searchValue.length > 0}
-            interactive
-            placement='bottom-start'
-            onClickOutside={hideResult}
-            render={(attrs) => (
-                <div className='box_search' tabIndex='-1' {...attrs}>
-                    <div className='label text-gray-600 font-semibold px-2 py-1'>Account</div>
-                    {users.userList.map((user, index) => {
-                        if (users?.userList.length === index + 1) {
+        <div className={`${popup ? 'popup_search_container' : 'search_container'}`}>
+            <Tippy
+                visible={openResult && searchValue.length > 0}
+                interactive
+                placement='bottom'
+                onClickOutside={hideResult}
+                render={(attrs) => (
+                    <div className='box_search' tabIndex='-1' {...attrs}>
+                        <div className='label text-gray-600 font-semibold px-2 py-1'>Account</div>
+                        {users.userList.map((user, index) => {
+                            if (users?.userList.length === index + 1) {
+                                return (
+                                    <div className='last_item' ref={getLastUserCard} key={user._id}>
+                                        <UserCard user={user} onClick={hideResult} auth={auth} />
+                                    </div>
+                                );
+                            }
+
                             return (
-                                <div className='last_item' ref={getLastUserCard} key={user._id}>
+                                <div key={user._id}>
                                     <UserCard user={user} onClick={hideResult} auth={auth} />
                                 </div>
                             );
-                        }
+                        })}
 
-                        return (
-                            <div key={user._id}>
-                                <UserCard user={user} onClick={hideResult} auth={auth} />
+                        {users.loading && (
+                            <div className='text-center p-2'>
+                                <CircularProgress />
                             </div>
-                        );
-                    })}
+                        )}
 
-                    {users.loading && (
-                        <div className='text-center p-2'>
-                            <CircularProgress />
-                        </div>
-                    )}
-
-                    {!users.loading && users?.userList.length === 0 && (
-                        <h3 className='text-black font-semibold text-center p-3'>
-                            Username does not exist
-                        </h3>
-                    )}
+                        {!users.loading && users?.userList.length === 0 && (
+                            <h3 className='text-black font-semibold text-center p-3'>
+                                Username does not exist
+                            </h3>
+                        )}
+                    </div>
+                )}
+            >
+                <div className='search search_wrapper text-black font-semibold flex items-center h-full'>
+                    <input
+                        type='search'
+                        className={`search_input py-2 px-3 outline-none bg-gray-100`}
+                        placeholder='Search on smedia'
+                        value={searchValue}
+                        onChange={handleSearch}
+                        onClick={visibleResult}
+                    />
                 </div>
-            )}
-        >
-            <div className='search search_wrapper text-black font-semibold flex items-center h-full'>
-                <input
-                    type='search'
-                    className='search_input py-2 px-3 outline-none bg-gray-100'
-                    placeholder='Search on smedia'
-                    value={searchValue}
-                    onChange={handleSearch}
-                    onClick={visibleResult}
-                />
-            </div>
-        </Tippy>
+            </Tippy>
+        </div>
     );
 }
 

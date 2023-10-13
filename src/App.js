@@ -6,7 +6,7 @@ import Home from './pages/Home';
 import Register from './pages/Register';
 import Alert from './components/alert/Alert';
 import { GLOBALTYPES } from './redux/actions/globalTypes';
-import { authSelector, themSelector } from './redux/selector';
+import { authSelector, themeSelector } from './redux/selector';
 import PageRender from './configRouter/PageRender';
 import PrivateRoute from './configRouter/PrivateRoute';
 import Layout from './components/layout/Layout';
@@ -17,7 +17,7 @@ import Password from './pages/Password';
 
 function App() {
     const dispatch = useDispatch();
-    const theme = useSelector(themSelector);
+    const theme = useSelector(themeSelector);
     const auth = useSelector(authSelector);
 
     useEffect(() => {

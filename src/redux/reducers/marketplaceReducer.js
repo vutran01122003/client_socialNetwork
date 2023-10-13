@@ -1,7 +1,7 @@
 const { GLOBALTYPES } = require('../actions/globalTypes');
 
 const initialState = {
-    searchedKeyword: '',
+    searchedKeyword: 'laptop',
     queryList: [],
     data: [],
     loading: false,
@@ -27,7 +27,7 @@ function marketplaceReducer(state = initialState, action) {
         }
         case GLOBALTYPES.MARKETPLACE.MARKETPLACE_RESET: {
             return {
-                searchedKeyword: '',
+                searchedKeyword: 'laptop',
                 queryList: [],
                 data: [],
                 loading: false,

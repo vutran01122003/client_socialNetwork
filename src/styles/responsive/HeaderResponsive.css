@@ -1,0 +1,36 @@
+@media only screen and (max-width: 499px) {
+    .search.search_wrapper .search_input {
+       display: none;
+    }
+
+    .popup_search_container .search.search_wrapper .search_input {
+        display: block;
+    }
+}
+
+@media only screen and (min-width: 500px) and (max-width: 740px) {
+    .search.search_wrapper .search_input {
+        width: 250px !important;
+    }
+
+    .search.search_wrapper .box_search {
+        width: 250px !important;
+    }
+}
+
+@media only screen and (min-width: 500px) {
+    .search_icon_wrapper {
+        display: none;
+    }
+}
+
+@media only screen  and (max-width: 739px) {
+    .header_app_name {
+        display: none;
+    }
+}
+
+
+
+
+
