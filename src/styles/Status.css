@@ -1,8 +1,10 @@
+
+
 .btn_status_popup {
     background: var(--white-background-color-v3);
     border-radius: 25px;
     padding: 8px 12px;
-    width: 400px;
+    width: 100%;
     text-align: left;
     color: gray;
     transition: linear 0.1s;
@@ -113,6 +115,7 @@
 .show_images video {
     width: 100%;
 }
+
 .show_images img {
     display: block;
     width: 33%;

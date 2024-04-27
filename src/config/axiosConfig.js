@@ -20,6 +20,9 @@ instance.interceptors.response.use(
         return response;
     },
     (error) => {
+        if (localStorage.getItem('logged') && error.response.data.status === 403) {
+            window.location.reload();
+        }
         return Promise.reject(error);
     }
 );

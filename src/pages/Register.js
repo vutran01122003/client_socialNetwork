@@ -27,12 +27,14 @@ function Copyright(props) {
             align='center'
             {...props}
         >
-            {'Copyright © '}
-            <Link color='inherit' href='/'>
-                Smedia
-            </Link>
-            {new Date().getFullYear()}
-            {'.'}
+            <div className='copyright'>
+                {'Copyright © '}
+                <Link color='inherit' href='/'>
+                    Smedia
+                </Link>
+                {new Date().getFullYear()}
+                {'.'}
+            </div>
         </Typography>
     );
 }
@@ -118,7 +120,7 @@ export default function Register() {
                                         required
                                         fullWidth
                                         id='fullname'
-                                        label='Fullname'
+                                        placeholder='Fullname'
                                         name='fullname'
                                         onChange={handleUserData}
                                         value={fullname}
@@ -129,7 +131,7 @@ export default function Register() {
                                         required
                                         fullWidth
                                         id='username'
-                                        label='Username'
+                                        placeholder='Username'
                                         name='username'
                                         value={username.toLowerCase().replace(/ /g, '')}
                                         onChange={handleUserData}
@@ -140,7 +142,7 @@ export default function Register() {
                                         required
                                         fullWidth
                                         id='email'
-                                        label='Email Address'
+                                        placeholder='Email Address'
                                         name='email'
                                         autoComplete='email'
                                         value={email}
@@ -153,7 +155,7 @@ export default function Register() {
                                         required
                                         fullWidth
                                         name='password'
-                                        label='Password'
+                                        placeholder='Password'
                                         type={showPassword ? 'text' : 'password'}
                                         id='password'
                                         value={password}
@@ -175,7 +177,7 @@ export default function Register() {
                                         required
                                         fullWidth
                                         name='cf_password'
-                                        label='Confirm Password'
+                                        placeholder='Confirm Password'
                                         type={showCfPassword ? 'text' : 'password'}
                                         id='cf_password'
                                         onChange={handleUserData}

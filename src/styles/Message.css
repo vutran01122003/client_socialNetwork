@@ -89,7 +89,6 @@
 
 .message_modal .camera_wrapper  video {
     width: 35%;
-
 }
 
 .message_modal .post_form {
@@ -156,4 +155,5 @@
     visibility: hidden;
     transition: 0.1s linear;
 }
+
 

@@ -23,13 +23,15 @@
 @media only screen and (min-width: 600px) and (max-width: 739px) {
     .app_container .message_user_description 
     :is(.message_user_description_username, .message_user_description_fullname) {
-        max-width: 40px;
+        max-width: 60px;
+        font-size: 12px;
     }
 }
 
 @media only screen and (min-width: 740px) and (max-width: 1024px) {
     .app_container .message_user_description 
     :is(.message_user_description_username, .message_user_description_fullname) {
-        max-width: 80px;
+        max-width: 60px;
+        font-size: 12px;
     }
 }

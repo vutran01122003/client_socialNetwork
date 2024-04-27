@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { follow, unFollow } from '../redux/actions/profileActions';
 import { socketSelector } from '../redux/selector';
 import { CircularProgress } from '@mui/material';
-import { getNewPosts } from '../redux/actions/postAction';
+// import { getNewPosts } from '../redux/actions/postAction';
 
 function Follow({ userInfo, auth, size }) {
     const socket = useSelector(socketSelector);
@@ -10,7 +10,7 @@ function Follow({ userInfo, auth, size }) {
 
     const handleFollow = async () => {
         dispatch(follow({ userInfo, auth, socket }));
-        dispatch(getNewPosts({ userId: userInfo._id }));
+        // dispatch(getNewPosts({ userId: userInfo._id }));
     };
 
     const handleUnFollow = () => {

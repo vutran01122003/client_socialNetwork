@@ -1,16 +1,34 @@
 import { GLOBALTYPES } from './globalTypes';
-import { deleteDataApi, patchDataApi, postDataApi } from '../../utils/fetchData';
+import { deleteDataApi, getDataApi, patchDataApi, postDataApi } from '../../utils/fetchData';
 import { createNotification } from './notifyAction';
+
+export const getComments =
+    ({ postId, commentQuantity }) =>
+    async (dispatch) => {
+        try {
+            const res = await getDataApi(`/post/${postId}/comments`, {
+                commentQuantity
+            });
+            dispatch({
+                type: GLOBALTYPES.COMMENT.GET_COMMENTS,
+                payload: {
+                    commentsData: res.data.commentsData,
+                    postId
+                }
+            });
+        } catch (error) {
+            dispatch({
+                type: GLOBALTYPES.ALERT,
+                payload: {
+                    error: error.response?.data.msg || 'Error'
+                }
+            });
+        }
+    };
 
 export const createComment =
     ({ post, user, content, originCommentId, socket }) =>
     async (dispatch) => {
-        dispatch({
-            type: GLOBALTYPES.ALERT,
-            payload: {
-                loading: true
-            }
-        });
         postDataApi('/comment', {
             commentData: {
                 postId: post._id,
@@ -64,13 +82,6 @@ export const createComment =
 export const deleteComment =
     ({ postId, commentId, socket }) =>
     async (dispatch) => {
-        dispatch({
-            type: GLOBALTYPES.ALERT,
-            payload: {
-                loading: true
-            }
-        });
-
         deleteDataApi('/comment', {
             commentData: { postId, commentId }
         })
@@ -100,12 +111,6 @@ export const deleteComment =
 export const updateComment =
     ({ postId, commentId, content }) =>
     async (dispatch) => {
-        dispatch({
-            type: GLOBALTYPES.ALERT,
-            payload: {
-                loading: true
-            }
-        });
         patchDataApi('/comment', {
             commentData: {
                 postId,
@@ -139,13 +144,6 @@ export const updateComment =
 export const likeComment =
     ({ postId, commentId, userId }) =>
     async (dispatch) => {
-        dispatch({
-            type: GLOBALTYPES.ALERT,
-            payload: {
-                loading: true
-            }
-        });
-
         patchDataApi(`/comment/${commentId}/like`, {
             data: {
                 postId,
@@ -178,13 +176,6 @@ export const likeComment =
 export const unlikeComment =
     ({ postId, commentId, userId }) =>
     async (dispatch) => {
-        dispatch({
-            type: GLOBALTYPES.ALERT,
-            payload: {
-                loading: true
-            }
-        });
-
         patchDataApi(`/comment/${commentId}/unlike`, {
             data: {
                 postId,

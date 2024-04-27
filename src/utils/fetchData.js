@@ -6,7 +6,9 @@ export const postDataApi = (uri, data) => {
 };
 
 export const getDataApi = (uri, data = null) => {
-    const res = instance.get(`/api${uri}`, { params: data });
+    const res = instance.get(`/api${uri}`, {
+        params: data
+    });
     return res;
 };
 

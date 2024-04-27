@@ -28,6 +28,10 @@ function Carousel({ post }) {
                         <img
                             src={file.url || file.imgCamera || URL.createObjectURL(file)}
                             alt='post_image'
+                            onError={({ currentTarget }) => {
+                                currentTarget.onerror = null; // prevents looping
+                                currentTarget.src = require('../../../images/no_image.png');
+                            }}
                         />
                     )}
                 </SwiperSlide>

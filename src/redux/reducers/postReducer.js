@@ -49,6 +49,26 @@ function postReducer(state = initialState, action) {
                 posts: [...newDeletedPosts],
                 result: state.result - 1
             };
+        case GLOBALTYPES.COMMENT.GET_COMMENTS: {
+            const postId = action.payload.postId;
+            const comments = action.payload.commentsData;
+            const posts = [...state.posts];
+
+            for (let i = 0; i < posts.length; i++) {
+                if (postId === posts[i]._id) {
+                    action.payload.commentsData.length === 0
+                        ? (posts[i].isMaxComments = true)
+                        : (posts[i].comments = [...posts[i].comments, ...comments]);
+                    break;
+                }
+            }
+
+            return {
+                ...state,
+                posts: posts
+            };
+        }
+
         default:
             return state;
     }

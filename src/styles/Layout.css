@@ -16,7 +16,7 @@ main {
 .wrapper {
     padding:15px;
     border-radius: 10px;
-    box-shadow: 0 0 2px gray;
+    box-shadow: 0 0 1px gray;
     background: #fff;
 }
 
@@ -28,6 +28,9 @@ main {
     height: calc(100vh - 64px - 8px - 8px);
     margin: 0 auto;
     gap: 4px;
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow: 0 0 1px gray;
 }
 
 .main_home {

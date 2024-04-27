@@ -12,7 +12,10 @@ export const getAuthInfo = () => async (dispatch) => {
         })
         .catch((e) => {
             if (e.response?.data.status === 403) {
-                localStorage.removeItem('logged');
+                if (localStorage.getItem('logged')) {
+                    localStorage.removeItem('logged');
+                    window.location.reload();
+                }
             } else
                 dispatch({
                     type: GLOBALTYPES.ALERT,

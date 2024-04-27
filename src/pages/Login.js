@@ -27,12 +27,14 @@ function Copyright(props) {
             align='center'
             {...props}
         >
-            {'Copyright © '}
-            <Link color='inherit' href='/'>
-                Smedia
-            </Link>
-            {new Date().getFullYear()}
-            {'.'}
+            <div className='copyright'>
+                {'Copyright © '}
+                <Link color='inherit' href='/'>
+                    Smedia
+                </Link>
+                {new Date().getFullYear()}
+                {'.'}
+            </div>
         </Typography>
     );
 }
@@ -103,7 +105,7 @@ export default function Login() {
                                     required
                                     fullWidth
                                     id='email'
-                                    label='Email Address'
+                                    placeholder='Email Address'
                                     name='email'
                                     autoComplete='email'
                                     autoFocus
@@ -116,7 +118,7 @@ export default function Login() {
                                     required
                                     fullWidth
                                     name='password'
-                                    label='Password'
+                                    placeholder='Password'
                                     type={showPassword ? 'text' : 'password'}
                                     id='password'
                                     autoComplete='current-password'

@@ -92,9 +92,7 @@ export const getPosts =
                 }
             });
 
-            const res = await getDataApi(
-                `/posts?page=${nextPage}&currentQuantity=${currentPostCount}`
-            );
+            const res = await getDataApi(`/posts?page=${nextPage}&currentQuantity=${currentPostCount}`);
 
             dispatch({
                 type: GLOBALTYPES.POST.GET_POSTS,
@@ -160,10 +158,7 @@ export const updatePost =
                 }
             });
         } else {
-            if (
-                currentPost.content === content &&
-                JSON.stringify(currentPost.files) === JSON.stringify(files)
-            ) {
+            if (currentPost.content === content && JSON.stringify(currentPost.files) === JSON.stringify(files)) {
                 dispatch({
                     type: GLOBALTYPES.ALERT,
                     payload: {

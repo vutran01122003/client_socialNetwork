@@ -35,13 +35,11 @@ function Post({ auth }) {
     );
 
     return (
-        <div className='post_wrapper wrapper'>
+        <div className='post_wrapper'>
             {homePosts.posts.length === 0 ? (
                 <div className='font-semibold mt-2 text-gray-500 flex flex-col items-center uppercase select-none'>
                     <h3 className=''>NO POSTS</h3>
-                    <span className='text-xs font-light'>
-                        ( Follow any user to see more posts )
-                    </span>
+                    <span className='text-xs font-light'>( Follow any user to see more posts )</span>
                 </div>
             ) : (
                 homePosts.posts.map((post, index) => {

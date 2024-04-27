@@ -7,7 +7,7 @@
     display: flex;
     justify-items: center;
     flex-wrap: wrap;
-    gap: 0.7%;
+    gap: 1%;
     padding: 10px;
 }
 
@@ -18,10 +18,9 @@
 
 .marketplace_item {
     width: 32%;
-    box-shadow: var(--box-shadow-gray);
     border-radius: 8px;
     overflow: hidden;
-    margin-bottom: 0.8%;
+    margin-bottom: 1.15%;
 }
 
 .marketplace_search {

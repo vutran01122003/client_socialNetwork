@@ -75,11 +75,12 @@ function PostsThumb({
                             </video>
                         ) : (
                             <img
-                                src={
-                                    post.files[0]?.url ??
-                                    'https://t4.ftcdn.net/jpg/04/99/93/31/360_F_499933117_ZAUBfv3P1HEOsZDrnkbNCt4jc3AodArl.jpg'
-                                }
+                                src={post.files[0]?.url ?? require('../../images/no_image.jpg')}
                                 alt='image_thumb'
+                                onError={({ currentTarget }) => {
+                                    currentTarget.onerror = null;
+                                    currentTarget.src = require('../../images/no_image.png');
+                                }}
                             />
                         )}
 

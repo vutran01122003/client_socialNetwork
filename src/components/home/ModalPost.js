@@ -225,7 +225,7 @@ function ModalPost({ auth, currentPost, detailPost, messageInput, message, scrol
     useEffect(() => {
         const post = currentPost;
         if (post) {
-            setContent(post.content.trim() || '');
+            setContent(post.content?.trim() || '');
             setFiles(post.files || []);
         }
     }, [currentPost]);
@@ -264,9 +264,9 @@ function ModalPost({ auth, currentPost, detailPost, messageInput, message, scrol
                             ? `${'Enter your message...'}`
                             : `What's on your mind, ${auth.user?.username}?`
                     }
-                    value={content.trim()}
+                    value={content}
                     onChange={handleChangeValueTextarea}
-                    onKeyDown={handleKeyDown}
+                    onKeyDown={messageInput ? handleKeyDown : () => {}}
                 ></textarea>
                 {openVideo && (
                     <div className='camera_wrapper'>
