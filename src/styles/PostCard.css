@@ -76,3 +76,22 @@
     max-height: 300px;
     overflow-y: scroll;
 }
+
+.input_comment::before {
+    content: attr(data-placeholder);
+    color: #999;
+}
+
+.ref_original_commenter {
+    font-weight: 600;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.ref_original_commenter:hover {
+    text-decoration: underline;
+}
+
+.comment_content {
+    display: flex;
+}

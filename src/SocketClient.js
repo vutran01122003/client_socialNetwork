@@ -28,11 +28,7 @@ function SocketClient({ auth }) {
                     });
                 }
 
-                if (
-                    !message.conversations?.data.find(
-                        (conversation) => conversation._id === data.conversation._id
-                    )
-                ) {
+                if (!message.conversations?.data.find((conversation) => conversation._id === data.conversation._id)) {
                     dispatch(getConversations({ auth, page: 1 }));
                 }
 
@@ -104,11 +100,25 @@ function SocketClient({ auth }) {
         });
 
         // comment post
-        socket.on('created_comment', (data) => {
-            dispatch({
-                type: GLOBALTYPES.POST.UPDATE_POST,
-                payload: data
-            });
+        socket.on('created_comment', ({ postId, newComment, originCommentId }) => {
+            if (originCommentId) {
+                dispatch({
+                    type: GLOBALTYPES.COMMENT.ADD_REPLY_COMMENT,
+                    payload: {
+                        postId,
+                        newComment,
+                        originCommentId
+                    }
+                });
+            } else {
+                dispatch({
+                    type: GLOBALTYPES.COMMENT.ADD_COMMENT,
+                    payload: {
+                        postId,
+                        newComment
+                    }
+                });
+            }
         });
 
         socket.on('deleted_comment', (data) => {

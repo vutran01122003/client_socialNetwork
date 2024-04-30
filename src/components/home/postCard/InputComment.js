@@ -4,7 +4,7 @@ import { createComment } from '../../../redux/actions/commentAction';
 import SendIcon from '@mui/icons-material/Send';
 import EmotionBtn from '../../EmotionBtn';
 
-function InputComment({ inputCommentRef, post, auth, comment, socket }) {
+function InputComment({ inputCommentRef, post, auth, comment, socket, currentOwnerComment }) {
     const [commentValue, setCommentValue] = useState('');
     const dispatch = useDispatch();
 
@@ -18,7 +18,7 @@ function InputComment({ inputCommentRef, post, auth, comment, socket }) {
             dispatch(
                 createComment({
                     post,
-                    originCommentId: comment?._id,
+                    originComment: comment,
                     user: auth?.user,
                     content: commentValue,
                     socket
@@ -36,7 +36,9 @@ function InputComment({ inputCommentRef, post, auth, comment, socket }) {
                     ref={inputCommentRef}
                     type='text'
                     className='input_comment outline-none bg-gray-100 pl-4 pr-16 py-2 w-full rounded-lg'
-                    placeholder={comment ? 'write your reply...' : 'write your comment...'}
+                    placeholder={
+                        comment ? `Reply comment's ${currentOwnerComment.username}...` : 'Write your comment...'
+                    }
                     value={commentValue}
                     onChange={handlecommentValue}
                 />

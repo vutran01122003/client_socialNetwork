@@ -27,7 +27,7 @@ function Comment({ post, auth, socket }) {
                         });
                     }}
                 >
-                    <span>View more</span>
+                    <span>View more comments</span>
                 </div>
             )}
         </div>

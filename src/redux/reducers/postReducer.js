@@ -68,6 +68,64 @@ function postReducer(state = initialState, action) {
                 posts: posts
             };
         }
+        case GLOBALTYPES.COMMENT.ADD_COMMENT: {
+            const { postId, newComment } = action.payload;
+            const posts = [...state.posts];
+
+            for (let i = 0; i < posts.length; i++) {
+                if (posts[i]._id === postId) {
+                    posts[i].comments = [newComment, ...posts[i].comments];
+                    break;
+                }
+            }
+            return {
+                ...state,
+                posts: posts
+            };
+        }
+        case GLOBALTYPES.COMMENT.GET_REPLIES: {
+            const { postId, commentId, replyData } = action.payload;
+            const posts = [...state.posts];
+
+            for (let i = 0; i < posts.length; i++) {
+                if (posts[i]._id === postId) {
+                    for (let j = 0; j < posts[i].comments.length; j++) {
+                        const currentComment = posts[i].comments[j];
+                        if (currentComment._id === commentId) {
+                            replyData.length === 0
+                                ? (currentComment.isMaxReplies = true)
+                                : (currentComment.reply = [...currentComment.reply, ...replyData]);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return {
+                ...state,
+                posts: posts
+            };
+        }
+        case GLOBALTYPES.COMMENT.ADD_REPLY_COMMENT: {
+            const { postId, newComment, originCommentId } = action.payload;
+            const posts = [...state.posts];
+            for (let i = 0; i < posts.length; i++) {
+                if (posts[i]._id === postId) {
+                    for (let j = 0; j < posts[i].comments.length; j++) {
+                        const currentComment = posts[i].comments[j];
+                        if (currentComment._id === originCommentId) {
+                            currentComment.reply = [newComment, ...currentComment.reply];
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return {
+                ...state,
+                posts: posts
+            };
+        }
 
         default:
             return state;

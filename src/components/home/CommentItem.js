@@ -11,27 +11,23 @@ import Content from '../Content';
 import InputComment from './postCard/InputComment';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import {
-    deleteComment,
-    updateComment,
-    likeComment,
-    unlikeComment
-} from '../../redux/actions/commentAction';
+import { deleteComment, updateComment, likeComment, unlikeComment } from '../../redux/actions/commentAction';
 import ShowMoreComment from './ShowMoreComment';
 
 function CommentItem({ reply, comment, auth, post, socket }) {
     const dispatch = useDispatch();
-    const [commentData, setCommentData] = useState([]);
     const [openMorePopup, setOpenMorePopup] = useState(false);
     const [commentId, setCommentId] = useState(null);
     const [editComment, setEditComment] = useState(false);
     const [editCommentValue, setEditCommentValue] = useState('');
     const [replyComment, setReplyComment] = useState(false);
+    const [currentOwnerComment, setCurrentOwnerComment] = useState(null);
     const inputCommentRef = useRef();
     const textareaRef = useRef();
 
-    const handleToggleReplyComment = (commentId) => {
+    const handleToggleReplyComment = ({ commentId, user }) => {
         setCommentId(commentId);
+        setCurrentOwnerComment(user);
         setReplyComment((prev) => !prev);
     };
 
@@ -73,10 +69,7 @@ function CommentItem({ reply, comment, auth, post, socket }) {
 
     const handleChangeEditCommentValue = (e) => {
         textareaRef.current.focus();
-        textareaRef.current.setAttribute(
-            'style',
-            'height:' + textareaRef.current.scrollHeight + 'px;'
-        );
+        textareaRef.current.setAttribute('style', 'height:' + textareaRef.current.scrollHeight + 'px;');
         setEditCommentValue(e.target.value);
     };
 
@@ -104,10 +97,7 @@ function CommentItem({ reply, comment, auth, post, socket }) {
 
     useEffect(() => {
         if (textareaRef.current) {
-            textareaRef.current.setAttribute(
-                'style',
-                'height:' + textareaRef.current.scrollHeight + 'px;'
-            );
+            textareaRef.current.setAttribute('style', 'height:' + textareaRef.current.scrollHeight + 'px;');
         }
 
         if (replyComment) {
@@ -142,10 +132,7 @@ function CommentItem({ reply, comment, auth, post, socket }) {
                         }}
                     ></textarea>
                     <div className='cancel_edit_notify'>
-                        <span
-                            onClick={handleHideEditComment}
-                            className='text-blue-500 hover:underline cursor-pointer'
-                        >
+                        <span onClick={handleHideEditComment} className='text-blue-500 hover:underline cursor-pointer'>
                             Cancel
                         </span>
                     </div>
@@ -172,21 +159,21 @@ function CommentItem({ reply, comment, auth, post, socket }) {
                                 {comment.user?.username}
                             </Link>
                             <div className='comment_content'>
-                                <Content content={comment.content} limit={200} />
+                                <Content
+                                    originalCommenter={comment?.originalCommenter}
+                                    content={comment.content}
+                                    limit={200}
+                                />
                             </div>
                             {comment.likes?.length !== 0 && (
                                 <div
                                     className={`${
-                                        comment.likes?.length === 1
-                                            ? 'count_one_like_wrapper'
-                                            : 'count_like_wrapper'
+                                        comment.likes?.length === 1 ? 'count_one_like_wrapper' : 'count_like_wrapper'
                                     }`}
                                 >
                                     <FavoriteIcon fontSize='small' className='like_comment_icon' />
                                     {comment.likes?.length > 1 ? (
-                                        <span className='count_like'>
-                                            {millify(comment.likes?.length)}
-                                        </span>
+                                        <span className='count_like'>{millify(comment.likes?.length)}</span>
                                     ) : (
                                         ''
                                     )}
@@ -276,20 +263,21 @@ function CommentItem({ reply, comment, auth, post, socket }) {
                         {!reply && (
                             <button
                                 onClick={() => {
-                                    handleToggleReplyComment(comment._id);
+                                    handleToggleReplyComment({
+                                        user: comment.user,
+                                        commentId: comment._id
+                                    });
                                 }}
                                 className='btn_reply_comment'
                             >
                                 Reply
                             </button>
                         )}
-                        <span className='time_createdAt_comment'>
-                            {moment(comment.createdAt).fromNow()}
-                        </span>
+                        <span className='time_createdAt_comment'>{moment(comment.createdAt).fromNow()}</span>
                     </div>
                     {comment.reply?.length > 0 && (
                         <div className='reply_comment_wrapper'>
-                            {commentData.map((replyComment, index) => (
+                            {comment.reply.map((replyComment, index) => (
                                 <div key={index} className='reply_item_wrapper'>
                                     <CommentItem
                                         post={post}
@@ -300,22 +288,27 @@ function CommentItem({ reply, comment, auth, post, socket }) {
                                     />
                                 </div>
                             ))}
-                            <ShowMoreComment
-                                comments={comment.reply}
-                                setCommentData={setCommentData}
-                            />
+
+                            {comment.reply?.length > 1 && !comment.isMaxReplies && (
+                                <ShowMoreComment
+                                    isReply={true}
+                                    commentId={comment._id}
+                                    postId={post._id}
+                                    replyQuantity={comment.reply?.length}
+                                />
+                            )}
                         </div>
                     )}
 
                     {replyComment && commentId === comment._id ? (
-                        <div ref={inputCommentRef}>
-                            <InputComment
-                                socket={socket}
-                                comment={comment}
-                                post={post}
-                                auth={auth}
-                            />
-                        </div>
+                        <InputComment
+                            inputCommentRef={inputCommentRef}
+                            currentOwnerComment={currentOwnerComment}
+                            socket={socket}
+                            comment={comment}
+                            post={post}
+                            auth={auth}
+                        />
                     ) : null}
                 </div>
             )}

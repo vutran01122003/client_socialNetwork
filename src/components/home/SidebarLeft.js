@@ -28,11 +28,7 @@ function SidebarLeft({ auth }) {
                     <div className='auth_user_wrapper'>
                         <UserCard user={auth.user} homeSidebar={true} />
                     </div>
-                    <SidebarItem
-                        name={'My Profile'}
-                        Icon={AccountBoxOutlinedIcon}
-                        url={`/profile/${auth.user?._id}`}
-                    />
+                    <SidebarItem name={'My Profile'} Icon={AccountBoxOutlinedIcon} url={`/profile/${auth.user?._id}`} />
                     <SidebarItem name={'Marketplace'} Icon={StorefrontIcon} url={'/marketplace'} />
                     <SidebarItem name={'Message'} Icon={MessageOutlinedIcon} url={'/message'} />
                     <SidebarItem name={'Discover'} Icon={ImageSearchIcon} url={'/discover'} />
@@ -51,18 +47,13 @@ function SidebarLeft({ auth }) {
                         ) : (
                             <>
                                 {suggestedUsers?.users.length === 0 ? (
-                                    <h3 className='text-center font-semibold mt-10 text-gray-500'>
-                                        No User
+                                    <h3 className='text-center uppercase text-xs font-medium mt-10 text-gray-500'>
+                                        There are no user
                                     </h3>
                                 ) : (
                                     <>
                                         {suggestedUsers.users.map((user) => (
-                                            <UserCard
-                                                key={user._id}
-                                                user={user}
-                                                auth={auth}
-                                                homeSidebar={true}
-                                            />
+                                            <UserCard key={user._id} user={user} auth={auth} homeSidebar={true} />
                                         ))}
                                     </>
                                 )}

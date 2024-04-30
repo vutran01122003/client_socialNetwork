@@ -26,37 +26,86 @@ export const getComments =
         }
     };
 
-export const createComment =
-    ({ post, user, content, originCommentId, socket }) =>
+export const getReplies =
+    ({ postId, commentId, replyQuantity }) =>
     async (dispatch) => {
+        try {
+            const res = await getDataApi(`/post/${postId}/comments/${commentId}`, {
+                replyQuantity
+            });
+            dispatch({
+                type: GLOBALTYPES.COMMENT.GET_REPLIES,
+                payload: {
+                    replyData: res.data.replyData,
+                    postId,
+                    commentId
+                }
+            });
+        } catch (error) {
+            dispatch({
+                type: GLOBALTYPES.ALERT,
+                payload: {
+                    error: error.response?.data.msg || 'Error'
+                }
+            });
+        }
+    };
+
+export const createComment =
+    ({ post, user, content, originComment, socket }) =>
+    async (dispatch) => {
+        const postId = post._id;
+        const postOwnerId = post.user._id;
+        const authId = user._id;
+        const originCommentId = originComment?._id;
+        const originalCommenter = originComment?.user?._id;
+
         postDataApi('/comment', {
             commentData: {
-                postId: post._id,
+                postId,
                 originCommentId,
+                originalCommenter,
                 user,
                 content
             }
         })
             .then((res) => {
-                socket.emit('comment', res.data.newPost);
-                dispatch({
-                    type: GLOBALTYPES.POST.UPDATE_POST,
-                    payload: res.data.newPost
-                });
-                dispatch({
-                    type: GLOBALTYPES.ALERT,
-                    payload: {
-                        success: res.data.status
-                    }
-                });
-                if (post.user._id !== user._id) {
+                const newComment = res.data.newComment;
+
+                if (originCommentId) {
+                    dispatch({
+                        type: GLOBALTYPES.COMMENT.ADD_REPLY_COMMENT,
+                        payload: {
+                            postId,
+                            originCommentId,
+                            newComment: newComment
+                        }
+                    });
+                } else {
+                    dispatch({
+                        type: GLOBALTYPES.COMMENT.ADD_COMMENT,
+                        payload: {
+                            postId,
+                            newComment: newComment
+                        }
+                    });
+                }
+
+                if (postOwnerId !== authId) {
+                    socket.emit('comment', {
+                        postId,
+                        newComment,
+                        postOwnerId,
+                        originCommentId
+                    });
+
                     dispatch(
                         createNotification({
-                            authId: user._id,
+                            authId,
                             socket,
                             notifyData: {
-                                postId: post._id,
-                                postOwnerId: post.user._id,
+                                postId,
+                                postOwnerId,
                                 avatar: user.avatar,
                                 url: `/post/${post._id}`,
                                 receiver: [post.user._id],
