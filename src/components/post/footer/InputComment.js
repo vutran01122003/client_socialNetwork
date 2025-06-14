@@ -2,9 +2,18 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { createComment } from '../../../redux/actions/commentAction';
 import SendIcon from '@mui/icons-material/Send';
-import EmotionBtn from '../../EmotionBtn';
+import EmotionBtn from '../../button/EmotionBtn';
 
-function InputComment({ inputCommentRef, post, auth, comment, socket, currentOwnerComment }) {
+function InputComment({
+    post,
+    auth,
+    comment,
+    socket,
+    inputCommentRef,
+    setReplyComment,
+    currentOwnerComment,
+    scrollToLastComment
+}) {
     const [commentValue, setCommentValue] = useState('');
     const dispatch = useDispatch();
 
@@ -18,13 +27,15 @@ function InputComment({ inputCommentRef, post, auth, comment, socket, currentOwn
             dispatch(
                 createComment({
                     post,
-                    originComment: comment,
+                    parentCommentId: comment?.parentCommentId || comment?._id,
                     user: auth?.user,
                     content: commentValue,
                     socket
                 })
             );
             setCommentValue('');
+            if (setReplyComment) setReplyComment(false);
+            if (scrollToLastComment) scrollToLastComment();
         }
         return;
     };

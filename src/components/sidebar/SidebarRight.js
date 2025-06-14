@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { messageSelector } from '../../redux/selector';
-import UserCard from '../UserCard';
+import UserCard from '../message/UserCard';
 import { getConversation, getConversations } from '../../redux/actions/messageAction';
 
 function SidebarRight({ auth }) {
@@ -37,8 +37,7 @@ function SidebarRight({ auth }) {
                                                 <div key={conversation._id}>
                                                     <UserCard
                                                         user={conversation.recipients.find(
-                                                            (recipient) =>
-                                                                recipient._id !== auth?.user._id
+                                                            (recipient) => recipient._id !== auth?.user._id
                                                         )}
                                                         auth={auth}
                                                         onClick={handleMessage}

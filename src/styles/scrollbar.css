@@ -58,6 +58,16 @@
     width: 0px;
 }
 
+/* Post Details */
+.post_details_wrapper::-webkit-scrollbar {
+    width: 5px;
+}
+
+.post_details_wrapper::-webkit-scrollbar-thumb{
+    background-color: rgba(22, 24, 35, 0.06);
+    border-radius: 50px;
+}
+
 /* Notify */
 .notify_wrapper::-webkit-scrollbar {
     width: 8px;

@@ -3,16 +3,18 @@ import { deleteDataApi, getDataApi, patchDataApi, postDataApi } from '../../util
 import { createNotification } from './notifyAction';
 
 export const getComments =
-    ({ postId, commentQuantity }) =>
+    ({ postId, commentQuantity, limit }) =>
     async (dispatch) => {
         try {
             const res = await getDataApi(`/post/${postId}/comments`, {
-                commentQuantity
+                commentQuantity,
+                limit
             });
+
             dispatch({
                 type: GLOBALTYPES.COMMENT.GET_COMMENTS,
                 payload: {
-                    commentsData: res.data.commentsData,
+                    comments: res.data.data,
                     postId
                 }
             });
@@ -27,12 +29,14 @@ export const getComments =
     };
 
 export const getReplies =
-    ({ postId, commentId, replyQuantity }) =>
+    ({ postId, commentId, replyQuantity, limit }) =>
     async (dispatch) => {
         try {
             const res = await getDataApi(`/post/${postId}/comments/${commentId}`, {
-                replyQuantity
+                replyQuantity,
+                limit
             });
+
             dispatch({
                 type: GLOBALTYPES.COMMENT.GET_REPLIES,
                 payload: {
@@ -52,174 +56,189 @@ export const getReplies =
     };
 
 export const createComment =
-    ({ post, user, content, originComment, socket }) =>
+    ({ post, user, content, parentCommentId, socket }) =>
     async (dispatch) => {
-        const postId = post._id;
-        const postOwnerId = post.user._id;
-        const authId = user._id;
-        const originCommentId = originComment?._id;
-        const originalCommenter = originComment?.user?._id;
+        try {
+            const postId = post._id;
+            const postOwnerId = post.user._id;
+            const authId = user._id;
 
-        postDataApi('/comment', {
-            commentData: {
-                postId,
-                originCommentId,
-                originalCommenter,
-                user,
-                content
-            }
-        })
-            .then((res) => {
-                const newComment = res.data.newComment;
-
-                if (originCommentId) {
-                    dispatch({
-                        type: GLOBALTYPES.COMMENT.ADD_REPLY_COMMENT,
-                        payload: {
-                            postId,
-                            originCommentId,
-                            newComment: newComment
-                        }
-                    });
-                } else {
-                    dispatch({
-                        type: GLOBALTYPES.COMMENT.ADD_COMMENT,
-                        payload: {
-                            postId,
-                            newComment: newComment
-                        }
-                    });
+            const res = await postDataApi('/comment', {
+                commentData: {
+                    postId,
+                    parentCommentId,
+                    user,
+                    content
                 }
+            });
 
-                if (postOwnerId !== authId) {
-                    socket.emit('comment', {
-                        postId,
-                        newComment,
-                        postOwnerId,
-                        originCommentId
-                    });
+            const newComment = res.data.newComment;
 
-                    dispatch(
-                        createNotification({
-                            authId,
-                            socket,
-                            notifyData: {
-                                postId,
-                                postOwnerId,
-                                avatar: user.avatar,
-                                url: `/post/${post._id}`,
-                                receiver: [post.user._id],
-                                type: 'notification_commentedPost',
-                                content,
-                                file: post.files[0]?.url,
-                                title: `${user.username} commented on your post:`
-                            }
-                        })
-                    );
-                }
-            })
-            .catch((error) => {
+            if (parentCommentId) {
                 dispatch({
-                    type: GLOBALTYPES.ALERT,
+                    type: GLOBALTYPES.COMMENT.ADD_REPLY_COMMENT,
                     payload: {
-                        error: error.response?.data.msg || 'Error'
+                        postId,
+                        parentCommentId,
+                        newComment: newComment
                     }
                 });
+            } else {
+                dispatch({
+                    type: GLOBALTYPES.COMMENT.ADD_COMMENT,
+                    payload: {
+                        postId,
+                        newComment: newComment
+                    }
+                });
+            }
+
+            // if (postOwnerId !== authId) {
+            //     socket.emit('comment', {
+            //         postId,
+            //         newComment,
+            //         postOwnerId,
+            //         parentCommentId
+            //     });
+
+            //     dispatch(
+            //         createNotification({
+            //             authId,
+            //             socket,
+            //             notifyData: {
+            //                 postId,
+            //                 postOwnerId,
+            //                 avatar: user.avatar,
+            //                 url: `/post/${post._id}`,
+            //                 receiver: [post.user._id],
+            //                 type: 'notification_commentedPost',
+            //                 content,
+            //                 file: post.files[0]?.url,
+            //                 title: `${user.username} commented on your post:`
+            //             }
+            //         })
+            //     );
+            // }
+        } catch (error) {
+            console.log(error);
+            dispatch({
+                type: GLOBALTYPES.ALERT,
+                payload: {
+                    error: error.response?.data.msg || 'Error'
+                }
             });
+        }
     };
 
 export const deleteComment =
-    ({ postId, commentId, socket }) =>
+    ({ post, user, comment, socket }) =>
     async (dispatch) => {
-        deleteDataApi('/comment', {
-            commentData: { postId, commentId }
-        })
-            .then((res) => {
-                socket.emit('delete_comment', res.data.newPost);
-                dispatch({
-                    type: GLOBALTYPES.POST.UPDATE_POST,
-                    payload: res.data.newPost
-                });
-                dispatch({
-                    type: GLOBALTYPES.ALERT,
-                    payload: {
-                        success: res.data.status
-                    }
-                });
-            })
-            .catch((error) => {
-                dispatch({
-                    type: GLOBALTYPES.ALERT,
-                    payload: {
-                        error: error.response?.data.msg || 'Error'
-                    }
-                });
+        try {
+            const postId = post._id;
+            const { _id: commentId, parentCommentId } = comment;
+            const res = await deleteDataApi('/comment', {
+                commentData: { postId, commentId }
             });
+
+            if (post.user._id !== user._id) socket.emit('delete_comment', res.data.newPost);
+
+            dispatch({
+                type: GLOBALTYPES.COMMENT.DELETE_COMMENT,
+                payload: {
+                    postId,
+                    commentId,
+                    parentCommentId
+                }
+            });
+        } catch (error) {
+            dispatch({
+                type: GLOBALTYPES.ALERT,
+                payload: {
+                    error: error.response?.data.msg || 'Delete Comment Error'
+                }
+            });
+        }
     };
 
 export const updateComment =
-    ({ postId, commentId, content }) =>
+    ({ postId, commentId, parentCommentId, content }) =>
     async (dispatch) => {
-        patchDataApi('/comment', {
-            commentData: {
-                postId,
-                commentId,
-                content
-            }
-        })
-            .then((res) => {
-                dispatch({
-                    type: GLOBALTYPES.POST.UPDATE_POST,
-                    payload: res.data.newPost
-                });
-
-                dispatch({
-                    type: GLOBALTYPES.ALERT,
-                    payload: {
-                        success: res.data.status
-                    }
-                });
-            })
-            .catch((error) => {
-                dispatch({
-                    type: GLOBALTYPES.ALERT,
-                    payload: {
-                        error: error.response?.data.msg || 'Error'
-                    }
-                });
+        try {
+            const res = await patchDataApi('/comment', {
+                commentData: {
+                    postId,
+                    commentId,
+                    parentCommentId,
+                    content
+                }
             });
+
+            dispatch({
+                type: GLOBALTYPES.COMMENT.UPDATE_COMMENT,
+                payload: {
+                    postId,
+                    commentId,
+                    parentCommentId,
+                    comment: res.data.data
+                }
+            });
+
+            dispatch({
+                type: GLOBALTYPES.ALERT,
+                payload: {
+                    success: res.data.status
+                }
+            });
+        } catch (error) {
+            console.log(error);
+            dispatch({
+                type: GLOBALTYPES.ALERT,
+                payload: {
+                    error: error.response?.data.msg || 'Error'
+                }
+            });
+        }
     };
 
 export const likeComment =
-    ({ postId, commentId, userId }) =>
+    ({ postId, commentId, user }) =>
     async (dispatch) => {
-        patchDataApi(`/comment/${commentId}/like`, {
-            data: {
-                postId,
-                userId
-            }
-        })
-            .then((res) => {
-                dispatch({
-                    type: GLOBALTYPES.POST.UPDATE_POST,
-                    payload: res.data.newPost
-                });
-
-                dispatch({
-                    type: GLOBALTYPES.ALERT,
-                    payload: {
-                        success: res.data.status
-                    }
-                });
-            })
-            .catch((e) => {
-                dispatch({
-                    type: GLOBALTYPES.ALERT,
-                    payload: {
-                        error: e.response?.data.msg || 'Error'
-                    }
-                });
+        try {
+            const res = await patchDataApi(`/comment/${commentId}/like`, {
+                data: {
+                    postId,
+                    userId: user._id
+                }
             });
+
+            dispatch({
+                type: GLOBALTYPES.COMMENT.LIKE_COMMENT,
+                payload: {
+                    postId,
+                    commentId,
+                    userData: {
+                        _id: user._id,
+                        username: user.username,
+                        fullname: user.fullname,
+                        avatar: user.avatar
+                    }
+                }
+            });
+
+            dispatch({
+                type: GLOBALTYPES.ALERT,
+                payload: {
+                    success: res.data.status
+                }
+            });
+        } catch (error) {
+            dispatch({
+                type: GLOBALTYPES.ALERT,
+                payload: {
+                    error: error.response?.data.msg || 'Like Comment Error'
+                }
+            });
+        }
     };
 
 export const unlikeComment =
@@ -233,8 +252,12 @@ export const unlikeComment =
         })
             .then((res) => {
                 dispatch({
-                    type: GLOBALTYPES.POST.UPDATE_POST,
-                    payload: res.data.newPost
+                    type: GLOBALTYPES.COMMENT.UNLIKE_COMMENT,
+                    payload: {
+                        postId,
+                        commentId,
+                        userId
+                    }
                 });
 
                 dispatch({
@@ -245,10 +268,11 @@ export const unlikeComment =
                 });
             })
             .catch((e) => {
+                console.log(e);
                 dispatch({
                     type: GLOBALTYPES.ALERT,
                     payload: {
-                        error: e.response?.data.msg || 'Error'
+                        error: e.response?.data.msg || 'Unlike Comment Error'
                     }
                 });
             });

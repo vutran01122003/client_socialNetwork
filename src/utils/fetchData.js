@@ -1,6 +1,7 @@
-import instance from '../config/axiosConfig';
+import instance from "../config/axiosConfig";
 
 export const postDataApi = (uri, data) => {
+    console.log(uri);
     const res = instance.post(`/api${uri}`, data);
     return res;
 };

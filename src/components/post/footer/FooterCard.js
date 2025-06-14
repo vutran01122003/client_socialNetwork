@@ -4,25 +4,24 @@ import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutline
 import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlined';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { likePost, savedPost, unSavedPost, unlikePost } from '../../../redux/actions/postAction';
-import InputComment from '../postCard/InputComment';
-import CommentCard from '../postCard/CommentCard';
-import UserModal from '../../UserModal';
+import CommentCard from '../footer/CommentCard';
+import UserModal from '../../modal/UserModal';
+import PostDetailsModal from '../../modal/PostDetailsModal';
 
-function FooterCard({ post, auth, socket }) {
-    const [like, setLike] = useState(false);
+function FooterCard({ post, auth, socket, detailPost }) {
+    const [postDetailsModal, setPostDetailsModal] = useState(false);
     const [likesPopup, setLikesPopup] = useState(false);
     const dispatch = useDispatch();
-    const inputCommentRef = useRef();
 
     const handleLike = () => {
         dispatch(likePost(post, auth.user, socket));
     };
 
     const handleUnlike = () => {
-        dispatch(unlikePost(post._id, auth.user, socket));
+        dispatch(unlikePost(post, auth.user, socket));
     };
 
     const handleSavedPost = () => {
@@ -33,19 +32,9 @@ function FooterCard({ post, auth, socket }) {
         dispatch(unSavedPost({ post: post, auth }));
     };
 
-    const handleScrollToInputComment = () => {
-        inputCommentRef.current.scrollIntoView({
-            behavior: 'smooth',
-            block: 'end'
-        });
+    const handleTogglePostDetailsModal = () => {
+        setPostDetailsModal((prev) => !prev);
     };
-
-    useEffect(() => {
-        const checkLiked = post.likes.find((user) => {
-            return user._id === auth.user?._id;
-        });
-        setLike(!!checkLiked);
-    }, [post.likes, auth.user?._id]);
 
     return (
         <>
@@ -59,32 +48,28 @@ function FooterCard({ post, auth, socket }) {
                     auth={auth}
                 />
             )}
-
             <div className='footer_card select-none'>
                 <div className='interactive_details flex justify-between text-gray-600'>
                     <div
                         onClick={() => {
                             setLikesPopup(true);
                         }}
-                        className='likes_details cursor-pointer hover:underline decoration-1'
+                        className='likes_details cursor-pointer font-light hover:underline decoration-1'
                     >
-                        {post.likes.length > 1
-                            ? `${millify(post.likes?.length)} likes`
-                            : `${post.likes?.length} like`}
+                        {post.likes.length > 1 ? `${millify(post?.likes.length)} likes` : `${post?.likes.length} like`}
                     </div>
                     <div className='flex gap-3'>
-                        <div
-                            onClick={handleScrollToInputComment}
-                            className='cursor-pointer hover:underline decoration-1'
-                        >
-                            {post.comments?.length > 1
-                                ? `${millify(post.comments?.length)} comments`
-                                : `${post.comments?.length} comment`}
+                        <div className='cursor-pointer font-light hover:underline decoration-1'>
+                            {post.numberOfComment > 1
+                                ? `${millify(post.numberOfComment)} comments`
+                                : `${post.numberOfComment} comment`}
                         </div>
                     </div>
                 </div>
                 <div className='interactive_icons_wrapper flex items-center text-gray-600 font-medium'>
-                    {like ? (
+                    {post.likes.find((user) => {
+                        return user._id === auth.user?._id;
+                    }) ? (
                         <div
                             onClick={handleUnlike}
                             className='active flex-1 text-center hover:bg-gray-100 rounded-md cursor-pointer transform active:scale-75 transition-transform'
@@ -102,8 +87,16 @@ function FooterCard({ post, auth, socket }) {
                         </div>
                     )}
 
+                    {postDetailsModal && !detailPost && (
+                        <PostDetailsModal
+                            auth={auth}
+                            post={post}
+                            handleTogglePostDetailsModal={handleTogglePostDetailsModal}
+                        />
+                    )}
+
                     <div
-                        onClick={handleScrollToInputComment}
+                        onClick={handleTogglePostDetailsModal}
                         className='flex-1 text-center hover:bg-gray-100 rounded-md cursor-pointer'
                     >
                         <ChatBubbleOutlineOutlinedIcon />
@@ -116,7 +109,7 @@ function FooterCard({ post, auth, socket }) {
                             className='flex-1 text-center hover:bg-gray-100 rounded-md p-1 cursor-pointer'
                         >
                             <BookmarkIcon />
-                            <span className='interactive_icon_name ml-2'>UnSave</span>
+                            <span className='interactive_icon_name ml-2'>Save</span>
                         </div>
                     ) : (
                         <div
@@ -129,13 +122,7 @@ function FooterCard({ post, auth, socket }) {
                     )}
                 </div>
             </div>
-            <CommentCard post={post} auth={auth} socket={socket} />
-            <InputComment
-                inputCommentRef={inputCommentRef}
-                post={post}
-                auth={auth}
-                socket={socket}
-            />
+            {detailPost && <CommentCard post={post} auth={auth} socket={socket} />}
         </>
     );
 }

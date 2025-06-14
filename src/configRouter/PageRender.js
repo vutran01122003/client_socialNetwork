@@ -1,6 +1,6 @@
-import { useParams } from 'react-router-dom';
-import NotFound from '../pages/NotFound';
-import React from 'react';
+import { useParams } from "react-router-dom";
+import NotFound from "../pages/NotFound";
+import React from "react";
 
 function PageRender() {
     const { page, id } = useParams();

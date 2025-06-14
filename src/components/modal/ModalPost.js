@@ -9,7 +9,7 @@ import { checkImageUpload, checkVideoUpload } from '../../utils/uploadFile';
 import { GLOBALTYPES } from '../../redux/actions/globalTypes';
 import { useEffect, useRef, useState } from 'react';
 import { createPost, updatePost } from '../../redux/actions/postAction';
-import EmotionBtn from '../EmotionBtn';
+import EmotionBtn from '../button/EmotionBtn';
 import readFile from '../../utils/readFile';
 import { createMessage } from '../../redux/actions/messageAction';
 
@@ -192,10 +192,20 @@ function ModalPost({ auth, currentPost, detailPost, messageInput, message, scrol
             dispatch({
                 type: GLOBALTYPES.ALERT,
                 payload: {
-                    error: 'posts only allow a maximum of 5 files'
+                    error: 'Posts only allow a maximum of 5 files'
                 }
             });
             e.target.value = '';
+            return;
+        }
+
+        if (!content.trim()) {
+            dispatch({
+                type: GLOBALTYPES.ALERT,
+                payload: {
+                    error: 'Content empty'
+                }
+            });
             return;
         }
 
@@ -260,9 +270,7 @@ function ModalPost({ auth, currentPost, detailPost, messageInput, message, scrol
                 <textarea
                     className='post_textarea w-full outline-none overflow-auto'
                     placeholder={
-                        messageInput
-                            ? `${'Enter your message...'}`
-                            : `What's on your mind, ${auth.user?.username}?`
+                        messageInput ? `${'Enter your message...'}` : `What's on your mind, ${auth.user?.username}?`
                     }
                     value={content}
                     onChange={handleChangeValueTextarea}
@@ -282,10 +290,7 @@ function ModalPost({ auth, currentPost, detailPost, messageInput, message, scrol
                                 <CloseIcon onClick={handleClearImages} fontSize='small' />
                             </div>
                             {files.map((file, index) => {
-                                if (
-                                    file.video ||
-                                    (file?.url && file?.url.includes('/video/upload/'))
-                                ) {
+                                if (file.video || (file?.url && file?.url.includes('/video/upload/'))) {
                                     return (
                                         <video key={index} controls>
                                             <source src={file.video || file.url} />
@@ -295,10 +300,7 @@ function ModalPost({ auth, currentPost, detailPost, messageInput, message, scrol
 
                                 return (
                                     <img
-                                        src={
-                                            file?.imgCamera ||
-                                            (file.url ?? URL.createObjectURL(file))
-                                        }
+                                        src={file?.imgCamera || (file.url ?? URL.createObjectURL(file))}
                                         key={index}
                                         alt='previewed_image'
                                     />
@@ -319,18 +321,13 @@ function ModalPost({ auth, currentPost, detailPost, messageInput, message, scrol
                                     fontSize='large'
                                 />
                                 <label className='absolute left-1/2 -translate-x-1/2 block p-1 rounded-full hover:bg-gray-200 transition linear'>
-                                    <PhotoCameraIcon
-                                        onClick={handleCaptureCamera}
-                                        fontSize='large'
-                                    />
+                                    <PhotoCameraIcon onClick={handleCaptureCamera} fontSize='large' />
                                 </label>
                             </>
                         ) : (
                             <>
                                 {!messageInput && (
-                                    <span className='font-semibold text-base whitespace-nowrap'>
-                                        Add to your post
-                                    </span>
+                                    <span className='font-semibold text-base whitespace-nowrap'>Add to your post</span>
                                 )}
                                 <div className='icons_wrapper flex gap-3 items-center'>
                                     <label htmlFor='insert_image' className='icon-item'>
@@ -338,10 +335,7 @@ function ModalPost({ auth, currentPost, detailPost, messageInput, message, scrol
                                     </label>
 
                                     <label className='icon-item'>
-                                        <PhotoCameraIcon
-                                            sx={{ color: '#F02849' }}
-                                            onClick={handleOpenCamera}
-                                        />
+                                        <PhotoCameraIcon sx={{ color: '#F02849' }} onClick={handleOpenCamera} />
                                     </label>
 
                                     <label className='icon-item'>
@@ -361,11 +355,7 @@ function ModalPost({ auth, currentPost, detailPost, messageInput, message, scrol
                                     <div
                                         onClick={handleSendMessage}
                                         className={`send_message  ${
-                                            content.trim()
-                                                ? theme
-                                                    ? 'text-white'
-                                                    : 'text-black'
-                                                : 'text-gray-500'
+                                            content.trim() ? (theme ? 'text-white' : 'text-black') : 'text-gray-500'
                                         }`}
                                     >
                                         <SendIcon />

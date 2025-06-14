@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { GLOBALTYPES } from './redux/actions/globalTypes';
 import { callSelector, peerSelector, socketSelector } from './redux/selector';
 import getStream from './utils/getStream';
-import CallUserModal from './components/message/CallUserModal';
+import CallUserModal from './components/modal/CallUserModal';
 
 function PeerClient({ auth }) {
     const dispatch = useDispatch();
@@ -22,8 +22,7 @@ function PeerClient({ auth }) {
             payload: {}
         });
 
-        const restUserId =
-            call?.sender._id === auth.user._id ? call?.receiver._id : call?.sender._id;
+        const restUserId = call?.sender._id === auth.user._id ? call?.receiver._id : call?.sender._id;
         socket.emit('end_call', { restUserId });
 
         if (stream) {

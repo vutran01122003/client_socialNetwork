@@ -3,20 +3,16 @@ import Tippy from '@tippyjs/react/headless';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import Avatar from './Avatar';
-import Follow from './FollowBtn';
+import Avatar from '../Avatar';
+import Follow from '../button/FollowBtn';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import PhoneOutlinedIcon from '@mui/icons-material/PhoneOutlined';
 import VideocamOutlinedIcon from '@mui/icons-material/VideocamOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import {
-    deleteConversations,
-    getMessages,
-    updateReadedUsers
-} from '../redux/actions/messageAction';
-import { GLOBALTYPES } from '../redux/actions/globalTypes';
-import { messageSelector } from '../redux/selector';
+import { deleteConversations, getMessages, updateReadedUsers } from '../../redux/actions/messageAction';
+import { GLOBALTYPES } from '../../redux/actions/globalTypes';
+import { messageSelector } from '../../redux/selector';
 
 function UserCard({
     user,
@@ -109,8 +105,7 @@ function UserCard({
                 payload: conversation
             });
 
-            if (!message.messages[conversation._id])
-                dispatch(getMessages({ conversation, currentMessages: 0 }));
+            if (!message.messages[conversation._id]) dispatch(getMessages({ conversation, currentMessages: 0 }));
         }
     };
 
@@ -118,9 +113,7 @@ function UserCard({
         <>
             {auth?.user && (
                 <div
-                    className={`account_wrapper ${
-                        homeSidebar ? 'home_sidebar' : ''
-                    } hover:bg-gray-100 ${
+                    className={`account_wrapper ${homeSidebar ? 'home_sidebar' : ''} hover:bg-gray-100 ${
                         conversation && message.currentReceiver?._id === user._id && !contactSidebar
                             ? 'border-l-4 border-gray-500'
                             : ''
@@ -143,9 +136,7 @@ function UserCard({
                             {conversation && (
                                 <div
                                     className={`${
-                                        message.onlineUserList[user?._id]
-                                            ? 'text-green-500'
-                                            : 'text-gray-500'
+                                        message.onlineUserList[user?._id] ? 'text-green-500' : 'text-gray-500'
                                     } user_active_status`}
                                 >
                                     <FiberManualRecordIcon fontSize='inherit' />
@@ -159,50 +150,36 @@ function UserCard({
                         >
                             <h3
                                 className={`${
-                                    conversation
-                                        ? 'message_user_description_username'
-                                        : 'user_description_username'
+                                    conversation ? 'message_user_description_username' : 'user_description_username'
                                 } font-bold text-slate-700`}
                             >
                                 {user?.username}
                             </h3>
                             <p
                                 className={`${
-                                    conversation
-                                        ? 'message_user_description_fullname'
-                                        : 'user_description_fullname'
+                                    conversation ? 'message_user_description_fullname' : 'user_description_fullname'
                                 } font-light text-gray-500`}
                             >
                                 {user?.fullname}
                             </p>
                         </div>
-                        {conversation &&
-                            !contactSidebar &&
-                            !conversation?.readedUsers.includes(auth?.user._id) && (
-                                <div className='unreaded_message text-red-500'>
-                                    <FiberManualRecordIcon fontSize='inherit' />
-                                </div>
-                            )}
+                        {conversation && !contactSidebar && !conversation?.readedUsers.includes(auth?.user._id) && (
+                            <div className='unreaded_message text-red-500'>
+                                <FiberManualRecordIcon fontSize='inherit' />
+                            </div>
+                        )}
                     </Elem>
 
-                    {auth &&
-                        user._id !== auth.user._id &&
-                        !conversationHeader &&
-                        !conversation &&
-                        !contactSidebar && <Follow userInfo={user} auth={auth} size={'small'} />}
+                    {auth && user._id !== auth.user._id && !conversationHeader && !conversation && !contactSidebar && (
+                        <Follow userInfo={user} auth={auth} size={'small'} />
+                    )}
 
                     {conversationHeader && (
                         <div className='conversation_icon_wrapper text-gray-500'>
-                            <div
-                                onClick={handleCallAudioUser}
-                                className='conversation_icon conversation_call_icon'
-                            >
+                            <div onClick={handleCallAudioUser} className='conversation_icon conversation_call_icon'>
                                 <PhoneOutlinedIcon />
                             </div>
-                            <div
-                                onClick={handleCallVideoUser}
-                                className='conversation_icon conversation_video_icon'
-                            >
+                            <div onClick={handleCallVideoUser} className='conversation_icon conversation_video_icon'>
                                 <VideocamOutlinedIcon />
                             </div>
                             <Tippy
@@ -211,11 +188,7 @@ function UserCard({
                                 visible={openMoreBtn}
                                 onClickOutside={handleToggleOpenMoreBtn}
                                 render={(attrs) => (
-                                    <div
-                                        className='more_wrapper text-black'
-                                        tabIndex='-1'
-                                        {...attrs}
-                                    >
+                                    <div className='more_wrapper text-black' tabIndex='-1' {...attrs}>
                                         <div
                                             onClick={() => {
                                                 handleDeleteConversation();

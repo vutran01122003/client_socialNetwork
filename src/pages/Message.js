@@ -3,16 +3,10 @@ import { useSelector } from 'react-redux';
 import MessageIcon from '@mui/icons-material/Message';
 import MessageInput from '../components/message/MessageInput';
 import MessageScreen from '../components/message/MessageScreen';
-import LeftMessageSidebar from '../components/message/LeftMessageSidebar';
-import {
-    authSelector,
-    callSelector,
-    messageSelector,
-    peerSelector,
-    socketSelector
-} from '../redux/selector';
-import UserCard from '../components/UserCard';
-import CallModal from '../components/message/CallModal';
+import LeftMessageSidebar from '../components/sidebar/LeftMessageSidebar';
+import { authSelector, callSelector, messageSelector, peerSelector, socketSelector } from '../redux/selector';
+import UserCard from '../components/message/UserCard';
+import CallModal from '../components/modal/CallModal';
 
 function Message() {
     const auth = useSelector(authSelector);
@@ -24,8 +18,7 @@ function Message() {
 
     const scrollToBottom = useCallback((prevScrollHeight) => {
         const messageScreenElem = messageScreenRef.current;
-        messageScreenElem.scrollTop =
-            messageScreenElem.scrollHeight - (prevScrollHeight > 0 ? prevScrollHeight : 0);
+        messageScreenElem.scrollTop = messageScreenElem.scrollHeight - (prevScrollHeight > 0 ? prevScrollHeight : 0);
     }, []);
 
     return (
@@ -54,11 +47,7 @@ function Message() {
                                 />
                             </div>
                             <div className='message_input'>
-                                <MessageInput
-                                    auth={auth}
-                                    message={message}
-                                    scrollToBottom={scrollToBottom}
-                                />
+                                <MessageInput auth={auth} message={message} scrollToBottom={scrollToBottom} />
                             </div>
                         </div>
                     ) : (

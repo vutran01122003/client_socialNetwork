@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { getSuggestUser } from '../../redux/actions/suggestUser';
 import { suggestedUsersSelector } from '../../redux/selector';
 import { CircularProgress } from '@mui/material';
-import UserCard from '../UserCard';
+import UserCard from '../message/UserCard';
 import SidebarItem from './SidebarItem';
 import AccountBoxOutlinedIcon from '@mui/icons-material/AccountBoxOutlined';
 import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';

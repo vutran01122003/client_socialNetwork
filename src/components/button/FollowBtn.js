@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { follow, unFollow } from '../redux/actions/profileActions';
-import { socketSelector } from '../redux/selector';
+import { follow, unFollow } from '../../redux/actions/profileActions';
+import { socketSelector } from '../../redux/selector';
 import { CircularProgress } from '@mui/material';
 // import { getNewPosts } from '../redux/actions/postAction';
 

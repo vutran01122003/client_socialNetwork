@@ -1,9 +1,9 @@
 import { Outlet, useParams } from 'react-router-dom';
 import Header from '../header/Header';
 import { Toolbar } from '@mui/material';
-import SidebarRight from '../home/SidebarRight';
-import SidebarLeft from '../home/SidebarLeft';
-import CallModal from '../message/CallModal';
+import SidebarRight from '../sidebar/SidebarRight';
+import SidebarLeft from '../sidebar/SidebarLeft';
+import CallModal from '../modal/CallModal';
 import { useSelector } from 'react-redux';
 import { callSelector, peerSelector, socketSelector } from '../../redux/selector';
 

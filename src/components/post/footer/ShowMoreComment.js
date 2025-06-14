@@ -1,4 +1,4 @@
-import { getComments, getReplies } from '../../redux/actions/commentAction';
+import { getComments, getReplies } from '../../../redux/actions/commentAction';
 import { useDispatch } from 'react-redux';
 
 function ShowMoreComment({ postId, commentQuantity, replyQuantity, commentId, isReply }) {
@@ -9,7 +9,7 @@ function ShowMoreComment({ postId, commentQuantity, replyQuantity, commentId, is
     };
 
     const getMoreReplies = () => {
-        dispatch(getReplies({ postId, commentId, replyQuantity }));
+        dispatch(getReplies({ postId, commentId, replyQuantity, limit: 10 }));
     };
 
     return (

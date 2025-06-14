@@ -201,7 +201,7 @@ export const follow =
                     dispatch({
                         type: GLOBALTYPES.ALERT,
                         payload: {
-                            success: 'success followed'
+                            success: 'Follow successful'
                         }
                     });
 
@@ -258,7 +258,7 @@ export const unFollow =
                     dispatch({
                         type: GLOBALTYPES.ALERT,
                         payload: {
-                            success: 'success unfollow'
+                            success: 'Unfollow successful'
                         }
                     });
                 })

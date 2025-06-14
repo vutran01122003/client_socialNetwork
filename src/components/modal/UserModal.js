@@ -1,4 +1,4 @@
-import UserCard from './UserCard';
+import UserCard from '../message/UserCard';
 
 function UserModal({ modalInfo, setPopup, auth }) {
     return (
@@ -12,9 +12,7 @@ function UserModal({ modalInfo, setPopup, auth }) {
         >
             <div className='modal_container'>
                 <div>
-                    <h1 className='model_title flex w-full justify-center font-bold'>
-                        {modalInfo.title}
-                    </h1>
+                    <h1 className='model_title flex w-full justify-center font-bold'>{modalInfo.title}</h1>
                     <button
                         onClick={() => {
                             setPopup(false);

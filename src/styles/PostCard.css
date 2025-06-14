@@ -1,6 +1,6 @@
 /* Card */
 .post_item {
-    width: 590px;
+    width: 600px;
     max-width: 100%;
     margin-bottom: 50px;
     border-radius: 8px;
@@ -45,7 +45,7 @@
 .body_content {
     font-weight: 500;
     width: 100%;
-    padding: 0 15px;
+    padding: 5px 15px;
 }
 
 /* Footer card */
@@ -60,10 +60,6 @@
     
 }
 
-.interactive_icons_wrapper div {
-    padding: 4px;
-}
-
 .interactive_details {
     padding: 8px 0;
 }
@@ -72,10 +68,9 @@
     color: var(--favourite-active-color);
 }
 
-.comment_wrapper {
-    max-height: 300px;
-    overflow-y: scroll;
-}
+/* .comment_wrapper {
+ 
+} */
 
 .input_comment::before {
     content: attr(data-placeholder);

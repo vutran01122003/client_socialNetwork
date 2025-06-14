@@ -5,19 +5,20 @@ import Tippy from '@tippyjs/react/headless';
 import millify from 'millify';
 import { Link } from 'react-router-dom';
 
-import Avatar from '../Avatar';
+import Avatar from '../../Avatar';
 import moment from 'moment';
-import Content from '../Content';
-import InputComment from './postCard/InputComment';
+import Content from '../../Content';
+import InputComment from './InputComment';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { deleteComment, updateComment, likeComment, unlikeComment } from '../../redux/actions/commentAction';
+import { deleteComment, updateComment, likeComment, unlikeComment } from '../../../redux/actions/commentAction';
 import ShowMoreComment from './ShowMoreComment';
+import UserModal from '../../modal/UserModal';
 
-function CommentItem({ reply, comment, auth, post, socket }) {
+function CommentItem({ activeCommentId, setActiveCommentId, comment, auth, post, socket }) {
     const dispatch = useDispatch();
+    const [likesPopup, setLikesPopup] = useState(false);
     const [openMorePopup, setOpenMorePopup] = useState(false);
-    const [commentId, setCommentId] = useState(null);
     const [editComment, setEditComment] = useState(false);
     const [editCommentValue, setEditCommentValue] = useState('');
     const [replyComment, setReplyComment] = useState(false);
@@ -25,8 +26,12 @@ function CommentItem({ reply, comment, auth, post, socket }) {
     const inputCommentRef = useRef();
     const textareaRef = useRef();
 
+    const handleOpenLikesPopup = () => {
+        setLikesPopup((prev) => !prev);
+    };
+
     const handleToggleReplyComment = ({ commentId, user }) => {
-        setCommentId(commentId);
+        setActiveCommentId(commentId);
         setCurrentOwnerComment(user);
         setReplyComment((prev) => !prev);
     };
@@ -40,7 +45,7 @@ function CommentItem({ reply, comment, auth, post, socket }) {
     };
 
     const handleLikeComment = (commentId) => {
-        dispatch(likeComment({ postId: post._id, commentId, userId: auth.user?._id }));
+        dispatch(likeComment({ postId: post._id, commentId, user: auth.user }));
     };
 
     const handleUnlikeComment = (commentId) => {
@@ -53,12 +58,13 @@ function CommentItem({ reply, comment, auth, post, socket }) {
         );
     };
 
-    const handleDeleteComment = (commentId) => {
+    const handleDeleteComment = () => {
         dispatch(
             deleteComment({
-                postId: post._id,
-                commentId,
-                socket
+                post,
+                comment,
+                socket,
+                user: auth.user
             })
         );
     };
@@ -84,10 +90,11 @@ function CommentItem({ reply, comment, auth, post, socket }) {
         }
 
         if (editCommentValue !== '') {
-            await dispatch(
+            dispatch(
                 updateComment({
                     postId: post._id,
-                    commentId,
+                    commentId: comment?._id,
+                    parentCommentId: comment?.parentCommentId,
                     content: editCommentValue
                 })
             );
@@ -113,7 +120,7 @@ function CommentItem({ reply, comment, auth, post, socket }) {
             <Link to={`/profile/${comment.user?._id}`}>
                 <Avatar avatar={comment.user?.avatar} size='small' />
             </Link>
-            {editComment && commentId === comment._id ? (
+            {editComment && activeCommentId === comment._id ? (
                 <div className='edit_comment_wrapper'>
                     <textarea
                         ref={textareaRef}
@@ -154,28 +161,35 @@ function CommentItem({ reply, comment, auth, post, socket }) {
                         <div className='comment_content_wrapper'>
                             <Link
                                 to={`/profile/${comment.user?._id}`}
-                                className='comment_username hover:underline decoration-1'
+                                className='comment_username text-black hover:underline decoration-1'
                             >
                                 {comment.user?.username}
                             </Link>
                             <div className='comment_content'>
-                                <Content
-                                    originalCommenter={comment?.originalCommenter}
-                                    content={comment.content}
-                                    limit={200}
-                                />
+                                <Content content={comment.content} limit={200} />
                             </div>
+                            {likesPopup && (
+                                <UserModal
+                                    modalInfo={{
+                                        title: 'Likes',
+                                        users: comment.likes
+                                    }}
+                                    setPopup={setLikesPopup}
+                                    auth={auth}
+                                />
+                            )}
                             {comment.likes?.length !== 0 && (
                                 <div
-                                    className={`${
+                                    onClick={() => {
+                                        handleOpenLikesPopup(comment._id);
+                                    }}
+                                    className={`like_wrapper ${
                                         comment.likes?.length === 1 ? 'count_one_like_wrapper' : 'count_like_wrapper'
                                     }`}
                                 >
                                     <FavoriteIcon fontSize='small' className='like_comment_icon' />
-                                    {comment.likes?.length > 1 ? (
+                                    {comment.likes?.length > 1 && (
                                         <span className='count_like'>{millify(comment.likes?.length)}</span>
-                                    ) : (
-                                        ''
                                     )}
                                 </div>
                             )}
@@ -186,7 +200,7 @@ function CommentItem({ reply, comment, auth, post, socket }) {
                                 placement='bottom-end'
                                 interactive
                                 onClickOutside={handleToggleMorePopup}
-                                visible={commentId === comment._id && openMorePopup}
+                                visible={activeCommentId === comment._id && openMorePopup}
                                 render={(attrs) => (
                                     <div className='comment_more_popup' tabIndex='-1' {...attrs}>
                                         {comment.user?._id === auth.user?._id ? (
@@ -195,7 +209,7 @@ function CommentItem({ reply, comment, auth, post, socket }) {
                                                     onClick={() => {
                                                         setEditCommentValue(comment.content);
                                                         handleOpenEditComment();
-                                                        setCommentId(comment._id);
+                                                        setActiveCommentId(comment._id);
                                                         handleToggleMorePopup();
                                                     }}
                                                     className='comment_more_popup_item'
@@ -204,7 +218,7 @@ function CommentItem({ reply, comment, auth, post, socket }) {
                                                 </div>
                                                 <div
                                                     onClick={() => {
-                                                        handleDeleteComment(comment._id);
+                                                        handleDeleteComment();
                                                         handleToggleMorePopup();
                                                     }}
                                                     className='comment_more_popup_item'
@@ -229,7 +243,7 @@ function CommentItem({ reply, comment, auth, post, socket }) {
                                     onClick={() => {
                                         handleToggleMorePopup();
                                         handleHideEditComment();
-                                        setCommentId(comment._id);
+                                        setActiveCommentId(comment._id);
                                     }}
                                     className='comment_more_btn'
                                 >
@@ -260,47 +274,44 @@ function CommentItem({ reply, comment, auth, post, socket }) {
                             </button>
                         )}
 
-                        {!reply && (
-                            <button
-                                onClick={() => {
-                                    handleToggleReplyComment({
-                                        user: comment.user,
-                                        commentId: comment._id
-                                    });
-                                }}
-                                className='btn_reply_comment'
-                            >
-                                Reply
-                            </button>
-                        )}
+                        <button
+                            onClick={() => {
+                                handleToggleReplyComment({
+                                    user: comment.user,
+                                    commentId: comment._id
+                                });
+                            }}
+                            className='btn_reply_comment'
+                        >
+                            Reply
+                        </button>
                         <span className='time_createdAt_comment'>{moment(comment.createdAt).fromNow()}</span>
                     </div>
-                    {comment.reply?.length > 0 && (
-                        <div className='reply_comment_wrapper'>
-                            {comment.reply.map((replyComment, index) => (
-                                <div key={index} className='reply_item_wrapper'>
-                                    <CommentItem
-                                        post={post}
-                                        auth={auth}
-                                        comment={replyComment}
-                                        reply={true}
-                                        socket={socket}
-                                    />
-                                </div>
-                            ))}
-
-                            {comment.reply?.length > 1 && !comment.isMaxReplies && (
-                                <ShowMoreComment
-                                    isReply={true}
-                                    commentId={comment._id}
-                                    postId={post._id}
-                                    replyQuantity={comment.reply?.length}
+                    {comment?.replies &&
+                        Object.keys(comment.replies).length > 0 &&
+                        Object.values(comment.replies).map((reply) => (
+                            <div key={reply._id} className='reply_item_wrapper'>
+                                <CommentItem
+                                    activeCommentId={activeCommentId}
+                                    setActiveCommentId={setActiveCommentId}
+                                    auth={auth}
+                                    post={post}
+                                    comment={reply}
+                                    socket={socket}
                                 />
-                            )}
+                            </div>
+                        ))}
+                    {comment.numberOfChildComment > 0 && !comment?.isMaxReply && (
+                        <div className='reply_comment_wrapper'>
+                            <ShowMoreComment
+                                isReply={true}
+                                commentId={comment._id}
+                                postId={post._id}
+                                replyQuantity={Object.keys(comment.replies).length}
+                            />
                         </div>
                     )}
-
-                    {replyComment && commentId === comment._id ? (
+                    {replyComment && activeCommentId === comment._id && (
                         <InputComment
                             inputCommentRef={inputCommentRef}
                             currentOwnerComment={currentOwnerComment}
@@ -308,8 +319,9 @@ function CommentItem({ reply, comment, auth, post, socket }) {
                             comment={comment}
                             post={post}
                             auth={auth}
+                            setReplyComment={setReplyComment}
                         />
-                    ) : null}
+                    )}
                 </div>
             )}
         </>

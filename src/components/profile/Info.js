@@ -1,10 +1,10 @@
 import { Box } from '@mui/material';
 import { useState } from 'react';
 import Edit from './EditProfile';
-import Follow from '../FollowBtn';
+import Follow from '../button/FollowBtn';
 import Avatar from '../Avatar';
 import Content from '../Content';
-import UserModal from '../UserModal';
+import UserModal from '../modal/UserModal';
 import MessageIcon from '@mui/icons-material/Message';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -16,8 +16,7 @@ function Info({ userInfo, auth }) {
     const message = useSelector(messageSelector);
     const [onEdit, setOnEdit] = useState(false);
     const [audience, setAudience] = useState(false);
-    const { avatar, username, fullname, followers, following, story, website, _id } =
-        userInfo || {};
+    const { avatar, username, fullname, followers, following, story, website, _id } = userInfo || {};
 
     const handleEdit = () => {
         setOnEdit((prev) => !prev);

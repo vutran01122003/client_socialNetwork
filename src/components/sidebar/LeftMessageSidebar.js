@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import UserCard from '../UserCard';
+import UserCard from '../message/UserCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { getConversations } from '../../redux/actions/messageAction';
 import { messageSelector } from '../../redux/selector';

@@ -1,12 +1,12 @@
 import { useRef, useCallback, useState } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
-import PostCard from './postCard/PostCard';
+import PostCard from './PostCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPosts } from '../../redux/actions/postAction';
 import { statusSelector } from '../../redux/selector';
 import { postSelector } from '../../redux/selector';
 import { useEffect } from 'react';
-import ModalPost from '../../components/home/ModalPost';
+import ModalPost from '../modal/ModalPost';
 
 function Post({ auth }) {
     const observer = useRef();
@@ -36,13 +36,13 @@ function Post({ auth }) {
 
     return (
         <div className='post_wrapper'>
-            {homePosts.posts.length === 0 ? (
+            {Object.keys(homePosts.posts).length === 0 ? (
                 <div className='font-semibold mt-2 text-gray-500 flex flex-col items-center uppercase select-none'>
                     <h3 className=''>There are no posts</h3>
                 </div>
             ) : (
-                homePosts.posts.map((post, index) => {
-                    if (homePosts.posts.length === index + 1) {
+                Object.values(homePosts.posts).map((post, index) => {
+                    if (Object.keys(homePosts.posts).length === index + 1) {
                         return (
                             <div ref={lastPostElementRef} key={post._id} className='post_item'>
                                 <PostCard auth={auth} post={post} />

@@ -2,4 +2,6 @@
     display: block;
     width: 100%;
     overflow-wrap: break-word;
+    color: #333;
+    font-weight: 400;
 }

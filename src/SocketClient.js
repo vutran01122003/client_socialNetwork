@@ -1,10 +1,10 @@
-import { useEffect } from 'react';
-import { io } from 'socket.io-client';
-import { GLOBALTYPES } from './redux/actions/globalTypes';
-import { useDispatch, useSelector } from 'react-redux';
-import { getConversations, getMessages, updateReadedUsers } from './redux/actions/messageAction';
-import { messageSelector, socketSelector } from './redux/selector';
-import { getDataApi } from './utils/fetchData';
+import { useEffect } from "react";
+import { io } from "socket.io-client";
+import { GLOBALTYPES } from "./redux/actions/globalTypes";
+import { useDispatch, useSelector } from "react-redux";
+import { getConversations, getMessages, updateReadedUsers } from "./redux/actions/messageAction";
+import { messageSelector, socketSelector } from "./redux/selector";
+import { getDataApi } from "./utils/fetchData";
 
 function SocketClient({ auth }) {
     const dispatch = useDispatch();
@@ -14,7 +14,7 @@ function SocketClient({ auth }) {
     useEffect(() => {
         // Message
         if (socket && Object.keys(message).length > 1) {
-            socket.on('created_message', async (data) => {
+            socket.on("created_message", async (data) => {
                 const userId = data.createdMessage.sender;
                 if (message.currentReceiver._id === data.createdMessage.sender) {
                     // If you and other user are chatting, conversation will not notify unreaded conversation notication
@@ -41,30 +41,30 @@ function SocketClient({ auth }) {
                     });
             });
 
-            return () => socket.off('created_message');
+            return () => socket.off("created_message");
         }
         // eslint-disable-next-line
     }, [socket, message, dispatch]);
 
     useEffect(() => {
         const socket = io(process.env.REACT_APP_API_URI);
-        socket.on('connect', () => {
+        socket.on("connect", () => {
             dispatch({
                 type: GLOBALTYPES.SOCKET,
                 payload: socket
             });
-            socket.emit('connected_user', auth?.user._id);
+            socket.emit("connected_user", auth?.user._id);
         });
 
         // user online
-        socket.on('user_online_list', (data) => {
+        socket.on("user_online_list", (data) => {
             dispatch({
                 type: GLOBALTYPES.MESSAGE.GET_USER_ONLINE_LIST,
                 payload: data
             });
         });
         // create post
-        socket.on('notification_createdPost', (createdNotification) => {
+        socket.on("notification_createdPost", (createdNotification) => {
             dispatch({
                 type: GLOBALTYPES.NOTIFICATION.CREATE_NOTIFICATION,
                 payload: {
@@ -75,21 +75,21 @@ function SocketClient({ auth }) {
         });
 
         // like post
-        socket.on('liked_post', (data) => {
+        socket.on("liked_post", (data) => {
             dispatch({
                 type: GLOBALTYPES.POST.UPDATE_POST,
                 payload: data
             });
         });
 
-        socket.on('unliked_post', (data) => {
+        socket.on("unliked_post", (data) => {
             dispatch({
                 type: GLOBALTYPES.POST.UPDATE_POST,
                 payload: data
             });
         });
 
-        socket.on('notification_liked', (createdNotification) => {
+        socket.on("notification_liked", (createdNotification) => {
             dispatch({
                 type: GLOBALTYPES.NOTIFICATION.CREATE_NOTIFICATION,
                 payload: {
@@ -100,7 +100,7 @@ function SocketClient({ auth }) {
         });
 
         // comment post
-        socket.on('created_comment', ({ postId, newComment, originCommentId }) => {
+        socket.on("created_comment", ({ postId, newComment, originCommentId }) => {
             if (originCommentId) {
                 dispatch({
                     type: GLOBALTYPES.COMMENT.ADD_REPLY_COMMENT,
@@ -121,14 +121,14 @@ function SocketClient({ auth }) {
             }
         });
 
-        socket.on('deleted_comment', (data) => {
+        socket.on("deleted_comment", (data) => {
             dispatch({
                 type: GLOBALTYPES.POST.UPDATE_POST,
                 payload: data
             });
         });
 
-        socket.on('notification_commentedPost', (createdNotification) => {
+        socket.on("notification_commentedPost", (createdNotification) => {
             dispatch({
                 type: GLOBALTYPES.NOTIFICATION.CREATE_NOTIFICATION,
                 payload: {
@@ -139,14 +139,14 @@ function SocketClient({ auth }) {
         });
 
         // Follow
-        socket.on('followed_user', (newUser) => {
+        socket.on("followed_user", (newUser) => {
             dispatch({
                 type: GLOBALTYPES.AUTH,
                 payload: { ...auth, user: newUser }
             });
         });
 
-        socket.on('unfollowed_user', (newUser) => {
+        socket.on("unfollowed_user", (newUser) => {
             dispatch({
                 type: GLOBALTYPES.AUTH,
                 payload: { ...auth, user: newUser }
@@ -154,7 +154,7 @@ function SocketClient({ auth }) {
         });
 
         // Save
-        socket.on('notification_saved', (createdNotification) => {
+        socket.on("notification_saved", (createdNotification) => {
             dispatch({
                 type: GLOBALTYPES.NOTIFICATION.CREATE_NOTIFICATION,
                 payload: { createdNotification, authId: auth?.user._id }
@@ -162,7 +162,7 @@ function SocketClient({ auth }) {
         });
 
         // Follow
-        socket.on('notification_followedUser', (createdNotification) => {
+        socket.on("notification_followedUser", (createdNotification) => {
             dispatch({
                 type: GLOBALTYPES.NOTIFICATION.CREATE_NOTIFICATION,
                 payload: {
@@ -172,7 +172,7 @@ function SocketClient({ auth }) {
             });
         });
 
-        socket.on('deleted_conversation', () => {
+        socket.on("deleted_conversation", () => {
             dispatch(getConversations({ auth, page: 1 }));
             dispatch({
                 type: GLOBALTYPES.MESSAGE.SET_CURRENT_CONVERSATION,

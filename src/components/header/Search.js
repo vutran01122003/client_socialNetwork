@@ -5,7 +5,7 @@ import { CircularProgress } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSearchUser } from '../../redux/actions/usersAction';
 import { userSelector } from '../../redux/selector';
-import UserCard from '../UserCard';
+import UserCard from '../message/UserCard';
 
 function Search({ auth, popup }) {
     const users = useSelector(userSelector);
@@ -98,9 +98,7 @@ function Search({ auth, popup }) {
                         )}
 
                         {!users.loading && users?.userList.length === 0 && (
-                            <h3 className='text-black font-semibold text-center p-3'>
-                                Username does not exist
-                            </h3>
+                            <h3 className='text-black font-semibold text-center p-3'>Username does not exist</h3>
                         )}
                     </div>
                 )}

@@ -1,36 +1,37 @@
-import { getDataApi, postDataApi } from '../../utils/fetchData';
-import { GLOBALTYPES } from './globalTypes';
+import { getDataApi, postDataApi } from "../../utils/fetchData";
+import { GLOBALTYPES } from "./globalTypes";
 
 export const getAuthInfo = () => async (dispatch) => {
-    getDataApi('/access_token')
+    getDataApi("/access_token")
         .then((res) => {
-            localStorage.setItem('logged', true);
+            localStorage.setItem("logged", true);
             dispatch({
                 type: GLOBALTYPES.AUTH,
                 payload: res.data
             });
         })
         .catch((e) => {
-            if (e.response?.data.status === 403) {
-                if (localStorage.getItem('logged')) {
-                    localStorage.removeItem('logged');
-                    window.location.reload();
-                }
-            } else
-                dispatch({
-                    type: GLOBALTYPES.ALERT,
-                    payload: {
-                        error: e.response?.data.msg || 'Error'
-                    }
-                });
+            // if (e.response?.data.status === 403) {
+            //     if (localStorage.getItem("logged")) {
+            //         localStorage.removeItem("logged");
+            //         window.location.reload();
+            //     }
+            // } else
+            //     dispatch({
+            //         type: GLOBALTYPES.ALERT,
+            //         payload: {
+            //             error: e.response?.data.msg || "Error"
+            //         }
+            //     });
+            console.log(e);
         });
 };
 
 export const loginAction = (payload) => async (dispatch) => {
     try {
         dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } });
-        const res = await postDataApi('/login', payload);
-        localStorage.setItem('logged', true);
+        const res = await postDataApi("/login", payload);
+        localStorage.setItem("logged", true);
         dispatch({
             type: GLOBALTYPES.AUTH,
             payload: {
@@ -53,7 +54,7 @@ export const loginAction = (payload) => async (dispatch) => {
 export const refreshToken = () => async (dispatch) => {
     try {
         dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } });
-        const res = await getDataApi('/refresh_token');
+        const res = await getDataApi("/refresh_token");
         dispatch({
             type: GLOBALTYPES.AUTH,
             payload: {
@@ -65,7 +66,7 @@ export const refreshToken = () => async (dispatch) => {
     } catch (err) {
         dispatch({
             type: GLOBALTYPES.ALERT,
-            payload: { error: err.response?.data.msg || 'Error' }
+            payload: { error: err.response?.data.msg || "Error" }
         });
     }
 };
@@ -77,9 +78,9 @@ export const register = (userData) => async (dispatch) => {
             payload: { loading: true }
         });
 
-        const res = await postDataApi('/register', userData);
+        const res = await postDataApi("/register", userData);
 
-        localStorage.setItem('logged', true);
+        localStorage.setItem("logged", true);
 
         dispatch({
             type: GLOBALTYPES.AUTH,
@@ -94,10 +95,11 @@ export const register = (userData) => async (dispatch) => {
             payload: { success: res.data.status }
         });
     } catch (err) {
+        console.log(err);
         dispatch({
             type: GLOBALTYPES.ALERT,
             payload: {
-                error: err.response?.data.msg || 'Error'
+                error: err.response?.data.msg || "Error"
             }
         });
     }
@@ -110,9 +112,9 @@ export const logout = () => async (dispatch) => {
             payload: { loading: true }
         });
 
-        const res = await getDataApi('/logout');
+        const res = await getDataApi("/logout");
 
-        localStorage.removeItem('logged');
+        localStorage.removeItem("logged");
 
         dispatch({
             type: GLOBALTYPES.AUTH,
@@ -129,7 +131,7 @@ export const logout = () => async (dispatch) => {
         dispatch({
             type: GLOBALTYPES.ALERT,
             payload: {
-                error: err.response?.data.msg || 'Error'
+                error: err.response?.data.msg || "Error"
             }
         });
     }

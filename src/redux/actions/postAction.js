@@ -6,14 +6,7 @@ import { createNotification } from './notifyAction';
 export const createPost =
     ({ user, content, files, socket }) =>
     async (dispatch) => {
-        if (!content) {
-            dispatch({
-                type: GLOBALTYPES.ALERT,
-                payload: {
-                    error: 'empty content'
-                }
-            });
-        } else {
+        try {
             dispatch({
                 type: GLOBALTYPES.ALERT,
                 payload: {
@@ -25,59 +18,59 @@ export const createPost =
             if (files.length > 0) {
                 fileUrlArr = await uploadFile(files);
             }
-            postDataApi(`/post`, {
+            const res = await postDataApi(`/post`, {
                 postData: {
                     user,
                     content,
                     files: fileUrlArr
                 }
-            })
-                .then((res) => {
-                    dispatch({
-                        type: GLOBALTYPES.POST.CREATE_POST,
-                        payload: res.data.postData
-                    });
+            });
 
-                    dispatch({
-                        type: GLOBALTYPES.PROFILE.RESET_USER_POSTS,
-                        payload: {
-                            userId: user._id
-                        }
-                    });
+            dispatch({
+                type: GLOBALTYPES.POST.CREATE_POST,
+                payload: {
+                    post: res.data.postData
+                }
+            });
 
-                    dispatch({
-                        type: GLOBALTYPES.ALERT,
-                        payload: {
-                            success: res.data.status
-                        }
-                    });
+            dispatch({
+                type: GLOBALTYPES.PROFILE.RESET_USER_POSTS,
+                payload: {
+                    userId: user._id
+                }
+            });
 
-                    dispatch(
-                        createNotification({
-                            authId: user._id,
-                            socket,
-                            notifyData: {
-                                postId: res.data.postData._id,
-                                postOwnerId: res.data.postData.user._id,
-                                avatar: res.data.postData.user.avatar,
-                                url: `/post/${res.data.postData._id}`,
-                                receiver: res.data.postData.user.followers,
-                                type: 'notification_createdPost',
-                                content: res.data.postData.content,
-                                file: res.data.postData.files[0]?.url,
-                                title: `${res.data.postData.user.username} posted:`
-                            }
-                        })
-                    );
+            dispatch({
+                type: GLOBALTYPES.ALERT,
+                payload: {
+                    success: res.data.status
+                }
+            });
+
+            dispatch(
+                createNotification({
+                    authId: user._id,
+                    socket,
+                    notifyData: {
+                        postId: res.data.postData._id,
+                        postOwnerId: res.data.postData.user._id,
+                        avatar: res.data.postData.user.avatar,
+                        url: `/post/${res.data.postData._id}`,
+                        receiver: res.data.postData.user.followers,
+                        type: 'notification_createdPost',
+                        content: res.data.postData.content,
+                        file: res.data.postData.files[0]?.url,
+                        title: `${res.data.postData.user.username} posted:`
+                    }
                 })
-                .catch((err) => {
-                    dispatch({
-                        type: GLOBALTYPES.ALERT,
-                        payload: {
-                            error: err.response?.data.msg || 'Error'
-                        }
-                    });
-                });
+            );
+        } catch (error) {
+            dispatch({
+                type: GLOBALTYPES.ALERT,
+                payload: {
+                    error: error.response?.data.msg || 'Create Post Error'
+                }
+            });
         }
     };
 
@@ -102,24 +95,56 @@ export const getPosts =
                     maxPage: res.data.result === 0 ? true : false
                 }
             });
-
-            dispatch({
-                type: GLOBALTYPES.POST.LOADING_POST,
-                payload: {
-                    loading: false
-                }
-            });
         } catch (error) {
-            dispatch({
-                type: GLOBALTYPES.POST.LOADING_POST,
-                payload: {
-                    loading: false
-                }
-            });
             dispatch({
                 type: GLOBALTYPES.ALERT,
                 payload: {
-                    error: error.response?.data.msg
+                    error: error.response?.data.msg || 'Get Posts Error'
+                }
+            });
+        } finally {
+            dispatch({
+                type: GLOBALTYPES.POST.LOADING_POST,
+                payload: {
+                    loading: false
+                }
+            });
+        }
+    };
+
+export const getPost =
+    ({ postId }) =>
+    async (dispatch) => {
+        try {
+            dispatch({
+                type: GLOBALTYPES.ALERT,
+                payload: {
+                    loading: true
+                }
+            });
+            const res = await getDataApi(`/post/${postId}`);
+
+            dispatch({
+                type: GLOBALTYPES.POST.GET_POST_DETAILS,
+                payload: {
+                    post: {
+                        ...res.data.post,
+                        comments: {}
+                    }
+                }
+            });
+        } catch (e) {
+            dispatch({
+                type: GLOBALTYPES.ALERT,
+                payload: {
+                    error: e.response?.data.msg || 'Get Post Details Error'
+                }
+            });
+        } finally {
+            dispatch({
+                type: GLOBALTYPES.ALERT,
+                payload: {
+                    loading: false
                 }
             });
         }
@@ -206,7 +231,7 @@ export const updatePost =
                     dispatch({
                         type: GLOBALTYPES.ALERT,
                         payload: {
-                            error: err.response?.data.msg || 'Error'
+                            error: err.response?.data.msg || 'Update Post Error'
                         }
                     });
                 });
@@ -250,120 +275,91 @@ export const deletePost =
                 dispatch({
                     type: GLOBALTYPES.ALERT,
                     payload: {
-                        error: e.response?.data.msg || 'Error'
+                        error: e.response?.data.msg || 'Delete Post Error'
                     }
                 });
             });
     };
 
 export const likePost = (post, user, socket) => async (dispatch) => {
-    dispatch({
-        type: GLOBALTYPES.ALERT,
-        payload: {
-            loading: true
-        }
-    });
-
-    patchDataApi(`/post/${post._id}/like`, {
-        userData: user
-    })
-        .then((res) => {
-            socket.emit('like_post', res.data.newPost);
-            dispatch({
-                type: GLOBALTYPES.POST.UPDATE_POST,
-                payload: res.data.newPost
-            });
-
-            dispatch({
-                type: GLOBALTYPES.ALERT,
-                payload: {
-                    success: res.data.status
-                }
-            });
-            if (post.user._id !== user._id) {
-                dispatch(
-                    createNotification({
-                        authId: user._id,
-                        socket,
-                        notifyData: {
-                            postId: res.data.newPost._id,
-                            postOwnerId: res.data.newPost.user._id,
-                            avatar: user.avatar,
-                            url: `/post/${res.data.newPost._id}`,
-                            type: 'notification_liked',
-                            receiver: [res.data.newPost.user._id],
-                            file: res.data.newPost.files[0]?.url,
-                            title: `${user.username} liked your post`
-                        }
-                    })
-                );
-            }
+    if (!post.likes.find((userData) => userData._id === user._id)) {
+        const postId = post._id;
+        patchDataApi(`/post/${postId}/like`, {
+            userData: user
         })
-        .catch((e) => {
-            dispatch({
-                type: GLOBALTYPES.ALERT,
-                payload: {
-                    error: e.response?.data.msg
-                }
-            });
-        });
-};
-
-export const unlikePost = (postId, user, socket) => async (dispatch) => {
-    dispatch({
-        type: GLOBALTYPES.ALERT,
-        payload: {
-            loading: true
-        }
-    });
-
-    patchDataApi(`/post/${postId}/unlike`, {
-        userData: user
-    })
-        .then((res) => {
-            socket.emit('unlike_post', res.data.newPost);
-
-            dispatch({
-                type: GLOBALTYPES.POST.UPDATE_POST,
-                payload: res.data.newPost
-            });
-
-            dispatch({
-                type: GLOBALTYPES.ALERT,
-                payload: {
-                    success: res.data.status
-                }
-            });
-        })
-        .catch((e) => {
-            dispatch({
-                type: GLOBALTYPES.ALERT,
-                payload: {
-                    error: e.response?.data.msg || 'Error'
-                }
-            });
-        });
-};
-
-export const getPost =
-    ({ postId }) =>
-    async (dispatch) => {
-        dispatch({
-            type: GLOBALTYPES.ALERT,
-            payload: {
-                loading: true
-            }
-        });
-        getDataApi(`/post/${postId}`)
             .then((res) => {
+                socket.emit('like_post', res.data.newPost);
+
                 dispatch({
-                    type: GLOBALTYPES.DETAILPOST.GET_DETAILPOST,
-                    payload: res.data.post
+                    type: GLOBALTYPES.POST.LIKE_POST,
+                    payload: {
+                        userData: {
+                            _id: user._id,
+                            username: user.username,
+                            fullname: user.fullname,
+                            avatar: user.avatar
+                        },
+                        postId: postId
+                    }
                 });
+
                 dispatch({
                     type: GLOBALTYPES.ALERT,
                     payload: {
-                        loading: false
+                        success: res.data.status
+                    }
+                });
+                if (post.user._id !== user._id) {
+                    dispatch(
+                        createNotification({
+                            authId: user._id,
+                            socket,
+                            notifyData: {
+                                postId: res.data.newPost._id,
+                                postOwnerId: res.data.newPost.user._id,
+                                avatar: user.avatar,
+                                url: `/post/${res.data.newPost._id}`,
+                                type: 'notification_liked',
+                                receiver: [res.data.newPost.user._id],
+                                file: res.data.newPost.files[0]?.url,
+                                title: `${user.username} liked your post`
+                            }
+                        })
+                    );
+                }
+            })
+            .catch((e) => {
+                dispatch({
+                    type: GLOBALTYPES.ALERT,
+                    payload: {
+                        error: e.response?.data.msg
+                    }
+                });
+            });
+    }
+};
+
+export const unlikePost = (post, user, socket) => async (dispatch) => {
+    if (post.likes.find((userData) => userData._id === user._id)) {
+        const postId = post._id;
+        patchDataApi(`/post/${postId}/unlike`, {
+            userData: user
+        })
+            .then((res) => {
+                socket.emit('unlike_post', res.data.newPost);
+
+                dispatch({
+                    type: GLOBALTYPES.POST.UNLIKE_POST,
+                    payload: {
+                        postId,
+                        userId: user._id
+                    }
+                });
+
+                dispatch({
+                    type: GLOBALTYPES.ALERT,
+                    payload: {
+                        success: res.data.status
                     }
                 });
             })
@@ -371,23 +367,17 @@ export const getPost =
                 dispatch({
                     type: GLOBALTYPES.ALERT,
                     payload: {
-                        error: e.response?.data.msg || 'Error'
+                        error: e.response?.data.msg || 'Unlike Post Error'
                     }
                 });
             });
-    };
+    }
+};
 
 export const savedPost =
     ({ auth, post, socket }) =>
     async (dispatch) => {
         try {
-            dispatch({
-                type: GLOBALTYPES.ALERT,
-                payload: {
-                    loading: true
-                }
-            });
-
             const res = await patchDataApi(`/saved_post/${post._id}`);
 
             dispatch({
@@ -398,8 +388,11 @@ export const savedPost =
             });
 
             dispatch({
-                type: GLOBALTYPES.POST.UPDATE_POST,
-                payload: res.data.updatedPost
+                type: GLOBALTYPES.POST.SAVE_POST,
+                payload: {
+                    userId: auth.user._id,
+                    postId: post._id
+                }
             });
 
             dispatch({
@@ -431,7 +424,7 @@ export const savedPost =
             dispatch({
                 type: GLOBALTYPES.ALERT,
                 payload: {
-                    error: e.response?.data.msg || 'Error'
+                    error: e.response?.data.msg || 'Save Post Error'
                 }
             });
         }
@@ -441,18 +434,14 @@ export const unSavedPost =
     ({ post, auth }) =>
     async (dispatch) => {
         try {
-            dispatch({
-                type: GLOBALTYPES.ALERT,
-                payload: {
-                    loading: true
-                }
-            });
-
             const res = await patchDataApi(`/unsaved_post/${post._id}`);
 
             dispatch({
-                type: GLOBALTYPES.POST.UPDATE_POST,
-                payload: res.data.updatedPost
+                type: GLOBALTYPES.POST.UNSAVE_POST,
+                payload: {
+                    userId: auth.user._id,
+                    postId: post._id
+                }
             });
 
             dispatch({
@@ -472,7 +461,7 @@ export const unSavedPost =
             dispatch({
                 type: GLOBALTYPES.ALERT,
                 payload: {
-                    error: e.response?.data.msg || 'Error'
+                    error: e.response?.data.msg || 'UnSave Post Error'
                 }
             });
         }

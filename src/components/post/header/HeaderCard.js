@@ -51,16 +51,14 @@ function HeaderCard({ post, auth, detailPost }) {
     return (
         <div className='header_card flex items-center justify-between'>
             <div className='user_info flex items-center'>
-                <Link to={`/profile/${user._id}`}>
-                    <Avatar avatar={user.avatar} size='small' />
+                <Link to={`/profile/${user?._id}`}>
+                    <Avatar avatar={user?.avatar} size='small' />
                 </Link>
                 <div className='ml-2'>
-                    <h3 className='header_username font-base text-xl font-medium hover:underline decoration-1'>
-                        <Link to={`/profile/${user._id}`}>{user.username}</Link>
+                    <h3 className='header_username text-black font-base text-xl font-medium hover:underline decoration-1'>
+                        <Link to={`/profile/${user?._id}`}>{user?.username}</Link>
                     </h3>
-                    <h4 className='created_at text-gray-500 text-sm'>
-                        {moment(post.createdAt).fromNow()}
-                    </h4>
+                    <h4 className='created_at text-gray-500 font-light text-sm'>{moment(post.createdAt).fromNow()}</h4>
                 </div>
             </div>
             <Tippy

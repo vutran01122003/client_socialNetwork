@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Tippy from '@tippyjs/react/headless';
-import BodyCard from '../home/postCard/BodyCard';
+import BodyCard from '../post/body/BodyCard';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useDispatch } from 'react-redux';
 import { deleteMessage, getMessages } from '../../redux/actions/messageAction';
@@ -27,16 +27,12 @@ function MessageScreen({ auth, message, scrollToBottom, messageScreenRef }) {
             if (message.loading) return;
             if (observer.current) observer.current.disconnect();
             observer.current = new IntersectionObserver((entries) => {
-                if (
-                    entries[0].isIntersecting &&
-                    !message.messages[message.currentConversation._id].maxPage
-                ) {
+                if (entries[0].isIntersecting && !message.messages[message.currentConversation._id].maxPage) {
                     setPrevScrollHeight(messageScreenRef.current.scrollHeight);
                     dispatch(
                         getMessages({
                             page: message.messages[message.currentConversation._id].page + 1,
-                            currentMessages:
-                                message.messages[message.currentConversation._id].result,
+                            currentMessages: message.messages[message.currentConversation._id].result,
                             conversation: message.currentConversation
                         })
                     );
@@ -88,90 +84,68 @@ function MessageScreen({ auth, message, scrollToBottom, messageScreenRef }) {
             {message.messages[message.currentConversation?._id] && (
                 <div className='message_screen_wrapper'>
                     {message.messages[message.currentConversation?._id] &&
-                        message.messages[message.currentConversation?._id].data.map(
-                            (messageItem, index) => (
-                                <div key={messageItem._id}>
-                                    <div
-                                        ref={index === 0 ? firstMessageElementRef : null}
-                                        key={messageItem._id}
-                                        className={`${
-                                            messageItem.sender === auth?.user._id
-                                                ? 'message_sender'
-                                                : 'message_receiver'
-                                        } message_item`}
-                                    >
-                                        {messageItem.sender !== auth?.user._id && (
-                                            <Avatar
-                                                avatar={message.currentReceiver.avatar}
-                                                size='small'
-                                            />
-                                        )}
+                        message.messages[message.currentConversation?._id].data.map((messageItem, index) => (
+                            <div key={messageItem._id}>
+                                <div
+                                    ref={index === 0 ? firstMessageElementRef : null}
+                                    key={messageItem._id}
+                                    className={`${
+                                        messageItem.sender === auth?.user._id ? 'message_sender' : 'message_receiver'
+                                    } message_item`}
+                                >
+                                    {messageItem.sender !== auth?.user._id && (
+                                        <Avatar avatar={message.currentReceiver.avatar} size='small' />
+                                    )}
 
-                                        <div className='flex items-center gap-1'>
-                                            <div
-                                                className={`${
-                                                    messageItem.sender === auth?.user._id
-                                                        ? 'order-2'
-                                                        : 'order-1'
-                                                } cursor-pointer`}
-                                            >
-                                                <BodyCard post={messageItem} messagePage={true} />
-                                            </div>
-
-                                            <Tippy
-                                                interactive
-                                                visible={
-                                                    openMoreMessage && messageId === messageItem._id
-                                                }
-                                                onClickOutside={handleToggleOpenMoreMessage}
-                                                placement='top-start'
-                                                render={(attrs) => (
-                                                    <div
-                                                        className='more_wrapper'
-                                                        tabIndex='-1'
-                                                        {...attrs}
-                                                    >
-                                                        <>
-                                                            {messageItem.sender ===
-                                                            auth?.user._id ? (
-                                                                <div
-                                                                    onClick={() => {
-                                                                        handleDeleteMessage(
-                                                                            messageItem._id
-                                                                        );
-                                                                    }}
-                                                                    className='more_item'
-                                                                >
-                                                                    Remove
-                                                                </div>
-                                                            ) : (
-                                                                <div className='more_item'>
-                                                                    Report
-                                                                </div>
-                                                            )}
-                                                        </>
-                                                    </div>
-                                                )}
-                                            >
-                                                <div
-                                                    onClick={() => {
-                                                        handleToggleOpenMoreMessage();
-                                                        setMessageId(messageItem._id);
-                                                    }}
-                                                    className={`${
-                                                        messageItem.sender === auth?.user._id
-                                                            ? 'order-1'
-                                                            : 'order-2'
-                                                    } cursor-pointer more_message_btn text-gray-500 icon-item active:text-gray-600`}
-                                                >
-                                                    <MoreVertIcon />
-                                                </div>
-                                            </Tippy>
+                                    <div className='flex items-center gap-1'>
+                                        <div
+                                            className={`${
+                                                messageItem.sender === auth?.user._id ? 'order-2' : 'order-1'
+                                            } cursor-pointer`}
+                                        >
+                                            <BodyCard post={messageItem} messagePage={true} />
                                         </div>
+
+                                        <Tippy
+                                            interactive
+                                            visible={openMoreMessage && messageId === messageItem._id}
+                                            onClickOutside={handleToggleOpenMoreMessage}
+                                            placement='top-start'
+                                            render={(attrs) => (
+                                                <div className='more_wrapper' tabIndex='-1' {...attrs}>
+                                                    <>
+                                                        {messageItem.sender === auth?.user._id ? (
+                                                            <div
+                                                                onClick={() => {
+                                                                    handleDeleteMessage(messageItem._id);
+                                                                }}
+                                                                className='more_item'
+                                                            >
+                                                                Remove
+                                                            </div>
+                                                        ) : (
+                                                            <div className='more_item'>Report</div>
+                                                        )}
+                                                    </>
+                                                </div>
+                                            )}
+                                        >
+                                            <div
+                                                onClick={() => {
+                                                    handleToggleOpenMoreMessage();
+                                                    setMessageId(messageItem._id);
+                                                }}
+                                                className={`${
+                                                    messageItem.sender === auth?.user._id ? 'order-1' : 'order-2'
+                                                } cursor-pointer more_message_btn text-gray-500 icon-item active:text-gray-600`}
+                                            >
+                                                <MoreVertIcon />
+                                            </div>
+                                        </Tippy>
                                     </div>
                                 </div>
-                            )
-                        )}
+                            </div>
+                        ))}
                 </div>
             )}
         </>
